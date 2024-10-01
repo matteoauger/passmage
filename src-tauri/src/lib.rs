@@ -1,6 +1,7 @@
 mod commands;
 mod prelude;
 mod error;
+mod utils;
 
 pub use crate::prelude::*;
 use crate::commands::*;

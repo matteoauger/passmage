@@ -4,13 +4,25 @@ import { invoke } from '@tauri-apps/api/core'
 import './App.css'
 import './index.css'
 
-function App() {
-    const [greetMsg, setGreetMsg] = useState('')
-    const [name, setName] = useState('')
+const testData = [{
+    "name": "test",
+    "password": "test"
+}]
 
-    async function greet() {
+function App() {
+    const [password, setPassword] = useState('')
+    const [key, setKey] = useState('')
+    const [encryptedData, setEncryptedData] = useState('')
+    const [decryptedData, setDecryptedData] = useState('')
+
+    async function testEncryption() {
         // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-        setGreetMsg(await invoke('greet', { name }))
+        const key = await invoke('hash_password', { password })
+        setKey(key)
+        const encryptedData = await invoke('encrypt', { contents: JSON.stringify(testData), key })
+        setEncryptedData(encryptedData)
+        const decryptedData = await invoke('decrypt', { contents: encryptedData, key })
+        setDecryptedData(decryptedData)
     }
 
     return (
@@ -47,18 +59,20 @@ function App() {
                 className='row'
                 onSubmit={e => {
                     e.preventDefault()
-                    greet()
+                    testEncryption()
                 }}
             >
                 <input
-                    id='greet-input'
-                    onChange={e => setName(e.currentTarget.value)}
-                    placeholder='Enter a name...'
+                    onChange={e => setPassword(e.currentTarget.value)}
+                    placeholder='Enter a password...'
                 />
-                <button type='submit'>Greet</button>
+                <button type='submit'>Test encryption</button>
             </form>
 
-            <p>{greetMsg}</p>
+            <p>{JSON.stringify(testData)}</p>
+            <p>{key}</p>
+            <p>{encryptedData}</p>
+            <p>{decryptedData}</p>
         </div>
     )
 }
