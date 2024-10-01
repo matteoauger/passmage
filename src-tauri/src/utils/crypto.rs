@@ -9,11 +9,29 @@ use crate::prelude::*;
 const KEY_SIZE: usize = 32;
 const BLOCK_SIZE: usize = 16;
 
+/// Provides AES256 encryption and decryption using a 32byte+ key.
 pub struct Encryption {
+    /// Encryption key (symmetric).
     key: Vec<u8>,
 }
 
 impl Encryption {
+    /// Creates a new `Encryption` instance with the provided key.
+    ///
+    /// The key must be at least `KEY_SIZE` (32 bytes) long to conform to the AES-256 standard.
+    /// If the key is shorter than `KEY_SIZE`, this function will return an error.
+    ///
+    /// # Arguments
+    ///
+    /// * `key` - A string slice representing the encryption key.
+    ///
+    /// # Returns
+    ///
+    /// Returns an `Ok(Encryption)` if the key is valid, otherwise returns an `Err(AppError)`.
+    ///
+    /// # Errors
+    ///
+    /// Returns `AppError::CryptoError` if the key is shorter than `KEY_SIZE`.
     pub fn new(key: &str) -> Result<Self, AppError> {
         if key.len() < KEY_SIZE {
             return Err(AppError::Crypto(f!(
@@ -26,6 +44,22 @@ impl Encryption {
         Ok(Encryption { key: bytes })
     }
 
+    /// Encrypts the provided data using AES-256 and encodes the result in Base64.
+    ///
+    /// The data is first padded using the PKCS#7 scheme to ensure it fits into 128-bit (16-byte) blocks.
+    /// Each block is encrypted and then concatenated together before being Base64-encoded.
+    ///
+    /// # Arguments
+    ///
+    /// * `data` - A reference to a string containing the data to be encrypted.
+    ///
+    /// # Returns
+    ///
+    /// Returns an `Ok(String)` containing the encrypted Base64 string, or an `Err(AppError)` if encryption fails.
+    ///
+    /// # Errors
+    ///
+    /// Returns `AppError::CryptoError` if the encryption process encounters an issue.
     pub fn encrypt(&self, data: &String) -> Result<String, AppError> {
         // For this function to work, we must pad the data in order to split it into different blocks.
         let data_bytes = pad(&data.as_bytes());
@@ -45,6 +79,19 @@ impl Encryption {
         Ok(encrypted_str)
     }
 
+    /// Decrypts the provided Base64-encoded string using AES-256 and returns the original plaintext.
+    ///
+    /// The encrypted data is first decoded from Base64. It is then decrypted in 128-bit (16-byte) blocks.
+    /// The decrypted data is unpadded using the PKCS#7 scheme to restore the original content.
+    ///
+    /// # Arguments
+    /// * `data` - A reference to a Base64-encoded string containing the encrypted data.
+    ///
+    /// # Returns
+    /// Returns an `Ok(String)` containing the decrypted text, or an `Err(AppError)` if decryption fails.
+    ///
+    /// # Errors
+    /// Returns `AppError::CryptoError` if the decryption process encounters an issue or if padding is invalid.
     pub fn decrypt(&self, data: &String) -> Result<String, AppError> {
         let encrypted_bytes = BASE64_STANDARD
             .decode(data)
@@ -73,13 +120,27 @@ impl Encryption {
     }
 }
 
-
+/// Hashes the given password using 32 byte SHA-256.
+///
+/// # Arguments
+/// * `password` - The password to hash.
+///
+/// # Returns
+/// Returns a string containing the base64 encoded hash of the given password.
 pub fn hash(password: &str) -> String {
     let result: [u8; 32] = Sha256::digest(password).into();
     BASE64_STANDARD.encode(result)
 }
 
 /// PKCS#7 padding function.
+/// This function adds remaining bytes to the given data so it fits the fixed block size required by AES256.
+/// For instance, if the given data has 5 bytes, the function will add 16-5 = 11 padding bytes to the data.
+///
+/// # Arguments
+/// * `data` - The data to pad
+///
+/// # Returns
+/// Returns a copy of the data with padding so it fits the block size required by AES256.
 fn pad(data: &[u8]) -> Vec<u8> {
     let mut padded_data = data.to_vec();
     // Getting the number of bytes to pad.
@@ -90,14 +151,22 @@ fn pad(data: &[u8]) -> Vec<u8> {
     padded_data
 }
 
-/// Reverts PKCS#7 padding..
+/// Reverts PKCS#7 padding.
+/// This function removes padded bytes done by PKCS#7 padding function.
+/// It will remove the last bytes that are equal to the padding length.
+///
+/// # Arguments
+/// * `data` - data to unpad
+///
+/// # Returns
+/// Returns an `Ok(Vec<u8>)` containing the data without its padding bytes, or an `Err(AppError)` if unpadding fails.
 fn unpad(data: &[u8]) -> Result<Vec<u8>, AppError> {
     let padding_len = *data.last().unwrap() as usize;
 
     if padding_len > BLOCK_SIZE || padding_len == 0 {
         return Err(AppError::Crypto("Invalid padding length".into()));
     }
-
+    
     if data[data.len() - padding_len..]
         .iter()
         .all(|&x| x as usize == padding_len)
