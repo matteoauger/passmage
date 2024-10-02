@@ -14,7 +14,7 @@ const classes = [
     'hover:bg-gray-400',
 ]
 
-export function Tile({ label, onClick }: Props) {
+export function Button({ label, onClick }: Props) {
     return (
         <button className={twMerge(classes)} onClick={onClick}>
             {label}
