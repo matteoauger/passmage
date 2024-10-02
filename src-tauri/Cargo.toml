@@ -23,4 +23,6 @@ thiserror = "1.0.64"
 sha2 = "0.10.8"
 base64 = "0.22.1"
 aes = "0.8.4"
+tauri-plugin-fs = "2.0.0-rc"
+tauri-plugin-dialog = "2.0.0-rc"
 

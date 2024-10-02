@@ -1,78 +1,90 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import { invoke } from '@tauri-apps/api/core'
-import './App.css'
 import './index.css'
+import { Tile } from './components/common/Tile'
+import { open, save } from '@tauri-apps/plugin-dialog'
+import { invoke } from '@tauri-apps/api/core'
+import {
+    BaseDirectory,
+    create,
+    open as fsopen,
+    readTextFile,
+} from '@tauri-apps/plugin-fs'
 
-const testData = [{
-    "name": "test",
-    "password": "test"
-}]
+const testData = [
+    {
+        name: 'test',
+        password: 'test',
+    },
+]
 
 function App() {
-    const [password, setPassword] = useState('')
-    const [key, setKey] = useState('')
-    const [encryptedData, setEncryptedData] = useState('')
-    const [decryptedData, setDecryptedData] = useState('')
+    const handleOpenClick = async () => {
+        const path = await open({
+            multiple: false,
+            directory: false,
+            filters: [{ name: 'Passmage Vault', extensions: ['pmv'] }],
+        })
 
-    async function testEncryption() {
-        // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-        const key = await invoke('hash_password', { password })
-        setKey(key)
-        const encryptedData = await invoke('encrypt', { contents: JSON.stringify(testData), key })
-        setEncryptedData(encryptedData)
-        const decryptedData = await invoke('decrypt', { contents: encryptedData, key })
-        setDecryptedData(decryptedData)
+        const testPsswd = await invoke('hash_password', { password: 'test' })
+
+        if (!path) {
+            // TODO handle error
+            return
+        }
+
+        console.debug(path)
+        const file = await fsopen(path, {
+            read: true,
+            baseDir: BaseDirectory.Home,
+        })
+        const contents = await readTextFile(path, {
+            baseDir: BaseDirectory.Home,
+        })
+
+        const decryptedData = (await invoke('decrypt', {
+            contents: contents,
+            key: testPsswd,
+        })) as string
+
+        console.debug('file', file)
+        console.debug('text:', contents)
+        console.debug('decrypted:', JSON.parse(decryptedData))
+    }
+
+    const handleNewClick = async () => {
+        const path = await save({
+            defaultPath: 'Passwords.pmv',
+            filters: [{ name: 'Passmage Vault', extensions: ['pmv'] }],
+        })
+
+        if (!path) {
+            // Handle error
+            return
+        }
+
+        console.debug(path)
+        const testPsswd = await invoke('hash_password', { password: 'test' })
+        const initialValue = JSON.stringify({
+            foo: 'bar',
+        })
+        const encryptedData = (await invoke('encrypt', {
+            contents: initialValue,
+            key: testPsswd,
+        })) as string
+
+        // Write file on the disk
+        const file = await create(path)
+        await file.write(new TextEncoder().encode(encryptedData))
+        await file.close()
     }
 
     return (
-        <div className='container'>
-            <h1>Welcome to Tauri!</h1>
+        <div className='flex flex-col items-center mt-10'>
+            <h1 className='text-5xl text-bold'>Passmage</h1>
 
-            <div className='row'>
-                <a href='https://vitejs.dev' target='_blank'>
-                    <img
-                        src='/vite.svg'
-                        className='logo vite'
-                        alt='Vite logo'
-                    />
-                </a>
-                <a href='https://tauri.app' target='_blank'>
-                    <img
-                        src='/tauri.svg'
-                        className='logo tauri'
-                        alt='Tauri logo'
-                    />
-                </a>
-                <a href='https://reactjs.org' target='_blank'>
-                    <img
-                        src={reactLogo}
-                        className='logo react'
-                        alt='React logo'
-                    />
-                </a>
+            <div>
+                <Tile label='Open' onClick={handleOpenClick} />
+                <Tile label='New' onClick={handleNewClick} />
             </div>
-
-            <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-            <form
-                className='row'
-                onSubmit={e => {
-                    e.preventDefault()
-                    testEncryption()
-                }}
-            >
-                <input
-                    onChange={e => setPassword(e.currentTarget.value)}
-                    placeholder='Enter a password...'
-                />
-                <button type='submit'>Test encryption</button>
-            </form>
-
-            <p>{JSON.stringify(testData)}</p>
-            <p>{key}</p>
-            <p>{encryptedData}</p>
-            <p>{decryptedData}</p>
         </div>
     )
 }

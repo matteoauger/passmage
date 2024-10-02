@@ -1,7 +1,7 @@
 use aes::{cipher::*, Aes256};
 use base64::prelude::*;
-use generic_array::GenericArray;
 use core::str;
+use generic_array::GenericArray;
 use sha2::{Digest, Sha256};
 
 use crate::prelude::*;
@@ -112,9 +112,8 @@ impl Encryption {
         // get the data in its normal format.
         let unpadded_data = unpad(&decrypted_blocks)?;
 
-        let decrypted_str = String::from_utf8(unpadded_data).map_err(|_| {
-            AppError::Crypto("Failed to convert decrypted data to UTF-8".into())
-        })?;
+        let decrypted_str = String::from_utf8(unpadded_data)
+            .map_err(|_| AppError::Crypto("Failed to convert decrypted data to UTF-8".into()))?;
 
         Ok(decrypted_str)
     }
@@ -166,7 +165,7 @@ fn unpad(data: &[u8]) -> Result<Vec<u8>, AppError> {
     if padding_len > BLOCK_SIZE || padding_len == 0 {
         return Err(AppError::Crypto("Invalid padding length".into()));
     }
-    
+
     if data[data.len() - padding_len..]
         .iter()
         .all(|&x| x as usize == padding_len)
