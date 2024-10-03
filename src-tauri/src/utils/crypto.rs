@@ -51,16 +51,16 @@ impl Encryption {
     ///
     /// # Arguments
     ///
-    /// * `data` - A reference to a string containing the data to be encrypted.
+    /// * `data` - A string reference reprensenting the data to encrypt.
     ///
     /// # Returns
     ///
-    /// Returns an `Ok(String)` containing the encrypted Base64 string, or an `Err(AppError)` if encryption fails.
+    /// Returns an `Ok(Vec<u8>)` containing the encrypted data as bytearray , or an `Err(AppError)` if encryption fails.
     ///
     /// # Errors
     ///
     /// Returns `AppError::CryptoError` if the encryption process encounters an issue.
-    pub fn encrypt(&self, data: &String) -> Result<String, AppError> {
+    pub fn encrypt(&self, data: &String) -> Result<Vec<u8>, AppError> {
         // For this function to work, we must pad the data in order to split it into different blocks.
         let data_bytes = pad(&data.as_bytes());
         let cipher = Aes256::new_from_slice(&self.key)
@@ -75,8 +75,7 @@ impl Encryption {
             encrypted_blocks.extend(block);
         }
 
-        let encrypted_str = BASE64_STANDARD.encode(&encrypted_blocks);
-        Ok(encrypted_str)
+        Ok(encrypted_blocks)
     }
 
     /// Decrypts the provided Base64-encoded string using AES-256 and returns the original plaintext.
@@ -85,24 +84,20 @@ impl Encryption {
     /// The decrypted data is unpadded using the PKCS#7 scheme to restore the original content.
     ///
     /// # Arguments
-    /// * `data` - A reference to a Base64-encoded string containing the encrypted data.
+    /// * `data` - A reference to the encrypted data byte array.
     ///
     /// # Returns
     /// Returns an `Ok(String)` containing the decrypted text, or an `Err(AppError)` if decryption fails.
     ///
     /// # Errors
     /// Returns `AppError::CryptoError` if the decryption process encounters an issue or if padding is invalid.
-    pub fn decrypt(&self, data: &String) -> Result<String, AppError> {
-        let encrypted_bytes = BASE64_STANDARD
-            .decode(data)
-            .map_err(|_| AppError::Crypto("Failed to decode data".into()))?;
-
+    pub fn decrypt(&self, data: &Vec<u8>) -> Result<String, AppError> {
         let cipher = Aes256::new_from_slice(&self.key)
             .map_err(|_| AppError::Crypto("Failed to create an AES256 key".into()))?;
 
         // Same as encoding, we decode the data by 128bit (16byte) blocks.
         let mut decrypted_blocks = Vec::new();
-        for chunk in encrypted_bytes.chunks(BLOCK_SIZE) {
+        for chunk in data.chunks(BLOCK_SIZE) {
             let mut block = GenericArray::clone_from_slice(chunk);
             cipher.decrypt_block(&mut block);
             decrypted_blocks.extend(block);

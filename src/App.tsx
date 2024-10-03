@@ -6,6 +6,7 @@ import {
     BaseDirectory,
     create,
     open as fsopen,
+    readFile,
     readTextFile,
 } from '@tauri-apps/plugin-fs'
 import { FileInput } from './components/input/FileInput'
@@ -31,7 +32,7 @@ function App() {
             read: true,
             baseDir: BaseDirectory.Home,
         })
-        const contents = await readTextFile(path, {
+        const contents = await readFile(path, {
             baseDir: BaseDirectory.Home,
         })
 
@@ -53,11 +54,11 @@ function App() {
         const encryptedData = (await invoke('encrypt', {
             contents: initialValue,
             key: testPsswd,
-        })) as string
+        })) as Uint8Array
 
         // Write file on the disk
         const file = await create(path)
-        await file.write(new TextEncoder().encode(encryptedData))
+        await file.write(encryptedData)
         await file.close()
     }
 
