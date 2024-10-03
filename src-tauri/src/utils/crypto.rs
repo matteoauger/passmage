@@ -44,7 +44,7 @@ impl Encryption {
         Ok(Encryption { key: bytes })
     }
 
-    /// Encrypts the provided data using AES-256 and encodes the result in Base64.
+    /// Encrypts the provided data using AES-256 and encodes the result as a bytearray.
     ///
     /// The data is first padded using the PKCS#7 scheme to ensure it fits into 128-bit (16-byte) blocks.
     /// Each block is encrypted and then concatenated together before being Base64-encoded.
@@ -78,10 +78,9 @@ impl Encryption {
         Ok(encrypted_blocks)
     }
 
-    /// Decrypts the provided Base64-encoded string using AES-256 and returns the original plaintext.
+    /// Decrypts the provided encrypted data bytes using AES-256 and returns the original plaintext.
     ///
-    /// The encrypted data is first decoded from Base64. It is then decrypted in 128-bit (16-byte) blocks.
-    /// The decrypted data is unpadded using the PKCS#7 scheme to restore the original content.
+    /// The encrypted data is decrypted in 128-bit (16-byte) blocks, then unpadded using the PKCS#7 scheme to restore the original content.
     ///
     /// # Arguments
     /// * `data` - A reference to the encrypted data byte array.
