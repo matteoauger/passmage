@@ -8,6 +8,7 @@ import { Input } from '../../utils/styles'
 import { HomeMode } from '../../models/HomeMode'
 import { hashPassword } from '../../utils/crypto'
 import {
+    faCheck,
     faChevronRight,
     faFile,
     faLockOpen,
@@ -93,10 +94,11 @@ export function Home({
             {mode === HomeMode.Open && filePath && (
                 <form
                     onSubmit={handleOpenSubmit}
-                    className={twMerge('flex gap-4 items-center w-full')}
+                    className={twMerge('flex flex-col gap-4 w-full')}
                 >
                     <PasswordInput className='w-full' />
                     <Button
+                        label='Unlock'
                         icon={{ def: faLockOpen, placement: 'left' }}
                         type='submit'
                     />
@@ -107,14 +109,30 @@ export function Home({
             {mode === HomeMode.New && (
                 <form
                     onSubmit={handleSaveSubmit}
-                    className={twMerge('flex flex-col gap-4 items-center')}
+                    className={twMerge('flex flex-col gap-4 w-2/3')}
                 >
-                    <PasswordInput />
-                    <PasswordInput name='confirmPassword' />
+                    <div>
+                        <label
+                            className='font-bold text-lg pb-2'
+                            htmlFor='password'
+                        >
+                            Password
+                        </label>
+                        <PasswordInput name='password' />
+                    </div>
+                    <div>
+                        <label
+                            className='font-bold text-lg pb-2'
+                            htmlFor='confirmPassword'
+                        >
+                            Confirm your password
+                        </label>
+                        <PasswordInput name='confirmPassword' />
+                    </div>
                     <Button
-                        label='Create'
+                        label='Submit'
                         type='submit'
-                        icon={{ def: faPlus, placement: 'left' }}
+                        icon={{ def: faCheck, placement: 'left' }}
                     />
                 </form>
             )}
