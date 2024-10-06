@@ -1,5 +1,6 @@
 import './index.css'
-import { useEffect, useState } from 'react'
+
+import { useState } from 'react'
 import { VaultModel } from './models/VaultModel'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Home } from './components/routes/Home'
@@ -14,13 +15,14 @@ function App() {
     const [vault, setVault] = useState<VaultModel | null>({})
     const [homeMode, setHomeMode] = useState<HomeMode>(HomeMode.Blank)
 
-    useEffect(() => {
-        if (filePath) {
-            setHomeMode(HomeMode.Open)
-        } else {
-            setHomeMode(HomeMode.Blank)
+    const handleFilePathChange = (val: string | null, isNew: boolean) => {
+        let mode = HomeMode.Blank
+        if (val) {
+            mode = isNew ? HomeMode.New : HomeMode.Open
         }
-    }, [filePath])
+        setFilePath(val)
+        setHomeMode(mode)
+    }
 
     const openVault = async () => {
         if (!filePath || !key) {
@@ -34,7 +36,6 @@ function App() {
         }
 
         setVault(JSON.parse(decryptedData) as VaultModel)
-        console.debug(JSON.parse(decryptedData) as VaultModel)
     }
 
     const saveVault = async () => {
@@ -53,9 +54,8 @@ function App() {
             element: (
                 <Home
                     mode={homeMode}
-                    onModeChange={val => setHomeMode(val)}
                     filePath={filePath}
-                    onFilePathChange={val => setFilePath(val)}
+                    onFilePathChange={handleFilePathChange}
                     onOpen={async (key: string) => {
                         setKey(key)
                         await openVault()
@@ -75,6 +75,7 @@ function App() {
                     onChange={val => setVault(val)}
                     onLock={async () => {
                         await saveVault()
+                        setHomeMode(filePath ? HomeMode.Open : HomeMode.Blank)
                     }}
                 />
             ),
@@ -82,7 +83,7 @@ function App() {
     ])
 
     return (
-        <main>
+        <main className='h-full bg-background'>
             <RouterProvider router={router} />
         </main>
     )

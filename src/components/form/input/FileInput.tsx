@@ -1,17 +1,50 @@
 import { open } from '@tauri-apps/plugin-dialog'
 import { twMerge } from 'tailwind-merge'
 import { openFileDialog } from '../../../utils/dialog'
-import { INPUT_CLASS } from '../../../utils/styles'
+import { Input } from '../../../utils/styles'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFile } from '@fortawesome/free-solid-svg-icons'
+import { IconInputWrapper } from './IconInputWrapper'
 
 interface Props {
     value: string
+    placeholder: string
+    disabled?: boolean
     onChange: (value: string) => void
+    className?: string
 }
 
-export function FileInput({ value, onChange }: Props) {
+export function FileInput({
+    value,
+    placeholder,
+    onChange,
+    disabled = false,
+    className = '',
+}: Props) {
     return (
-        <div className={INPUT_CLASS} onClick={openFileDialog(onChange)}>
-            {value}
-        </div>
+        <IconInputWrapper
+            className={twMerge(className, 'cursor-pointer')}
+            icon={faFile}
+            disabled={disabled}
+        >
+            <input
+                type='text'
+                value={value}
+                placeholder={placeholder}
+                className={twMerge(
+                    Input.Default,
+                    Input.Pad,
+                    'caret-transparent select-none cursor-pointer',
+                    disabled === true ? 'border-none' : Input.Hover,
+                )}
+                onClick={openFileDialog(onChange)}
+                onChange={evt => onChange(evt.target.value)}
+                autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
+                spellCheck='false'
+                disabled={disabled}
+            />
+        </IconInputWrapper>
     )
 }

@@ -1,14 +1,27 @@
-import { twMerge } from 'tailwind-merge'
-
-export const INPUT_CLASS = Object.freeze(
-    twMerge(
-        'border',
-        'border-black',
-        'border-solid',
-        'rounded-2xl',
-        'p-2',
+export const Input = Object.freeze({
+    Default: Object.freeze([
+        'text-gray-600',
         'text-lg',
+        'border',
+        'focus:border-transparent',
+        'border-gray-300',
+        'rounded-lg',
+        'ring',
+        'ring-transparent',
+        'focus:ring-2',
+        'focus:outline-none',
+        'focus:ring-primary-500',
+        'block',
         'w-full',
-        'cursor-pointer',
-    ),
-)
+        'p-2.5',
+        'rounded-l-lg',
+        'py-3',
+        'px-4',
+    ]).join(' '),
+    Hover: Object.freeze([
+        'hover:border-primary-500',
+        'hover:placeholder-primary-500',
+        'hover:text-primary-500',
+    ]).join(' '),
+    Pad: 'pl-12',
+})

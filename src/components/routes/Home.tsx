@@ -3,24 +3,29 @@ import { openFileDialog, saveFileDialog } from '../../utils/dialog'
 import { Button } from '../common/Button'
 import { FileInput } from '../form/input/FileInput'
 import { useNavigate } from 'react-router-dom'
-import { invoke } from '@tauri-apps/api/core'
 import { FormEvent, useEffect, useState } from 'react'
-import { INPUT_CLASS } from '../../utils/styles'
+import { Input } from '../../utils/styles'
 import { HomeMode } from '../../models/HomeMode'
 import { hashPassword } from '../../utils/crypto'
+import {
+    faChevronRight,
+    faFile,
+    faLockOpen,
+    faPlus,
+    faXmark,
+} from '@fortawesome/free-solid-svg-icons'
+import { PasswordInput } from '../form/input/PasswordInput'
 
 interface Props {
     filePath: string | null
-    onFilePathChange: (val: string | null) => void
+    onFilePathChange: (val: string | null, isNew: boolean) => void
     onOpen: (key: string) => Promise<void>
     onSave: (key: string) => Promise<void>
     mode: HomeMode
-    onModeChange: (mode: HomeMode) => void
 }
 
 export function Home({
     mode,
-    onModeChange,
     filePath,
     onFilePathChange,
     onOpen,
@@ -58,33 +63,42 @@ export function Home({
     }
 
     return (
-        <section className='flex flex-col gap-6 items-center justify-center mt-10 h-full mx-auto max-w-xl'>
-            <FileInput
-                value={filePath ?? 'Select a file...'}
-                onChange={(val: string) => {
-                    onFilePathChange(val)
-                }}
-            />
+        <section
+            className={twMerge(
+                'flex flex-col gap-6 items-center justify-center h-full mx-auto max-w-xl',
+            )}
+        >
+            <div className='flex gap-4 items-center w-full'>
+                <FileInput
+                    className='w-full'
+                    value={filePath ?? ''}
+                    placeholder='Select a file...'
+                    onChange={(val: string) => {
+                        onFilePathChange(val, false)
+                    }}
+                    disabled={filePath !== null}
+                />
+
+                {filePath && (
+                    <Button
+                        icon={{ def: faXmark, placement: 'left' }}
+                        onClick={() => {
+                            onFilePathChange(null, false)
+                        }}
+                    />
+                )}
+            </div>
 
             {/* On open */}
             {mode === HomeMode.Open && filePath && (
                 <form
                     onSubmit={handleOpenSubmit}
-                    className={twMerge('flex gap-4 items-center')}
+                    className={twMerge('flex gap-4 items-center w-full')}
                 >
-                    <input
-                        name='password'
-                        className={INPUT_CLASS}
-                        type='password'
-                        placeholder='Input master password...'
-                    />
-                    <Button label='>' type='submit' />
+                    <PasswordInput className='w-full' />
                     <Button
-                        label='x'
-                        onClick={() => {
-                            onModeChange(HomeMode.Blank)
-                            onFilePathChange(null)
-                        }}
+                        icon={{ def: faLockOpen, placement: 'left' }}
+                        type='submit'
                     />
                 </form>
             )}
@@ -95,19 +109,13 @@ export function Home({
                     onSubmit={handleSaveSubmit}
                     className={twMerge('flex flex-col gap-4 items-center')}
                 >
-                    <input
-                        name='password'
-                        className={INPUT_CLASS}
-                        type='password'
-                        placeholder='Enter new master password...'
+                    <PasswordInput />
+                    <PasswordInput name='confirmPassword' />
+                    <Button
+                        label='Create'
+                        type='submit'
+                        icon={{ def: faPlus, placement: 'left' }}
                     />
-                    <input
-                        name='confirmPassword'
-                        className={INPUT_CLASS}
-                        type='password'
-                        placeholder='Confirm new master password...'
-                    />
-                    <Button label='Create' type='submit' />
                 </form>
             )}
 
@@ -116,16 +124,16 @@ export function Home({
                     <Button
                         label='Open'
                         onClick={openFileDialog((val: string) => {
-                            onModeChange(HomeMode.Open)
-                            onFilePathChange(val)
+                            onFilePathChange(val, false)
                         })}
+                        icon={{ def: faFile, placement: 'left' }}
                     />
                     <Button
                         label='New'
                         onClick={saveFileDialog((val: string) => {
-                            onModeChange(HomeMode.New)
-                            onFilePathChange(val)
+                            onFilePathChange(val, true)
                         })}
+                        icon={{ def: faPlus, placement: 'left' }}
                     />
                 </div>
             )}
