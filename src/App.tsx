@@ -1,16 +1,26 @@
 import './index.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { VaultModel } from './models/VaultModel'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Home } from './components/routes/Home'
 import { Editor } from './components/routes/Editor'
 import { openFile, saveFile } from './utils/fs'
 import { decrypt, encrypt } from './utils/crypto'
+import { HomeMode } from './models/HomeMode'
 
 function App() {
     const [filePath, setFilePath] = useState<string | null>(null)
     const [key, setKey] = useState<string | null>(null)
     const [vault, setVault] = useState<VaultModel | null>({})
+    const [homeMode, setHomeMode] = useState<HomeMode>(HomeMode.Blank)
+
+    useEffect(() => {
+        if (filePath) {
+            setHomeMode(HomeMode.Open)
+        } else {
+            setHomeMode(HomeMode.Blank)
+        }
+    }, [filePath])
 
     const openVault = async () => {
         if (!filePath || !key) {
@@ -42,11 +52,12 @@ function App() {
             path: '/',
             element: (
                 <Home
+                    mode={homeMode}
+                    onModeChange={val => setHomeMode(val)}
                     filePath={filePath}
                     onFilePathChange={val => setFilePath(val)}
                     onOpen={async (key: string) => {
                         setKey(key)
-                        //await saveVault()
                         await openVault()
                     }}
                     onSave={async (key: string) => {

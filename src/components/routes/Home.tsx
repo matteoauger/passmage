@@ -6,22 +6,25 @@ import { useNavigate } from 'react-router-dom'
 import { invoke } from '@tauri-apps/api/core'
 import { FormEvent, useEffect, useState } from 'react'
 import { INPUT_CLASS } from '../../utils/styles'
+import { HomeMode } from '../../models/HomeMode'
 
 interface Props {
     filePath: string | null
     onFilePathChange: (val: string | null) => void
     onOpen: (key: string) => Promise<void>
     onSave: (key: string) => Promise<void>
+    mode: HomeMode
+    onModeChange: (mode: HomeMode) => void
 }
 
-enum Mode {
-    Blank,
-    Open,
-    New,
-}
-
-export function Home({ filePath, onFilePathChange, onOpen, onSave }: Props) {
-    const [mode, setMode] = useState(Mode.Blank)
+export function Home({
+    mode,
+    onModeChange,
+    filePath,
+    onFilePathChange,
+    onOpen,
+    onSave,
+}: Props) {
     const navigate = useNavigate()
 
     const handleOpenSubmit = async (evt: FormEvent) => {
@@ -63,7 +66,7 @@ export function Home({ filePath, onFilePathChange, onOpen, onSave }: Props) {
             />
 
             {/* On open */}
-            {mode === Mode.Open && filePath && (
+            {mode === HomeMode.Open && filePath && (
                 <form
                     onSubmit={handleOpenSubmit}
                     className={twMerge('flex gap-4 items-center')}
@@ -78,7 +81,7 @@ export function Home({ filePath, onFilePathChange, onOpen, onSave }: Props) {
                     <Button
                         label='x'
                         onClick={() => {
-                            setMode(Mode.Blank)
+                            onModeChange(HomeMode.Blank)
                             onFilePathChange(null)
                         }}
                     />
@@ -86,7 +89,7 @@ export function Home({ filePath, onFilePathChange, onOpen, onSave }: Props) {
             )}
 
             {/* On new */}
-            {mode === Mode.New && (
+            {mode === HomeMode.New && (
                 <form
                     onSubmit={handleSaveSubmit}
                     className={twMerge('flex flex-col gap-4 items-center')}
@@ -107,21 +110,20 @@ export function Home({ filePath, onFilePathChange, onOpen, onSave }: Props) {
                 </form>
             )}
 
-            {mode === Mode.Blank && (
+            {mode === HomeMode.Blank && (
                 <div className={twMerge('flex gap-4')}>
                     <Button
                         label='Open'
                         onClick={openFileDialog((val: string) => {
-                            setMode(Mode.Open)
+                            onModeChange(HomeMode.Open)
                             onFilePathChange(val)
                         })}
                     />
                     <Button
                         label='New'
                         onClick={saveFileDialog((val: string) => {
-                            setMode(Mode.New)
+                            onModeChange(HomeMode.New)
                             onFilePathChange(val)
-                            //navigate('/editor')
                         })}
                     />
                 </div>
