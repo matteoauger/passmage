@@ -31,12 +31,10 @@ impl Encryption {
     ///
     /// # Errors
     ///
-    /// Returns `AppError::CryptoError` if the key is shorter than `KEY_SIZE`.
+    /// Returns `AppError::PasswordByteLength` if the key is shorter than `KEY_SIZE`.
     pub fn new(key: &str) -> Result<Self, AppError> {
         if key.len() < KEY_SIZE {
-            return Err(AppError::Crypto(f!(
-                "Key must be at least {KEY_SIZE} bytes long"
-            )));
+            return Err(AppError::PasswordByteLength(key.len()));
         }
 
         // Limit the key size to fit AES256.
@@ -59,12 +57,12 @@ impl Encryption {
     ///
     /// # Errors
     ///
-    /// Returns `AppError::CryptoError` if the encryption process encounters an issue.
+    /// Returns `AppError::Crypto` if the encryption process encounters an issue.
     pub fn encrypt(&self, data: &String) -> Result<Vec<u8>, AppError> {
         // For this function to work, we must pad the data in order to split it into different blocks.
         let data_bytes = pad(&data.as_bytes());
-        let cipher = Aes256::new_from_slice(&self.key)
-            .map_err(|_| AppError::Crypto("Failed to create an AES256 key".into()))?;
+        let cipher =
+            Aes256::new_from_slice(&self.key).map_err(|err| AppError::Crypto(err.to_string()))?;
 
         // Now we split the data into 128bit (16 bytes) blocks.
         // This encrypts each block and append them alltogether.
@@ -89,10 +87,12 @@ impl Encryption {
     /// Returns an `Ok(String)` containing the decrypted text, or an `Err(AppError)` if decryption fails.
     ///
     /// # Errors
-    /// Returns `AppError::CryptoError` if the decryption process encounters an issue or if padding is invalid.
+    /// Returns `AppError::Password` if the data cannot be decrypted.
+    /// Returns `AppError::Crypto` for other cryptography issues.
+
     pub fn decrypt(&self, data: &Vec<u8>) -> Result<String, AppError> {
-        let cipher = Aes256::new_from_slice(&self.key)
-            .map_err(|_| AppError::Crypto("Failed to create an AES256 key".into()))?;
+        let cipher =
+            Aes256::new_from_slice(&self.key).map_err(|err| AppError::Crypto(err.to_string()))?;
 
         // Same as encoding, we decode the data by 128bit (16byte) blocks.
         let mut decrypted_blocks = Vec::new();
@@ -106,8 +106,7 @@ impl Encryption {
         // get the data in its normal format.
         let unpadded_data = unpad(&decrypted_blocks)?;
 
-        let decrypted_str = String::from_utf8(unpadded_data)
-            .map_err(|_| AppError::Crypto("Failed to convert decrypted data to UTF-8".into()))?;
+        let decrypted_str = String::from_utf8(unpadded_data).map_err(|_| AppError::Password())?;
 
         Ok(decrypted_str)
     }

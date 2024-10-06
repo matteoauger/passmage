@@ -7,6 +7,7 @@ import { invoke } from '@tauri-apps/api/core'
 import { FormEvent, useEffect, useState } from 'react'
 import { INPUT_CLASS } from '../../utils/styles'
 import { HomeMode } from '../../models/HomeMode'
+import { hashPassword } from '../../utils/crypto'
 
 interface Props {
     filePath: string | null
@@ -36,7 +37,7 @@ export function Home({
             return
         }
 
-        const hash = (await invoke('hash_password', { password })) as string
+        const hash = await hashPassword(password)
         await onOpen(hash)
         navigate('/editor')
     }
@@ -51,7 +52,7 @@ export function Home({
             return
         }
 
-        const hash = (await invoke('hash_password', { password })) as string
+        const hash = await hashPassword(password)
         await onSave(hash)
         navigate('/editor')
     }

@@ -13,3 +13,7 @@ export async function decrypt(key: string, data: Uint8Array) {
         key,
     })) as string
 }
+
+export async function hashPassword(password: string) {
+    return (await invoke('hash_password', { password })) as string
+}
