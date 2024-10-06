@@ -60,7 +60,7 @@ impl Encryption {
     /// Returns `AppError::Crypto` if the encryption process encounters an issue.
     pub fn encrypt(&self, data: &String) -> Result<Vec<u8>, AppError> {
         // For this function to work, we must pad the data in order to split it into different blocks.
-        let data_bytes = pad(&data.as_bytes());
+        let data_bytes = pad(data.as_bytes());
         let cipher =
             Aes256::new_from_slice(&self.key).map_err(|err| AppError::Crypto(err.to_string()))?;
 
@@ -90,7 +90,7 @@ impl Encryption {
     /// Returns `AppError::Password` if the data cannot be decrypted.
     /// Returns `AppError::Crypto` for other cryptography issues.
 
-    pub fn decrypt(&self, data: &Vec<u8>) -> Result<String, AppError> {
+    pub fn decrypt(&self, data: &[u8]) -> Result<String, AppError> {
         let cipher =
             Aes256::new_from_slice(&self.key).map_err(|err| AppError::Crypto(err.to_string()))?;
 
