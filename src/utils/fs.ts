@@ -1,15 +1,6 @@
-import {
-    BaseDirectory,
-    create,
-    open as fsopen,
-    readFile,
-} from '@tauri-apps/plugin-fs'
+import { BaseDirectory, create, readFile } from '@tauri-apps/plugin-fs'
 
 export async function openFile(path: string): Promise<Uint8Array> {
-    const file = await fsopen(path, {
-        read: true,
-        baseDir: BaseDirectory.Home,
-    })
     const contents = await readFile(path, {
         baseDir: BaseDirectory.Home,
     })

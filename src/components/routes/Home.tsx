@@ -1,22 +1,30 @@
 import { twMerge } from 'tailwind-merge'
 import { openFileDialog, saveFileDialog } from '../../utils/dialog'
 import { Button } from '../common/Button'
-import { FileInput } from '../input/FileInput'
+import { FileInput } from '../form/input/FileInput'
 import { useNavigate } from 'react-router-dom'
 import { invoke } from '@tauri-apps/api/core'
-import { FormEvent } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { INPUT_CLASS } from '../../utils/styles'
 
 interface Props {
     filePath: string | null
     onFilePathChange: (val: string | null) => void
-    onSubmit: (key: string) => Promise<void>
+    onOpen: (key: string) => Promise<void>
+    onSave: (key: string) => Promise<void>
 }
 
-export function Home({ filePath, onFilePathChange, onSubmit }: Props) {
+enum Mode {
+    Blank,
+    Open,
+    New,
+}
+
+export function Home({ filePath, onFilePathChange, onOpen, onSave }: Props) {
+    const [mode, setMode] = useState(Mode.Blank)
     const navigate = useNavigate()
 
-    const handleSubmit = async (evt: FormEvent) => {
+    const handleOpenSubmit = async (evt: FormEvent) => {
         evt.preventDefault()
         const formData = new FormData(evt.target as HTMLFormElement)
         const password = formData.get('password') as string
@@ -26,51 +34,98 @@ export function Home({ filePath, onFilePathChange, onSubmit }: Props) {
         }
 
         const hash = (await invoke('hash_password', { password })) as string
-        await onSubmit(hash)
+        await onOpen(hash)
+        navigate('/editor')
+    }
+
+    const handleSaveSubmit = async (evt: FormEvent) => {
+        evt.preventDefault()
+        const formData = new FormData(evt.target as HTMLFormElement)
+        const password = formData.get('password') as string
+        const confirmPassword = formData.get('confirmPassword') as string
+
+        if (password !== confirmPassword) {
+            return
+        }
+
+        const hash = (await invoke('hash_password', { password })) as string
+        await onSave(hash)
         navigate('/editor')
     }
 
     return (
-        <form
-            className='flex flex-col gap-6 items-center justify-center mt-10 h-full mx-auto max-w-xl'
-            onSubmit={handleSubmit}
-        >
-            {!filePath && (
-                <FileInput
-                    value={filePath ?? 'Select a file...'}
-                    onChange={(val: string) => {
-                        onFilePathChange(val)
-                    }}
-                />
-            )}
+        <section className='flex flex-col gap-6 items-center justify-center mt-10 h-full mx-auto max-w-xl'>
+            <FileInput
+                value={filePath ?? 'Select a file...'}
+                onChange={(val: string) => {
+                    onFilePathChange(val)
+                }}
+            />
 
-            {filePath && (
-                <div className={twMerge('flex gap-4 items-center')}>
+            {/* On open */}
+            {mode === Mode.Open && filePath && (
+                <form
+                    onSubmit={handleOpenSubmit}
+                    className={twMerge('flex gap-4 items-center')}
+                >
                     <input
                         name='password'
                         className={INPUT_CLASS}
                         type='password'
-                        placeholder='Input password...'
+                        placeholder='Input master password...'
                     />
                     <Button label='>' type='submit' />
-                </div>
+                    <Button
+                        label='x'
+                        onClick={() => {
+                            setMode(Mode.Blank)
+                            onFilePathChange(null)
+                        }}
+                    />
+                </form>
             )}
 
-            <div className={twMerge('flex gap-4')}>
-                <Button
-                    label='Open'
-                    onClick={openFileDialog((val: string) => {
-                        onFilePathChange(val)
-                    })}
-                />
-                <Button
-                    label='New'
-                    onClick={saveFileDialog((val: string) => {
-                        onFilePathChange(val)
-                        //navigate('/editor')
-                    })}
-                />
-            </div>
-        </form>
+            {/* On new */}
+            {mode === Mode.New && (
+                <form
+                    onSubmit={handleSaveSubmit}
+                    className={twMerge('flex flex-col gap-4 items-center')}
+                >
+                    <input
+                        name='password'
+                        className={INPUT_CLASS}
+                        type='password'
+                        placeholder='Enter new master password...'
+                    />
+                    <input
+                        name='confirmPassword'
+                        className={INPUT_CLASS}
+                        type='password'
+                        placeholder='Confirm new master password...'
+                    />
+                    <Button label='Create' type='submit' />
+                </form>
+            )}
+
+            {mode === Mode.Blank && (
+                <div className={twMerge('flex gap-4')}>
+                    <Button
+                        label='Open'
+                        onClick={openFileDialog((val: string) => {
+                            setMode(Mode.Open)
+                            onFilePathChange(val)
+                        })}
+                    />
+                    <Button
+                        label='New'
+                        onClick={saveFileDialog((val: string) => {
+                            setMode(Mode.New)
+                            onFilePathChange(val)
+                            //navigate('/editor')
+                        })}
+                    />
+                </div>
+            )}
+        </section>
     )
 }

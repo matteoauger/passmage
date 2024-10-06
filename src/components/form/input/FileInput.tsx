@@ -1,7 +1,7 @@
 import { open } from '@tauri-apps/plugin-dialog'
 import { twMerge } from 'tailwind-merge'
-import { openFileDialog } from '../../utils/dialog'
-import { INPUT_CLASS } from '../../utils/styles'
+import { openFileDialog } from '../../../utils/dialog'
+import { INPUT_CLASS } from '../../../utils/styles'
 
 interface Props {
     value: string
