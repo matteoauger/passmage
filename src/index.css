@@ -3,8 +3,23 @@
 @tailwind utilities;
 
 @layer base {
+    @font-face {
+        font-family: 'AfacadFlux';
+        font-weight: 400;
+        font-display: swap;
+        src: url(./assets/fonts/AfacadFlux-Regular.ttf);
+    }
+
+    @font-face {
+        font-family: 'AfacadFlux';
+        font-weight: 700;
+        font-display: swap;
+        src: url(./assets/fonts/AfacadFlux-Bold.ttf);
+    }
+
     :root {
         font-size: 16px;
+        font-family: 'AfacadFlux', sans-serif;
     }
 
     html,

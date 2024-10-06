@@ -25,6 +25,10 @@ export default {
                 100: '##E9E4ED',
             },
         },
+        fontFamily: {
+            sans: ['AfacadFlux', 'system-ui'],
+            display: ['AfacadFlux', 'system-ui'],
+        },
     },
     plugins: [],
 }

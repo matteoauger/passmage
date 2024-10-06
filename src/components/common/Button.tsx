@@ -25,7 +25,6 @@ const classes = [
     'bg-primary-500',
     'hover:bg-primary-800',
     'text-[#ffffff]',
-    'font-display',
     'transition-all',
 ]
 
