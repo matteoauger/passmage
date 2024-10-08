@@ -1,7 +1,7 @@
 import { twMerge } from 'tailwind-merge'
 import { InputStyles } from '../../../utils/styles'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faKey } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faKey } from '@fortawesome/free-solid-svg-icons'
 import { IconInputWrapper } from './IconInputWrapper'
 import { ValidationState } from '../../../models/input/ValidationState'
 import React, { useEffect, useState } from 'react'
@@ -25,7 +25,14 @@ export function PasswordInput({
     name = 'password',
     ...props
 }: Props) {
-    props.type = 'password'
+    const [visible, setVisible] = useState(false)
+
+    const toggleVisibility = () => {
+        setVisible(!visible)
+    }
+
+    props.type = visible === true ? 'text' : 'password'
+    props.disabled = props.disabled ?? false
     props.placeholder = props.placeholder ?? 'Input master password...'
     return (
         <IconInputWrapper className={className} icon={faKey}>
@@ -41,6 +48,19 @@ export function PasswordInput({
                 )}
                 {...props}
             />
+
+            <span
+                className='absolute cursor-pointer inset-y-0 right-0 flex items-center pr-3'
+                onClick={toggleVisibility}
+            >
+                <FontAwesomeIcon
+                    icon={visible ? faEyeSlash : faEye}
+                    className={twMerge(
+                        'h-6 w-6 text-grey-500',
+                        props.disabled ? '' : 'hover:text-primary-500',
+                    )}
+                />
+            </span>
         </IconInputWrapper>
     )
 }

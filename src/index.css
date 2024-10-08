@@ -27,4 +27,9 @@
     #root {
         height: 100vh;
     }
+
+    /* Hide the password reveal button on Windows */
+    input[type='password']::-ms-reveal {
+        display: none;
+    }
 }
