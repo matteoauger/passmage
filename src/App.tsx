@@ -24,7 +24,7 @@ function App() {
         setHomeMode(mode)
     }
 
-    const openVault = async () => {
+    const openVault = async (key: string) => {
         if (!filePath || !key) {
             return
         }
@@ -35,6 +35,7 @@ function App() {
             return
         }
 
+        setKey(key)
         setVault(JSON.parse(decryptedData) as VaultModel)
     }
 
@@ -56,14 +57,8 @@ function App() {
                     mode={homeMode}
                     filePath={filePath}
                     onFilePathChange={handleFilePathChange}
-                    onOpen={async (key: string) => {
-                        setKey(key)
-                        await openVault()
-                    }}
-                    onSave={async (key: string) => {
-                        setKey(key)
-                        await saveVault()
-                    }}
+                    onOpen={openVault}
+                    onSave={saveVault}
                 />
             ),
         },

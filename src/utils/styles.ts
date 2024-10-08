@@ -1,4 +1,4 @@
-export const Input = Object.freeze({
+export const InputStyles = Object.freeze({
     Default: Object.freeze([
         'text-gray-600',
         'text-lg',
@@ -12,6 +12,7 @@ export const Input = Object.freeze({
         'focus:outline-none',
         'focus:ring-primary-500',
         'block',
+        'bg-white',
         'w-full',
         'p-2.5',
         'rounded-l-lg',
