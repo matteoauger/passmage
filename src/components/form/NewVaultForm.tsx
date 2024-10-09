@@ -10,10 +10,10 @@ import { ValidationState } from '../../models/input/ValidationState'
 import { PasswordStrength } from './input/PasswordStrength'
 
 interface Props {
-    onSave: (hash: string) => void
+    onSubmit: (key: string) => void
 }
 
-export function NewVaultForm({ onSave }: Props) {
+export function NewVaultForm({ onSubmit }: Props) {
     const navigate = useNavigate()
     const [validationState, setValidationState] = useState({
         password: ValidationState.None,
@@ -47,10 +47,11 @@ export function NewVaultForm({ onSave }: Props) {
 
         try {
             const hash = await hashPassword(password)
-            await onSave(hash)
+            await onSubmit(hash)
+            console.log('created')
             navigate('/editor')
         } catch (err) {
-            console.log(err)
+            console.error('handled error', err)
             setValidationState({
                 password: ValidationState.Warning,
                 confirmPassword: ValidationState.Warning,

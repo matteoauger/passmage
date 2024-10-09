@@ -2,20 +2,8 @@ import { twMerge } from 'tailwind-merge'
 import { openFileDialog, saveFileDialog } from '../../utils/dialog'
 import { Button } from '../common/Button'
 import { FileInput } from '../form/input/FileInput'
-import { useNavigate } from 'react-router-dom'
-import { FormEvent, useEffect, useState } from 'react'
-import { InputStyles } from '../../utils/styles'
 import { HomeMode } from '../../models/HomeMode'
-import { hashPassword } from '../../utils/crypto'
-import {
-    faCheck,
-    faChevronRight,
-    faFile,
-    faLockOpen,
-    faPlus,
-    faXmark,
-} from '@fortawesome/free-solid-svg-icons'
-import { PasswordInput } from '../form/input/PasswordInput'
+import { faFile, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { OpenVaultForm } from '../form/OpenVaultForm'
 import { NewVaultForm } from '../form/NewVaultForm'
 
@@ -23,7 +11,7 @@ interface Props {
     filePath: string | null
     onFilePathChange: (val: string | null, isNew: boolean) => void
     onOpen: (key: string) => Promise<void>
-    onSave: (key: string) => Promise<void>
+    onCreate: (key: string) => Promise<void>
     mode: HomeMode
 }
 
@@ -32,7 +20,7 @@ export function Home({
     filePath,
     onFilePathChange,
     onOpen,
-    onSave,
+    onCreate,
 }: Props) {
     return (
         <section
@@ -67,7 +55,7 @@ export function Home({
             )}
 
             {/* On new */}
-            {mode === HomeMode.New && <NewVaultForm onSave={onSave} />}
+            {mode === HomeMode.New && <NewVaultForm onSubmit={onCreate} />}
 
             {mode === HomeMode.Blank && (
                 <div className={twMerge('flex gap-4')}>

@@ -36,7 +36,7 @@ export function OpenVaultForm({ onSubmit: onOpen }: Props) {
             navigate('/editor')
             return true
         } catch (err) {
-            console.log(err)
+            console.error('handled error', err)
             setError('Invalid password or corrupted file.')
             setValidationState(ValidationState.Fail)
             return false

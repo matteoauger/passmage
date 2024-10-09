@@ -24,7 +24,7 @@ function App() {
         setHomeMode(mode)
     }
 
-    const openVault = async (key: string) => {
+    const handleOpen = async (key: string) => {
         if (!filePath || !key) {
             return
         }
@@ -39,7 +39,17 @@ function App() {
         setVault(JSON.parse(decryptedData) as VaultModel)
     }
 
-    const saveVault = async () => {
+    const handleNew = async (key: string) => {
+        if (!filePath || !key) {
+            return
+        }
+
+        setKey(key)
+        setVault({})
+        await handleSave()
+    }
+
+    const handleSave = async () => {
         if (!filePath || !key || !vault) {
             return
         }
@@ -57,8 +67,8 @@ function App() {
                     mode={homeMode}
                     filePath={filePath}
                     onFilePathChange={handleFilePathChange}
-                    onOpen={openVault}
-                    onSave={saveVault}
+                    onOpen={handleOpen}
+                    onCreate={handleNew}
                 />
             ),
         },
@@ -69,7 +79,9 @@ function App() {
                     vault={vault}
                     onChange={val => setVault(val)}
                     onLock={async () => {
-                        await saveVault()
+                        await handleSave()
+                        setVault({})
+                        setKey(null)
                         setHomeMode(filePath ? HomeMode.Open : HomeMode.Blank)
                     }}
                 />
