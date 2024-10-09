@@ -1,4 +1,7 @@
-use crate::utils::crypto::{hash, Encryption};
+use crate::utils::{
+    crypto::{hash, Encryption},
+    password::calc_entropy,
+};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -18,4 +21,9 @@ pub fn decrypt(key: &str, contents: Vec<u8>) -> Result<String, String> {
 #[tauri::command]
 pub fn hash_password(password: &str) -> String {
     hash(password)
+}
+
+#[tauri::command]
+pub fn entropy(password: &str) -> f64 {
+    calc_entropy(password)
 }

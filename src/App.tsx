@@ -12,7 +12,7 @@ import { HomeMode } from './models/HomeMode'
 function App() {
     const [filePath, setFilePath] = useState<string | null>(null)
     const [key, setKey] = useState<string | null>(null)
-    const [vault, setVault] = useState<VaultModel | null>({})
+    const [vault, setVault] = useState<VaultModel>({})
     const [homeMode, setHomeMode] = useState<HomeMode>(HomeMode.Blank)
 
     const handleFilePathChange = (val: string | null, isNew: boolean) => {

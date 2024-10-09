@@ -7,6 +7,7 @@ import { Button } from '../common/Button'
 import { Indicator } from '../common/Indicator'
 import { FormEvent, useState } from 'react'
 import { ValidationState } from '../../models/input/ValidationState'
+import { PasswordStrength } from './input/PasswordStrength'
 
 interface Props {
     onSave: (hash: string) => void
@@ -19,11 +20,11 @@ export function NewVaultForm({ onSave }: Props) {
         confirmPassword: ValidationState.None,
     })
     const [error, setError] = useState<string | null>(null)
+    const [password, setPassword] = useState<string>('')
 
     const handleSaveSubmit = async (evt: FormEvent) => {
         evt.preventDefault()
         const formData = new FormData(evt.target as HTMLFormElement)
-        const password = formData.get('password') as string
         const confirmPassword = formData.get('confirmPassword') as string
 
         if (!password) {
@@ -70,6 +71,8 @@ export function NewVaultForm({ onSave }: Props) {
                 </label>
                 <PasswordInput
                     name='password'
+                    value={password}
+                    onChange={evt => setPassword(evt.target.value)}
                     validationState={validationState.password}
                 />
             </div>
@@ -85,6 +88,7 @@ export function NewVaultForm({ onSave }: Props) {
                     validationState={validationState.confirmPassword}
                 />
             </div>
+            {password && <PasswordStrength password={password} />}
             {error && <Indicator type='error' text={error ?? ''} />}
             <Button
                 label='Submit'

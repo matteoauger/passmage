@@ -24,9 +24,11 @@ export default {
                 50: ' #FFFFFF',
                 100: '##E9E4ED',
             },
+            supersuccess: colors.teal[700],
             success: colors.green[700],
             warning: colors.amber[700],
             error: colors.red[700],
+            supererror: colors.red[900],
         },
         fontFamily: {
             sans: ['AfacadFlux', 'system-ui'],

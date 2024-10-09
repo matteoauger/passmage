@@ -1,13 +1,12 @@
-import { faLockOpen, faXmarkCircle } from '@fortawesome/free-solid-svg-icons'
+import { faLockOpen } from '@fortawesome/free-solid-svg-icons'
 import { Button } from '../common/Button'
 import { PasswordInput } from './input/PasswordInput'
 import { twMerge } from 'tailwind-merge'
 import { useNavigate } from 'react-router-dom'
 import { hashPassword } from '../../utils/crypto'
-import { FormEvent, useRef, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { ValidationState } from '../../models/input/ValidationState'
 import { Indicator } from '../common/Indicator'
-import { debounce } from '../../utils/timing'
 
 interface Props {
     onSubmit: (value: string) => Promise<void>
