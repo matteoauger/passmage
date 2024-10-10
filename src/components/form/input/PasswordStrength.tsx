@@ -7,11 +7,11 @@ interface Props {
 }
 
 enum Strength {
-    VeryWeak = 28,
-    Weak = 36,
-    Moderate = 60,
-    Strong = 128,
-    VeryStrong = 129,
+    VeryWeak = 1,
+    Weak = 28,
+    Moderate = 36,
+    Strong = 60,
+    VeryStrong = 120,
 }
 
 type StrengthDefinition = {
@@ -21,16 +21,16 @@ type StrengthDefinition = {
 }
 
 const entropyToStrength = (entropy: number) => {
-    if (entropy < 32) {
+    if (entropy < Strength.Weak) {
         return Strength.VeryWeak
     }
-    if (entropy < 48) {
+    if (entropy < Strength.Moderate) {
         return Strength.Weak
     }
-    if (entropy < 64) {
+    if (entropy < Strength.Strong) {
         return Strength.Moderate
     }
-    if (entropy < 128) {
+    if (entropy < Strength.VeryStrong) {
         return Strength.Strong
     }
     return Strength.VeryStrong
@@ -73,6 +73,8 @@ export function PasswordStrength({ password }: Props) {
             const entropy = (await invoke('entropy', {
                 password,
             })) as number
+
+            console.log(entropy)
 
             // Calculate the strength of the password
             const strength = entropyToStrength(entropy)
