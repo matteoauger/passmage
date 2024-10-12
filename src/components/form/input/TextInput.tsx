@@ -4,6 +4,7 @@ import { ValidationState } from '../../../models/input/ValidationState'
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     name?: string
+    className?: string
     validationState?: ValidationState
 }
 
@@ -14,17 +15,22 @@ const classesByValidationState: Record<ValidationState, string> = {
     [ValidationState.Fail]: 'border-2 border-error',
 }
 
-export function TextInput({ validationState, name, ...props }: Props) {
+export function TextInput({
+    validationState,
+    name,
+    className,
+    ...props
+}: Props) {
     return (
         <input
             name={name}
             className={twMerge(
                 InputStyles.Default,
-                InputStyles.Pad,
                 InputStyles.Hover,
                 classesByValidationState[
                     validationState ?? ValidationState.None
                 ],
+                className,
             )}
             {...props}
         />

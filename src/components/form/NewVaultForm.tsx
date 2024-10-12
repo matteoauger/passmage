@@ -7,7 +7,7 @@ import { Button } from '../common/Button'
 import { Indicator } from '../common/Indicator'
 import { FormEvent, useState } from 'react'
 import { ValidationState } from '../../models/input/ValidationState'
-import { PasswordStrength } from './input/PasswordStrength'
+import { PasswStrengthMeter } from './input/PasswStrengthMeter'
 
 interface Props {
     onSubmit: (key: string) => void
@@ -48,7 +48,6 @@ export function NewVaultForm({ onSubmit }: Props) {
         try {
             const hash = await hashPassword(password)
             await onSubmit(hash)
-            console.log('created')
             navigate('/editor')
         } catch (err) {
             console.error('handled error', err)
@@ -89,7 +88,7 @@ export function NewVaultForm({ onSubmit }: Props) {
                     validationState={validationState.confirmPassword}
                 />
             </div>
-            {password && <PasswordStrength password={password} />}
+            {password && <PasswStrengthMeter password={password} />}
             {error && <Indicator type='error' text={error ?? ''} />}
             <Button
                 label='Submit'

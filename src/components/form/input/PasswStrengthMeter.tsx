@@ -64,7 +64,7 @@ const StrengthDefinitions: Record<number, StrengthDefinition> = Object.freeze({
     },
 })
 
-export function PasswordStrength({ password }: Props) {
+export function PasswStrengthMeter({ password }: Props) {
     let [meter, setMeter] = useState<number>(0)
     let [strength, setStrength] = useState<StrengthDefinition | null>(null)
 
@@ -73,8 +73,6 @@ export function PasswordStrength({ password }: Props) {
             const entropy = (await invoke('entropy', {
                 password,
             })) as number
-
-            console.log(entropy)
 
             // Calculate the strength of the password
             const strength = entropyToStrength(entropy)

@@ -43,6 +43,12 @@ export function Editor({ vault, onLock, onChange }: Props) {
                             onClick={() => {
                                 setCurrentEntry(indexedItem)
                             }}
+                            onDelete={() => {
+                                if (vault) {
+                                    const { [key]: _, ...rest } = vault
+                                    onChange(rest)
+                                }
+                            }}
                             selected={currentEntry?.key === key}
                         />
                     )

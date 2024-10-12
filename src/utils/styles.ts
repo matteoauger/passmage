@@ -1,10 +1,10 @@
 export const InputStyles = Object.freeze({
     Default: Object.freeze([
-        'text-gray-600',
+        'text-grey-600',
         'text-lg',
         'border',
         'focus:border-transparent',
-        'border-gray-300',
+        'border-grey-300',
         'rounded-lg',
         'ring',
         'ring-transparent',

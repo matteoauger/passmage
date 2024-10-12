@@ -35,7 +35,9 @@ export function FileInput({
                     InputStyles.Default,
                     InputStyles.Pad,
                     'caret-transparent select-none cursor-pointer',
-                    disabled === true ? 'border-none' : InputStyles.Hover,
+                    disabled === true
+                        ? 'border-none shadow-none'
+                        : InputStyles.Hover,
                 )}
                 onClick={openFileDialog(onChange)}
                 onChange={evt => onChange(evt.target.value)}

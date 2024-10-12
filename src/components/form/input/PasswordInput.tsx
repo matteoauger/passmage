@@ -33,6 +33,7 @@ export function PasswordInput({
             <TextInput
                 validationState={validationState}
                 name={name}
+                className={InputStyles.Pad}
                 {...props}
             />
 
