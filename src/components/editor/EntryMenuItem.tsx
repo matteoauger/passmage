@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge'
-import { IndexedVaultItem } from './routes/Editor'
+import { IndexedVaultItem } from '../routes/Editor'
 
 interface Props {
     entry: IndexedVaultItem
@@ -15,7 +15,11 @@ export function EntryMenuItem({ entry, onClick, selected }: Props) {
         'px-4',
         'py-2',
         'border-b',
-        selected ? 'border-blue-500' : 'border-gray-200',
+        'cursor-pointer',
+        selected ? 'border-primary-500' : 'border-gray-200',
+        selected ? 'bg-primary-500' : 'bg-white',
+        selected ? 'text-white' : 'text-black',
+        selected ? 'font-bold' : 'font-normal',
     ]
 
     return (

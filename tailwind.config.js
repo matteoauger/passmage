@@ -22,7 +22,7 @@ export default {
             transparent: colors.transparent,
             background: {
                 50: ' #FFFFFF',
-                100: '##E9E4ED',
+                100: '#E9E4ED',
             },
             supersuccess: colors.teal[700],
             success: colors.green[700],

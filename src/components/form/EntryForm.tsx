@@ -1,6 +1,8 @@
 import { FormEvent } from 'react'
 import { IndexedVaultItem } from '../routes/Editor'
 import { VaultItem } from '../../models/VaultModel'
+import { twMerge } from 'tailwind-merge'
+import { TextInput } from './input/TextInput'
 
 interface Props {
     entry: IndexedVaultItem
@@ -26,12 +28,34 @@ export function EntryForm({ entry, onSubmit }: Props) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input type='text' name='name' placeholder='Name' />
-            <input type='text' name='username' placeholder='Username' />
-            <input type='text' name='password' placeholder='Password' />
-            <input type='text' name='url' placeholder='URL' />
-            <textarea name='notes' placeholder='Notes' />
+        <form
+            onSubmit={handleSubmit}
+            className={twMerge('grid grid-cols-2 gap-4 w-full bg-transparent')}
+        >
+            <div>
+                <label htmlFor='name'>Name:</label>
+                <TextInput type='text' name='name' placeholder='Name' />
+            </div>
+
+            <div>
+                <label htmlFor='username'>Username:</label>
+                <TextInput type='text' name='username' placeholder='Username' />
+            </div>
+
+            <div>
+                <label htmlFor='password'>Password:</label>
+                <TextInput type='text' name='password' placeholder='Password' />
+            </div>
+
+            <div>
+                <label htmlFor='url'>URL:</label>
+                <TextInput type='text' name='url' placeholder='URL' />
+            </div>
+
+            <div>
+                <label htmlFor='notes'>Notes:</label>
+                <textarea name='notes' placeholder='Notes' />
+            </div>
             <button type='submit'>Save</button>
         </form>
     )

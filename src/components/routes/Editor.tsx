@@ -4,7 +4,9 @@ import { Button } from '../common/Button'
 import { twMerge } from 'tailwind-merge'
 import { useState } from 'react'
 import { EntryForm } from '../form/EntryForm'
-import { EntryMenuItem } from '../EntryMenuItem'
+import { EntryMenuItem } from '../editor/EntryMenuItem'
+import { EntryButton } from '../editor/EntryButton'
+import { faLock, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
     vault: VaultModel | null
@@ -25,8 +27,12 @@ export function Editor({ vault, onLock, onChange }: Props) {
     )
 
     return (
-        <section className={twMerge('flex gap-8')}>
-            <nav className={twMerge('w-1/5')}>
+        <section className={twMerge('flex h-full')}>
+            <nav
+                className={twMerge(
+                    'bg-white w-1/4 h-full border-r-2 border-r-primary-500 relative',
+                )}
+            >
                 {entries.map(([key, value]) => {
                     const indexedItem = { key, value }
 
@@ -42,8 +48,10 @@ export function Editor({ vault, onLock, onChange }: Props) {
                     )
                 })}
 
-                <Button
-                    label='add'
+                <EntryButton
+                    icon={faPlus}
+                    label=''
+                    className='w-full'
                     onClick={() => {
                         setCurrentEntry({
                             key: crypto.randomUUID(),
@@ -51,17 +59,21 @@ export function Editor({ vault, onLock, onChange }: Props) {
                         })
                     }}
                 />
-                <Button
-                    label='Lock'
-                    onClick={() => {
-                        // TODO
-                        onLock()
-                        navigate('/')
-                    }}
-                />
+                <div className={twMerge('w-full absolute bottom-4 px-4')}>
+                    <Button
+                        icon={{ def: faLock, placement: 'left' }}
+                        label='Lock'
+                        className={twMerge('w-full')}
+                        onClick={() => {
+                            // TODO
+                            onLock()
+                            navigate('/')
+                        }}
+                    />
+                </div>
             </nav>
 
-            <div>
+            <div className={twMerge('bg-background-100 h-full w-3/4 p-8')}>
                 {currentEntry && (
                     <EntryForm
                         entry={currentEntry}
