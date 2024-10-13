@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react'
 import { TextInput } from './TextInput'
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+    icon?: boolean
     name?: string
     className?: string
     validationState?: ValidationState
@@ -17,6 +18,7 @@ export function PasswordInput({
     className,
     validationState,
     name = 'password',
+    icon = true,
     ...props
 }: Props) {
     const [visible, setVisible] = useState(false)
@@ -29,11 +31,11 @@ export function PasswordInput({
     props.disabled = props.disabled ?? false
     props.placeholder = props.placeholder ?? 'Input master password...'
     return (
-        <IconInputWrapper className={className} icon={faKey}>
+        <IconInputWrapper className={className} icon={icon ? faKey : undefined}>
             <TextInput
                 validationState={validationState}
                 name={name}
-                className={InputStyles.Pad}
+                className={icon ? InputStyles.Pad : ''}
                 {...props}
             />
 

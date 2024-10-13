@@ -28,6 +28,13 @@
         height: 100vh;
     }
 
+    label,
+    p,
+    span,
+    div {
+        @apply select-none;
+    }
+
     /* Hide the password reveal button on Windows */
     input[type='password']::-ms-reveal {
         display: none;

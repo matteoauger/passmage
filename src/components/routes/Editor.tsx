@@ -5,8 +5,8 @@ import { twMerge } from 'tailwind-merge'
 import { useState } from 'react'
 import { EntryForm } from '../form/EntryForm'
 import { EntryMenuItem } from '../editor/EntryMenuItem'
-import { EntryButton } from '../editor/EntryButton'
 import { faLock, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { SearchBar } from '../editor/SearchBar'
 
 interface Props {
     vault: VaultModel | null
@@ -21,43 +21,39 @@ export interface IndexedVaultItem {
 
 export function Editor({ vault, onLock, onChange }: Props) {
     const navigate = useNavigate()
-    const entries = vault ? Object.entries(vault) : []
+    const [entries, setEntries] = useState(vault ? Object.entries(vault) : [])
     const [currentEntry, setCurrentEntry] = useState<IndexedVaultItem | null>(
         null,
     )
 
+    const handleSearch = (entry: string) => {
+        const search = entry.toLowerCase().trim()
+        if (!search && vault) {
+            setEntries(Object.entries(vault))
+            return
+        }
+        const searchResult = entries.filter(([_, value]) => {
+            const { name, username, url } = value
+            return (
+                name.toLowerCase().includes(search) ||
+                username.toLowerCase().includes(search) ||
+                url.toLowerCase().includes(search)
+            )
+        })
+
+        setEntries(searchResult)
+    }
+
     return (
-        <section className={twMerge('flex h-full')}>
-            <nav
+        <article className={twMerge('h-full')}>
+            <header
                 className={twMerge(
-                    'bg-white w-1/4 h-full border-r-2 border-r-primary-500 relative',
+                    'flex gap-2 p-4 border-b-2 border-b-grey-300 h-[90px]',
                 )}
             >
-                {entries.map(([key, value]) => {
-                    const indexedItem = { key, value }
-
-                    return (
-                        <EntryMenuItem
-                            key={key}
-                            entry={indexedItem}
-                            onClick={() => {
-                                setCurrentEntry(indexedItem)
-                            }}
-                            onDelete={() => {
-                                if (vault) {
-                                    const { [key]: _, ...rest } = vault
-                                    onChange(rest)
-                                }
-                            }}
-                            selected={currentEntry?.key === key}
-                        />
-                    )
-                })}
-
-                <EntryButton
-                    icon={faPlus}
-                    label=''
-                    className='w-full'
+                <SearchBar onSearch={entry => handleSearch(entry)} />
+                <Button
+                    icon={{ def: faPlus, placement: 'left' }}
                     onClick={() => {
                         setCurrentEntry({
                             key: crypto.randomUUID(),
@@ -65,35 +61,58 @@ export function Editor({ vault, onLock, onChange }: Props) {
                         })
                     }}
                 />
-                <div className={twMerge('w-full absolute bottom-4 px-4')}>
-                    <Button
-                        icon={{ def: faLock, placement: 'left' }}
-                        label='Lock'
-                        className={twMerge('w-full')}
-                        onClick={() => {
-                            // TODO
-                            onLock()
-                            navigate('/')
-                        }}
-                    />
+                <Button
+                    icon={{ def: faLock, placement: 'left' }}
+                    onClick={() => {
+                        onLock()
+                        navigate('/')
+                    }}
+                />
+            </header>
+            <section className={twMerge('flex h-[calc(100%-90px)]')}>
+                <nav
+                    className={twMerge(
+                        'bg-white w-1/4 border-r-2 border-r-grey-300 flex flex-col overflow-y-scroll ',
+                    )}
+                >
+                    {entries.map(([key, value]) => {
+                        const indexedItem = { key, value }
+
+                        return (
+                            <EntryMenuItem
+                                key={key}
+                                entry={indexedItem}
+                                onClick={() => {
+                                    setCurrentEntry(indexedItem)
+                                }}
+                                onDelete={() => {
+                                    if (vault) {
+                                        const { [key]: _, ...rest } = vault
+                                        onChange(rest)
+                                    }
+                                }}
+                                selected={currentEntry?.key === key}
+                            />
+                        )
+                    })}
+                </nav>
+
+                <div className={twMerge('bg-background-100 h-full w-3/4 p-8')}>
+                    {currentEntry && (
+                        <EntryForm
+                            entry={currentEntry}
+                            onSubmit={item => {
+                                onChange({
+                                    ...vault,
+                                    [item.key]: item.value,
+                                })
+
+                                setCurrentEntry(null)
+                            }}
+                        />
+                    )}
                 </div>
-            </nav>
-
-            <div className={twMerge('bg-background-100 h-full w-3/4 p-8')}>
-                {currentEntry && (
-                    <EntryForm
-                        entry={currentEntry}
-                        onSubmit={item => {
-                            onChange({
-                                ...vault,
-                                [item.key]: item.value,
-                            })
-
-                            setCurrentEntry(null)
-                        }}
-                    />
-                )}
-            </div>
-        </section>
+            </section>
+        </article>
     )
 }

@@ -1,6 +1,7 @@
 import { twMerge } from 'tailwind-merge'
 import { InputStyles } from '../../../utils/styles'
 import { ValidationState } from '../../../models/input/ValidationState'
+import { forwardRef } from 'react'
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     name?: string
@@ -15,7 +16,30 @@ const classesByValidationState: Record<ValidationState, string> = {
     [ValidationState.Fail]: 'border-2 border-error',
 }
 
-export function TextInput({
+export const TextInput = forwardRef<HTMLInputElement, Props>(
+    (
+        { validationState, name, className, ...props }: Props,
+        ref: React.Ref<any>,
+    ) => {
+        return (
+            <input
+                name={name}
+                ref={ref}
+                className={twMerge(
+                    InputStyles.Default,
+                    InputStyles.Hover,
+                    classesByValidationState[
+                        validationState ?? ValidationState.None
+                    ],
+                    className,
+                )}
+                {...props}
+            />
+        )
+    },
+)
+
+/* export function TextInput({
     validationState,
     name,
     className,
@@ -36,3 +60,4 @@ export function TextInput({
         />
     )
 }
+ */

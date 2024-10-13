@@ -8,6 +8,8 @@ import { Indicator } from '../common/Indicator'
 import { Button } from '../common/Button'
 import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons'
 import { TextArea } from './input/TextArea'
+import { PasswStrengthMeter } from './input/PasswStrengthMeter'
+import { PasswordInput } from './input/PasswordInput'
 
 interface Props {
     entry: IndexedVaultItem
@@ -15,6 +17,7 @@ interface Props {
 }
 
 export function EntryForm({ entry, onSubmit }: Props) {
+    const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     useEffect(() => {
         if (!entry) return
@@ -26,6 +29,8 @@ export function EntryForm({ entry, onSubmit }: Props) {
         form.password.value = data.password
         form.url.value = data.url
         form.notes.value = data.notes
+
+        setPassword(data.password)
     }, [entry])
 
     const handleSubmit = (evt: FormEvent) => {
@@ -81,11 +86,15 @@ export function EntryForm({ entry, onSubmit }: Props) {
 
                     <div>
                         <Label htmlFor='password' text='Password' />
-                        <TextInput
+                        <PasswordInput
+                            icon={false}
                             type='password'
                             name='password'
                             placeholder='Password'
+                            value={password}
+                            onChange={evt => setPassword(evt.target.value)}
                         />
+                        {password && <PasswStrengthMeter password={password} />}
                     </div>
 
                     <div>
