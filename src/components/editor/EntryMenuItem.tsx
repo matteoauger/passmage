@@ -6,11 +6,10 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 interface Props {
     entry: IndexedVaultItem
     onClick: () => void
-    onDelete: () => void
     selected: boolean
 }
 
-export function EntryMenuItem({ entry, onClick, onDelete, selected }: Props) {
+export function EntryMenuItem({ entry, onClick, selected }: Props) {
     const classes = [
         'flex',
         'justify-between',
@@ -25,13 +24,8 @@ export function EntryMenuItem({ entry, onClick, onDelete, selected }: Props) {
     ]
 
     return (
-        <div className={twMerge(classes)}>
-            <div className={twMerge('w-full')} onClick={() => onClick()}>
-                <div className='text-lg font-medium'>{entry.value.name}</div>
-            </div>
-            <span className={twMerge('z-10')} onClick={() => onDelete()}>
-                <FontAwesomeIcon icon={faTrash} />
-            </span>
+        <div className={twMerge(classes)} onClick={() => onClick()}>
+            <div className='text-lg font-medium'>{entry.value.name}</div>
         </div>
     )
 }

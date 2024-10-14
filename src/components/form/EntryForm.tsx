@@ -1,27 +1,36 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { IndexedVaultItem } from '../routes/Editor'
-import { VaultItem } from '../../models/VaultModel'
 import { twMerge } from 'tailwind-merge'
 import { TextInput } from './input/TextInput'
 import { Label } from './Label'
 import { Indicator } from '../common/Indicator'
 import { Button } from '../common/Button'
-import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons'
+import { faFloppyDisk, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { TextArea } from './input/TextArea'
 import { PasswStrengthMeter } from './input/PasswStrengthMeter'
 import { PasswordInput } from './input/PasswordInput'
 
 interface Props {
     entry: IndexedVaultItem
+    isNew: boolean
     onSubmit: (item: IndexedVaultItem) => void
+    onDelete: (key: string) => void
 }
 
-export function EntryForm({ entry, onSubmit }: Props) {
+export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
 
-    const [createdAt, setCreatedAt] = useState('')
-    const [updatedAt, setUpdatedAt] = useState('')
+    let createdAt = ''
+    let updatedAt = ''
+    if (entry.value.createdAtUTC) {
+        const createdAtDate = new Date(entry.value.createdAtUTC)
+        createdAt = createdAtDate.toLocaleString()
+    }
+    if (entry.value.updatedAtUTC) {
+        const updatedAtDate = new Date(entry.value.updatedAtUTC)
+        updatedAt = updatedAtDate.toLocaleString()
+    }
 
     useEffect(() => {
         if (!entry) return
@@ -35,19 +44,6 @@ export function EntryForm({ entry, onSubmit }: Props) {
         form.notes.value = data.notes
 
         setPassword(data.password)
-
-        if (data.createdAtUTC) {
-            const createdAtDate = new Date(data.createdAtUTC)
-            setCreatedAt(createdAtDate.toLocaleString())
-        } else {
-            setCreatedAt('')
-        }
-        if (data.updatedAtUTC) {
-            const updatedAtDate = new Date(data.updatedAtUTC)
-            setUpdatedAt(updatedAtDate.toLocaleString())
-        } else {
-            setUpdatedAt('')
-        }
     }, [entry])
 
     const handleSubmit = (evt: FormEvent) => {
@@ -128,18 +124,28 @@ export function EntryForm({ entry, onSubmit }: Props) {
                 </div>
 
                 <div className={twMerge('flex justify-between items-center')}>
-                    {createdAt && updatedAt && (
-                        <div className={twMerge('text-grey-500')}>
-                            <b>Created: {createdAt}</b>
-                            <br />
-                            <b>Updated: {updatedAt}</b>
-                        </div>
-                    )}
-                    <Button
-                        type='submit'
-                        label='Save'
-                        icon={{ def: faFloppyDisk, placement: 'left' }}
-                    />
+                    <div className={twMerge('text-grey-500 text-sm')}>
+                        {createdAt && <span>Created: {createdAt}</span>}
+                        <br />
+                        {createdAt && <span>Updated: {updatedAt}</span>}
+                    </div>
+
+                    <div className={twMerge('flex gap-2')}>
+                        {!isNew && (
+                            <Button
+                                type='button'
+                                label='Delete'
+                                icon={{ def: faTrash, placement: 'left' }}
+                                onClick={() => onDelete(entry.key)}
+                            />
+                        )}
+
+                        <Button
+                            type='submit'
+                            label='Save'
+                            icon={{ def: faFloppyDisk, placement: 'left' }}
+                        />
+                    </div>
                 </div>
             </form>
         </section>

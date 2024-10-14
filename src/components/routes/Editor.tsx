@@ -9,7 +9,7 @@ import { faLock, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { SearchBar } from '../editor/SearchBar'
 
 interface Props {
-    vault: VaultModel | null
+    vault: VaultModel
     onLock: () => void
     onChange: (vault: VaultModel) => void
 }
@@ -33,6 +33,10 @@ export function Editor({ vault, onLock, onChange }: Props) {
         }
     }, [vault])
 
+    // Check if the current entry exists in the vault
+    const entryExists =
+        (currentEntry && vault.hasOwnProperty(currentEntry.key)) ?? false
+
     const handleSearch = (term: string) => {
         setSearch(term.toLowerCase())
         if (!term && vault) {
@@ -51,6 +55,14 @@ export function Editor({ vault, onLock, onChange }: Props) {
         })
 
         setEntries(searchResult)
+    }
+
+    const handleEntryDelete = (key: string) => {
+        if (vault) {
+            const { [key]: _, ...rest } = vault
+            setCurrentEntry(null)
+            onChange(rest)
+        }
     }
 
     return (
@@ -97,13 +109,6 @@ export function Editor({ vault, onLock, onChange }: Props) {
                                 onClick={() => {
                                     setCurrentEntry(indexedItem)
                                 }}
-                                onDelete={() => {
-                                    if (vault) {
-                                        const { [key]: _, ...rest } = vault
-                                        setCurrentEntry(null)
-                                        onChange(rest)
-                                    }
-                                }}
                                 selected={currentEntry?.key === key}
                             />
                         )
@@ -114,13 +119,16 @@ export function Editor({ vault, onLock, onChange }: Props) {
                     {currentEntry && (
                         <EntryForm
                             entry={currentEntry}
+                            isNew={!entryExists}
                             onSubmit={item => {
                                 onChange({
                                     ...vault,
                                     [item.key]: item.value,
                                 })
-
-                                setCurrentEntry(null)
+                                setCurrentEntry(item)
+                            }}
+                            onDelete={() => {
+                                handleEntryDelete(currentEntry.key)
                             }}
                         />
                     )}
