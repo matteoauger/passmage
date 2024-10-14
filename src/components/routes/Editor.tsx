@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { VaultItem, VaultModel } from '../../models/VaultModel'
 import { Button } from '../common/Button'
 import { twMerge } from 'tailwind-merge'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { EntryForm } from '../form/EntryForm'
 import { EntryMenuItem } from '../editor/EntryMenuItem'
 import { faLock, faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -25,19 +25,28 @@ export function Editor({ vault, onLock, onChange }: Props) {
     const [currentEntry, setCurrentEntry] = useState<IndexedVaultItem | null>(
         null,
     )
+    const [search, setSearch] = useState('')
 
-    const handleSearch = (entry: string) => {
-        const search = entry.toLowerCase().trim()
-        if (!search && vault) {
+    useEffect(() => {
+        if (vault) {
+            setEntries(Object.entries(vault))
+        }
+    }, [vault])
+
+    const handleSearch = (term: string) => {
+        setSearch(term.toLowerCase())
+        if (!term && vault) {
             setEntries(Object.entries(vault))
             return
         }
-        const searchResult = entries.filter(([_, value]) => {
+
+        var allEntries = Object.entries(vault ?? [])
+        const searchResult = allEntries.filter(([_, value]) => {
             const { name, username, url } = value
             return (
-                name.toLowerCase().includes(search) ||
-                username.toLowerCase().includes(search) ||
-                url.toLowerCase().includes(search)
+                name.toLowerCase().includes(term) ||
+                username.toLowerCase().includes(term) ||
+                url.toLowerCase().includes(term)
             )
         })
 
@@ -51,7 +60,10 @@ export function Editor({ vault, onLock, onChange }: Props) {
                     'flex gap-2 p-4 border-b-2 border-b-grey-300 h-[90px]',
                 )}
             >
-                <SearchBar onSearch={entry => handleSearch(entry)} />
+                <SearchBar
+                    value={search}
+                    onChange={term => handleSearch(term)}
+                />
                 <Button
                     icon={{ def: faPlus, placement: 'left' }}
                     onClick={() => {

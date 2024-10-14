@@ -6,16 +6,16 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import { useRef } from 'react'
 
 interface Props {
-    onSearch: (entry: string) => void
+    value: string
+    onChange: (term: string) => void
 }
 
-export function SearchBar({ onSearch }: Props) {
+export function SearchBar({ value, onChange }: Props) {
     const searchBar = useRef<HTMLInputElement>(null)
     useHotkeys('ctrl+k', () => {
         // Focus on search bar
         const search = searchBar.current
         search?.focus()
-        console.log('Focus on search bar')
     })
 
     return (
@@ -24,8 +24,9 @@ export function SearchBar({ onSearch }: Props) {
                 ref={searchBar}
                 placeholder='Search...'
                 className={InputStyles.Pad}
+                value={value}
                 onChange={(e: any) => {
-                    onSearch(e.target.value)
+                    onChange(e.target.value)
                 }}
             />
             <i className='absolute cursor-pointer inset-y-0 right-0 flex items-center pr-3 text-grey-500'>
