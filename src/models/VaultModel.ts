@@ -8,6 +8,8 @@ export class VaultItem {
     password: string
     url: string
     notes: string
+    createdAtUTC?: number
+    updatedAtUTC?: number
 
     constructor() {
         this.name = ''

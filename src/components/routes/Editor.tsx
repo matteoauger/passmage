@@ -100,6 +100,7 @@ export function Editor({ vault, onLock, onChange }: Props) {
                                 onDelete={() => {
                                     if (vault) {
                                         const { [key]: _, ...rest } = vault
+                                        setCurrentEntry(null)
                                         onChange(rest)
                                     }
                                 }}

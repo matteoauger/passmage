@@ -25,11 +25,11 @@ export function EntryMenuItem({ entry, onClick, onDelete, selected }: Props) {
     ]
 
     return (
-        <div className={twMerge(classes)} onClick={() => onClick()}>
-            <div>
+        <div className={twMerge(classes)}>
+            <div className={twMerge('w-full')} onClick={() => onClick()}>
                 <div className='text-lg font-medium'>{entry.value.name}</div>
             </div>
-            <span onClick={() => onDelete()}>
+            <span className={twMerge('z-10')} onClick={() => onDelete()}>
                 <FontAwesomeIcon icon={faTrash} />
             </span>
         </div>

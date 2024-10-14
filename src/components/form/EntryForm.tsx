@@ -19,6 +19,10 @@ interface Props {
 export function EntryForm({ entry, onSubmit }: Props) {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+
+    const [createdAt, setCreatedAt] = useState('')
+    const [updatedAt, setUpdatedAt] = useState('')
+
     useEffect(() => {
         if (!entry) return
         const form = document.querySelector('form') as HTMLFormElement
@@ -31,6 +35,19 @@ export function EntryForm({ entry, onSubmit }: Props) {
         form.notes.value = data.notes
 
         setPassword(data.password)
+
+        if (data.createdAtUTC) {
+            const createdAtDate = new Date(data.createdAtUTC)
+            setCreatedAt(createdAtDate.toLocaleString())
+        } else {
+            setCreatedAt('')
+        }
+        if (data.updatedAtUTC) {
+            const updatedAtDate = new Date(data.updatedAtUTC)
+            setUpdatedAt(updatedAtDate.toLocaleString())
+        } else {
+            setUpdatedAt('')
+        }
     }, [entry])
 
     const handleSubmit = (evt: FormEvent) => {
@@ -53,6 +70,8 @@ export function EntryForm({ entry, onSubmit }: Props) {
                 password: data.password as string,
                 url: data.url as string,
                 notes: data.notes as string,
+                createdAtUTC: entry.value.createdAtUTC ?? Date.now(),
+                updatedAtUTC: Date.now(),
             },
         })
     }
@@ -108,7 +127,14 @@ export function EntryForm({ entry, onSubmit }: Props) {
                     <TextArea name='notes' placeholder='Notes' />
                 </div>
 
-                <div className={twMerge('flex justify-end items-center')}>
+                <div className={twMerge('flex justify-between items-center')}>
+                    {createdAt && updatedAt && (
+                        <div className={twMerge('text-grey-500')}>
+                            <b>Created: {createdAt}</b>
+                            <br />
+                            <b>Updated: {updatedAt}</b>
+                        </div>
+                    )}
                     <Button
                         type='submit'
                         label='Save'
