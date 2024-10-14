@@ -169,3 +169,57 @@ fn unpad(data: &[u8]) -> Result<Vec<u8>, AppError> {
         Err(AppError::Crypto("Invalid padding bytes".into()))
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_hash() {
+        let data = "Hello, World!";
+        let expected = "3/1gIbsr1bCvZ2KQgJ7DpTGR3YHH9wpLKGiKNiGCmG8="; // Base64 SHA-256 hash of "Hello, World!"
+        let hashed = hash(data);
+        assert_eq!(hashed, expected);
+    }
+
+    #[test]
+    fn test_hash_empty() {
+        let data = "";
+        let expected = "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU="; // Base64 SHA-256 hash of ""
+        let hashed = hash(data);
+        assert_eq!(hashed, expected);
+    }
+
+    #[test]
+    fn test_pad() {
+        let data = "Hello, World!";
+        let expected = "Hello, World!\x03\x03\x03";
+        let padded = pad(data.as_bytes());
+        assert_eq!(str::from_utf8(&padded).unwrap(), expected);
+    }
+
+    #[test]
+    fn test_unpad() {
+        let data = "Hello, World!\x03\x03\x03";
+        let expected = "Hello, World!";
+        let unpadded = unpad(data.as_bytes()).unwrap();
+        assert_eq!(str::from_utf8(&unpadded).unwrap(), expected);
+    }
+
+    #[test]
+    fn test_unpad_invalid_padding() {
+        let data = "Hello, World!\x03\x03\x02";
+        let result = unpad(data.as_bytes());
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_encrypt_decrypt() {
+        let key = "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=";
+        let data = "Hello, World!".to_string();
+        let encryption = Encryption::new(key).unwrap();
+        let encrypted = encryption.encrypt(&data).unwrap();
+        let decrypted = encryption.decrypt(&encrypted).unwrap();
+        assert_eq!(data, decrypted);
+    }
+}
