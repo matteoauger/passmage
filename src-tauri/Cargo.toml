@@ -25,4 +25,6 @@ base64 = "0.22.1"
 aes = "0.8.4"
 tauri-plugin-fs = "2.0.0"
 tauri-plugin-dialog = "2.0.0"
+rand = "0.8.5"
+tauri-plugin-clipboard-manager = "2.0.1"
 

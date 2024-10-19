@@ -8,6 +8,7 @@
         "shell:allow-open",
         "fs:default",
         "dialog:default",
+        "clipboard-manager:allow-write-text",
         {
             "identifier": "fs:allow-app-write",
             "allow": ["$APPDATA/*", "$HOME/*"]
@@ -15,6 +16,7 @@
         {
             "identifier": "fs:allow-open",
             "allow": ["$APPDATA/*", "$HOME/*"]
-        }
+        },
+        "clipboard-manager:default"
     ]
 }

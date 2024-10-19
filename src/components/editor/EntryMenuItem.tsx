@@ -15,6 +15,7 @@ export function EntryMenuItem({ entry, onClick, selected }: Props) {
         'justify-between',
         'items-center',
         'p-2',
+        'pl-4',
         'border-b',
         'cursor-pointer',
         selected ? 'border-primary-500' : 'border-grey-300',

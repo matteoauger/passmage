@@ -4,14 +4,15 @@ import { twMerge } from 'tailwind-merge'
 
 interface Props {
     password: string
+    className?: string
 }
 
 enum Strength {
     VeryWeak = 1,
-    Weak = 28,
-    Moderate = 36,
-    Strong = 60,
-    VeryStrong = 120,
+    Weak = 50,
+    Moderate = 80,
+    Strong = 100,
+    VeryStrong = 160,
 }
 
 type StrengthDefinition = {
@@ -58,13 +59,13 @@ const StrengthDefinitions: Record<number, StrengthDefinition> = Object.freeze({
         bgColor: 'bg-success',
     },
     [Strength.VeryStrong]: {
-        label: 'Very Strong',
+        label: 'Amazing',
         textColor: 'text-supersuccess',
         bgColor: 'bg-supersuccess',
     },
 })
 
-export function PasswStrengthMeter({ password }: Props) {
+export function PasswStrengthMeter({ password, className }: Props) {
     let [meter, setMeter] = useState<number>(0)
     let [strength, setStrength] = useState<StrengthDefinition | null>(null)
 
@@ -77,7 +78,7 @@ export function PasswStrengthMeter({ password }: Props) {
             // Calculate the strength of the password
             const strength = entropyToStrength(entropy)
             const strengthDef = StrengthDefinitions[strength]
-            let entropyPercent = (entropy / (Strength.VeryStrong + 50)) * 100
+            let entropyPercent = (entropy / Strength.VeryStrong) * 100
             entropyPercent = Math.min(entropyPercent, 100)
 
             setStrength(strengthDef)
@@ -87,25 +88,21 @@ export function PasswStrengthMeter({ password }: Props) {
     }, [password])
 
     return (
-        <div>
+        <div className={twMerge(className, password ? '' : 'invisible')}>
             {strength && (
                 <>
                     <span
                         className={twMerge(
-                            'text-lg text-bold',
-                            strength.textColor,
+                            ' text-bold',
+                            strength.bgColor,
+                            'text-white',
+                            'px-2',
+                            'py-1',
+                            'rounded',
                         )}
                     >
                         {strength?.label}
                     </span>
-                    <div className='w-full h-2 bg-gray-200 rounded-lg'>
-                        <div
-                            className={`h-full rounded-lg ${strength.bgColor}`}
-                            style={{
-                                width: `${meter}%`,
-                            }}
-                        />
-                    </div>
                 </>
             )}
         </div>

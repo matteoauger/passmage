@@ -107,9 +107,10 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
                             name='password'
                             placeholder='Password'
                             value={password}
+                            enableGeneration={true}
                             onChange={evt => setPassword(evt.target.value)}
                         />
-                        {password && <PasswStrengthMeter password={password} />}
+                        {<PasswStrengthMeter password={password} />}
                     </div>
 
                     <div>
