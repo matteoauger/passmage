@@ -32,7 +32,7 @@ export default function Modal({ children, onClose, show }: Props) {
 
             <div
                 className={twMerge(
-                    'relative z-20 bg-white rounded-2xl p-8 shadow-2xl max-w-md',
+                    'relative z-20 bg-white rounded-2xl p-8 shadow-2xl w-[500px]',
                 )}
             >
                 <button

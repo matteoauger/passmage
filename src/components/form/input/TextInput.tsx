@@ -21,6 +21,9 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
         { validationState, name, className, ...props }: Props,
         ref: React.Ref<any>,
     ) => {
+        props.autoComplete = 'off'
+        props.spellCheck = false
+
         return (
             <input
                 name={name}
@@ -38,26 +41,3 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
         )
     },
 )
-
-/* export function TextInput({
-    validationState,
-    name,
-    className,
-    ...props
-}: Props) {
-    return (
-        <input
-            name={name}
-            className={twMerge(
-                InputStyles.Default,
-                InputStyles.Hover,
-                classesByValidationState[
-                    validationState ?? ValidationState.None
-                ],
-                className,
-            )}
-            {...props}
-        />
-    )
-}
- */

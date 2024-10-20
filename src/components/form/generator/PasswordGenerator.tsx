@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Button } from '../common/Button'
-import { TextInput } from './input/TextInput'
+import { Button } from '../../common/Button'
 import { invoke } from '@tauri-apps/api/core'
-import { PasswStrengthMeter } from './input/PasswStrengthMeter'
+import { PasswStrengthMeter } from '../input/PasswStrengthMeter'
 import { faArrowRight, faArrowsRotate } from '@fortawesome/free-solid-svg-icons'
 import { twMerge } from 'tailwind-merge'
-import { Checkbox } from './input/Checkbox'
+import { Checkbox } from '../input/Checkbox'
 import { writeText } from '@tauri-apps/plugin-clipboard-manager'
+import { PasswordShowcase } from './PasswordShowcase'
 
 type PasswordType = 'password' | 'passphrase'
 
@@ -27,10 +27,27 @@ export function PasswordGenerator({ onSubmit }: Props) {
     // Used for passphrase only
     const [separator, setSeparator] = useState('-')
 
-    // Initial generation
+    let lengthBoundaries = [
+        type === 'password' ? 6 : 4,
+        type === 'password' ? 64 : 12,
+    ]
+
     useEffect(() => {
         generatePassword()
     }, [])
+
+    // Automatically generate a password when parameters are updated
+    useEffect(() => {
+        generatePassword()
+    }, [type, length, capitals, numbers, specials, separator])
+
+    useEffect(() => {
+        let boundLength = length
+        boundLength = Math.min(boundLength, lengthBoundaries[1])
+        boundLength = Math.max(boundLength, lengthBoundaries[0])
+
+        setLength(boundLength)
+    }, [type])
 
     const generatePassword = async () => {
         if (type === 'passphrase') {
@@ -50,29 +67,14 @@ export function PasswordGenerator({ onSubmit }: Props) {
         setPassword(password)
     }
 
-    const handlePasswordClick = async () => {
-        // TODO toast
-        await writeText(password)
-    }
-
-    let lengthBoundaries = [4, 64]
-
     return (
         <div className={twMerge('flex flex-col gap-4')}>
             <h3 className='text-2xl mb-2'>Generate a password :</h3>
 
-            <div className='flex gap-2 items-start w-full'>
-                <p
-                    className='w-4/5'
-                    onClick={() => {
-                        handlePasswordClick()
-                    }}
-                >
-                    {password}
-                </p>
-                <Button
-                    onClick={() => generatePassword()}
-                    icon={{ def: faArrowsRotate, placement: 'left' }}
+            <div className='flex gap-2 w-full'>
+                <PasswordShowcase
+                    value={password}
+                    className={twMerge('w-full')}
                 />
             </div>
             <PasswStrengthMeter password={password} />
@@ -103,7 +105,7 @@ export function PasswordGenerator({ onSubmit }: Props) {
                     <input
                         type='number'
                         value={length}
-                        onChange={evt => setLength(evt.target.value)}
+                        onChange={evt => setLength(+evt.target.value)}
                     />
                 </div>
                 {type === 'password' && (
@@ -143,7 +145,11 @@ export function PasswordGenerator({ onSubmit }: Props) {
                 )}
             </div>
 
-            <div className='flex justify-end'>
+            <div className='flex gap-2 justify-end'>
+                <Button
+                    onClick={() => generatePassword()}
+                    icon={{ def: faArrowsRotate, placement: 'left' }}
+                />
                 <Button
                     onClick={() => onSubmit(password)}
                     label='Apply'

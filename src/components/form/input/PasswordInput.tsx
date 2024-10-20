@@ -9,10 +9,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { IconInputWrapper } from './IconInputWrapper'
 import { ValidationState } from '../../../models/input/ValidationState'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { TextInput } from './TextInput'
-import { PasswordGenerator } from '../PasswordGenerator'
-import Modal from '../../Modal'
+import { PasswordGenerator } from '../generator/PasswordGenerator'
+import Modal from '../../common/Modal'
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     icon?: boolean
@@ -55,8 +55,12 @@ export function PasswordInput({
                 >
                     <PasswordGenerator
                         onSubmit={password => {
-                            // Change input value to password
-                            props.value = password
+                            props.onChange?.({
+                                target: {
+                                    name,
+                                    value: password,
+                                },
+                            } as React.ChangeEvent<HTMLInputElement>)
                             setEnableGenModal(false)
                         }}
                     />
