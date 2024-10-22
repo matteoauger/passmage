@@ -5,7 +5,6 @@ import { PasswStrengthMeter } from '../input/PasswStrengthMeter'
 import { faArrowRight, faArrowsRotate } from '@fortawesome/free-solid-svg-icons'
 import { twMerge } from 'tailwind-merge'
 import { Checkbox } from '../input/Checkbox'
-import { writeText } from '@tauri-apps/plugin-clipboard-manager'
 import { PasswordShowcase } from './PasswordShowcase'
 
 type PasswordType = 'password' | 'passphrase'
@@ -28,7 +27,7 @@ export function PasswordGenerator({ onSubmit }: Props) {
     const [separator, setSeparator] = useState('-')
 
     let lengthBoundaries = [
-        type === 'password' ? 6 : 4,
+        type === 'password' ? 6 : 2,
         type === 'password' ? 64 : 12,
     ]
 

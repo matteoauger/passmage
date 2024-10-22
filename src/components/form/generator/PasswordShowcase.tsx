@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge'
 import { InputStyles } from '../../../utils/styles'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
+import { toast } from 'react-toastify'
 
 interface Props {
     className?: string
@@ -11,7 +12,9 @@ interface Props {
 
 export function PasswordShowcase({ value, className }: Props) {
     const handlePasswordClick = async () => {
-        // TODO toast
+        toast.success('Password copied to clipboard', {
+            position: 'top-center',
+        })
         await writeText(value)
     }
 

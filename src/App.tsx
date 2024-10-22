@@ -1,4 +1,5 @@
 import './index.css'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { useState } from 'react'
 import { VaultModel } from './models/VaultModel'
@@ -9,6 +10,7 @@ import { openFile, saveFile } from './utils/fs'
 import { decrypt, encrypt } from './utils/crypto'
 import { HomeMode } from './models/HomeMode'
 import { Modal } from './components/common/Modal'
+import { ToastContainer } from 'react-toastify'
 
 function App() {
     const [filePath, setFilePath] = useState<string | null>(null)
@@ -60,6 +62,11 @@ function App() {
         await saveFile(filePath, encryptedData)
     }
 
+    const handleEditorChange = async (val: VaultModel) => {
+        setVault(val)
+        await handleSave()
+    }
+
     const router = createBrowserRouter([
         {
             path: '/',
@@ -78,7 +85,7 @@ function App() {
             element: (
                 <Editor
                     vault={vault}
-                    onChange={val => setVault(val)}
+                    onChange={handleEditorChange}
                     onLock={async () => {
                         await handleSave()
                         setVault({})
@@ -93,6 +100,7 @@ function App() {
     return (
         <main className='h-full bg-background'>
             <RouterProvider router={router} />
+            <ToastContainer />
         </main>
     )
 }
