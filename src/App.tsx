@@ -9,7 +9,6 @@ import { Editor } from './components/routes/Editor'
 import { openFile, saveFile } from './utils/fs'
 import { decrypt, encrypt } from './utils/crypto'
 import { HomeMode } from './models/HomeMode'
-import { Modal } from './components/common/Modal'
 import { ToastContainer } from 'react-toastify'
 
 function App() {

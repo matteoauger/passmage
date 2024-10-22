@@ -44,6 +44,7 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
         form.notes.value = data.notes
 
         setPassword(data.password)
+        setError('') // Reset error message
     }, [entry])
 
     const handleSubmit = (evt: FormEvent) => {
