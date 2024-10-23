@@ -18,7 +18,7 @@ const classesByValidationState: Record<ValidationState, string> = {
 
 export const TextInput = forwardRef<HTMLInputElement, Props>(
     (
-        { validationState, name, className, ...props }: Props,
+        { validationState, name, className, readOnly, ...props }: Props,
         ref: React.Ref<any>,
     ) => {
         props.autoComplete = 'off'
@@ -34,8 +34,10 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                     classesByValidationState[
                         validationState ?? ValidationState.None
                     ],
+                    readOnly ? InputStyles.Readonly : [],
                     className,
                 )}
+                readOnly={readOnly}
                 {...props}
             />
         )

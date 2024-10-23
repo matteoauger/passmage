@@ -1,5 +1,5 @@
 export const InputStyles = Object.freeze({
-    Default: Object.freeze([
+    Default: [
         'text-grey-600',
         'text-lg',
         'border',
@@ -18,11 +18,12 @@ export const InputStyles = Object.freeze({
         'rounded-l-lg',
         'py-3',
         'px-4',
-    ]).join(' '),
-    Hover: Object.freeze([
+    ].join(' '),
+    Hover: [
         'hover:border-primary-500',
         'hover:placeholder-primary-500',
         'hover:text-primary-500',
-    ]).join(' '),
+    ].join(' '),
     Pad: 'pl-12',
+    Readonly: ['bg-gray-100', 'cursor-pointer'].join(' '),
 })

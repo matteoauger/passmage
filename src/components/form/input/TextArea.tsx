@@ -4,6 +4,7 @@ interface Props {
     name: string
     placeholder: string
     className?: string
+    readOnly: boolean
 }
 
 export function TextArea({ className, ...props }: Props) {

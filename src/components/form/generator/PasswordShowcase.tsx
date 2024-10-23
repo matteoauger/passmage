@@ -42,7 +42,7 @@ export function PasswordShowcase({ value, className }: Props) {
                 onClick={handlePasswordClick}
                 className={twMerge(
                     InputStyles.Default,
-                    ' break-words overflow-hiddentext-sm cursor-pointer h-28 pr-12',
+                    ' break-words overflow-hidden cursor-pointer h-28 pr-12',
                 )}
             >
                 {valueElement}

@@ -5,10 +5,11 @@ import { TextInput } from './input/TextInput'
 import { Label } from './Label'
 import { Indicator } from '../common/Indicator'
 import { Button } from '../common/Button'
-import { faFloppyDisk, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faFloppyDisk, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { TextArea } from './input/TextArea'
 import { PasswStrengthMeter } from './input/PasswStrengthMeter'
 import { PasswordInput } from './input/PasswordInput'
+import { ClipboardInput } from './input/ClipboardInput'
 
 interface Props {
     entry: IndexedVaultItem
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
+    const [isReadonly, setIsReadonly] = useState(true)
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
 
@@ -58,6 +60,7 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
         }
 
         setError('')
+        setIsReadonly(true)
 
         onSubmit({
             key: entry.key,
@@ -78,28 +81,42 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
             <form onSubmit={handleSubmit}>
                 <section
                     className={twMerge(
-                        'grid grid-cols-2 gap-4 w-full bg-transparent border-b border-grey-300 pb-4',
+                        'flex flex-col gap-4 w-full bg-transparent border-b border-grey-300 pb-4',
                     )}
                 >
-                    <div>
-                        <Label htmlFor='entryName' text='Name' />
-                        <TextInput
-                            type='text'
-                            name='entryName'
-                            placeholder='Name'
-                        />
-                        {error && <Indicator type='error' text={error} />}
+                    <div className='w-full flex gap-4 border-b border-grey-300 pb-4'>
+                        <div className='w-1/2'>
+                            <Label htmlFor='entryName' text='Name' />
+                            <TextInput
+                                type='text'
+                                name='entryName'
+                                placeholder='Name'
+                                readOnly={isReadonly}
+                            />
+                            {error && <Indicator type='error' text={error} />}
+                        </div>
+                        <div className='w-1/2'>
+                            <Label htmlFor='url' text='URL' />
+                            <ClipboardInput
+                                hotkey='Ctrl + U'
+                                type='text'
+                                name='url'
+                                placeholder='URL'
+                                readOnly={isReadonly}
+                            />
+                        </div>
                     </div>
 
                     <div>
                         <Label htmlFor='username' text='Username' />
-                        <TextInput
+                        <ClipboardInput
+                            hotkey='Ctrl + B'
                             type='text'
                             name='username'
                             placeholder='Username'
+                            readOnly={isReadonly}
                         />
                     </div>
-
                     <div>
                         <Label htmlFor='password' text='Password' />
                         <PasswordInput
@@ -116,16 +133,15 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
                             password={password}
                         />
                     </div>
-
-                    <div>
-                        <Label htmlFor='url' text='URL' />
-                        <TextInput type='text' name='url' placeholder='URL' />
-                    </div>
                 </section>
 
                 <div>
                     <Label htmlFor='notes' text='Notes' />
-                    <TextArea name='notes' placeholder='Notes' />
+                    <TextArea
+                        name='notes'
+                        placeholder='Notes'
+                        readOnly={isReadonly}
+                    />
                 </div>
 
                 <div className={twMerge('flex justify-between items-center')}>
@@ -145,11 +161,22 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
                             />
                         )}
 
-                        <Button
-                            type='submit'
-                            label='Save'
-                            icon={{ def: faFloppyDisk, placement: 'left' }}
-                        />
+                        {!isReadonly && (
+                            <Button
+                                type='submit'
+                                label='Save'
+                                icon={{ def: faFloppyDisk, placement: 'left' }}
+                            />
+                        )}
+
+                        {isReadonly && (
+                            <Button
+                                type='button'
+                                label='Edit'
+                                icon={{ def: faPen, placement: 'left' }}
+                                onClick={() => setIsReadonly(false)}
+                            />
+                        )}
                     </div>
                 </div>
             </form>

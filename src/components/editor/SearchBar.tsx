@@ -29,9 +29,9 @@ export function SearchBar({ value, onChange }: Props) {
                     onChange(e.target.value)
                 }}
             />
-            <i className='absolute cursor-pointer inset-y-0 right-0 flex items-center pr-3 text-grey-500'>
+            <span className='absolute cursor-pointer inset-y-0 right-0 flex items-center pr-3 text-grey-500 text-sm'>
                 Ctrl + K
-            </i>
+            </span>
         </IconInputWrapper>
     )
 }
