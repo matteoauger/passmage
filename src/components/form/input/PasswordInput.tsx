@@ -1,9 +1,10 @@
-import { faKey } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faKey } from '@fortawesome/free-solid-svg-icons'
 import { ValidationState } from '../../../models/input/ValidationState'
 import { useState } from 'react'
-import { TextInput } from './TextInput'
+import { InputWidget, TextInput } from './TextInput'
 import { PasswordGenerator } from '../generator/PasswordGenerator'
 import Modal from '../../common/Modal'
+import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons/faArrowsRotate'
 
 interface Props {
     icon?: boolean
@@ -37,6 +38,23 @@ export function PasswordInput({
 
     const showGeneration = enableGeneration && !disabled
 
+    let widgets: InputWidget[] = [
+        {
+            icon: visible ? faEyeSlash : faEye,
+            onClick: () => toggleVisibility(),
+        },
+    ]
+
+    if (enableGeneration) {
+        widgets = [
+            {
+                icon: faArrowsRotate,
+                onClick: () => setEnableGenModal(true),
+            },
+            ...widgets,
+        ]
+    }
+
     return (
         <>
             {/* Password generation modal */}
@@ -60,6 +78,7 @@ export function PasswordInput({
                 leftIcon={icon ? faKey : undefined}
                 onChange={evt => onChange?.(evt.target.value)}
                 type={type}
+                widgets={widgets}
                 {...props}
             />
             {/* {showGeneration && (

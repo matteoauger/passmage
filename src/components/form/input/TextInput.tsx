@@ -4,6 +4,8 @@ import { forwardRef } from 'react'
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+export type InputWidget = { icon: IconDefinition; onClick: () => void }
+
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     name?: string
     label?: string
@@ -13,6 +15,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     rightText?: string
     disabled?: boolean
     type?: 'text' | 'password'
+    widgets?: InputWidget[]
 }
 
 const classesByValidationState: Record<ValidationState, string> = {
@@ -22,7 +25,6 @@ const classesByValidationState: Record<ValidationState, string> = {
     [ValidationState.Fail]: 'border-2 border-error',
 }
 
-// TODO : adapt this to welcome password input
 export const TextInput = forwardRef<HTMLInputElement, Props>(
     (
         {
@@ -35,6 +37,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
             disabled,
             onClick,
             readOnly,
+            widgets = [],
             type = 'text',
             ...props
         }: Props,
@@ -48,7 +51,6 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
         return (
             <div
                 className={twMerge(
-                    'relative',
                     Styles.Default,
                     Styles.Hover,
                     classesByValidationState[
@@ -83,7 +85,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                     )}
                     <input
                         className={twMerge(
-                            'ring-0 w-full focus:ring-0 focus:border-0',
+                            'ring-0 w-full focus:outline-none',
                             readOnly ? Styles.Readonly : [],
                         )}
                         name={name}
@@ -93,6 +95,25 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                         {...props}
                     />
                 </div>
+
+                {widgets?.length > 0 && (
+                    <div className='flex gap-4'>
+                        {widgets.map(widget => (
+                            <span className='cursor-pointer flex items-center'>
+                                <FontAwesomeIcon
+                                    icon={widget.icon}
+                                    className={twMerge(
+                                        'h-6 w-6 text-grey-500',
+                                        readOnly
+                                            ? ''
+                                            : 'hover:text-primary-500',
+                                    )}
+                                    onClick={widget.onClick}
+                                />
+                            </span>
+                        ))}
+                    </div>
+                )}
 
                 {rightText && (
                     <div className='text-sm flex items-center border-l border-grey-300 pl-4 min-w-16'>
@@ -128,6 +149,5 @@ const Styles = Object.freeze({
         'hover:placeholder-primary-500',
         'hover:text-primary-500',
     ].join(' '),
-    Pad: 'pl-12',
     Readonly: ['bg-gray-100', 'cursor-pointer'].join(' '),
 })
