@@ -1,7 +1,5 @@
 import { twMerge } from 'tailwind-merge'
 import { IndexedVaultItem } from '../routes/Editor'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
     entry: IndexedVaultItem

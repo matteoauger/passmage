@@ -65,29 +65,18 @@ export function NewVaultForm({ onSubmit }: Props) {
             onSubmit={handleSaveSubmit}
             className={twMerge('flex flex-col gap-4 w-2/3')}
         >
-            <div>
-                <label className='font-bold text-lg pb-2' htmlFor='password'>
-                    Password
-                </label>
-                <PasswordInput
-                    name='password'
-                    value={password}
-                    onChange={evt => setPassword(evt.target.value)}
-                    validationState={validationState.password}
-                />
-            </div>
-            <div>
-                <label
-                    className='font-bold text-lg pb-2'
-                    htmlFor='confirmPassword'
-                >
-                    Confirm your password
-                </label>
-                <PasswordInput
-                    name='confirmPassword'
-                    validationState={validationState.confirmPassword}
-                />
-            </div>
+            <PasswordInput
+                name='password'
+                label='Master password'
+                value={password}
+                onChange={data => setPassword(data)}
+                validationState={validationState.password}
+            />
+            <PasswordInput
+                label='Confirm master password'
+                name='confirmPassword'
+                validationState={validationState.confirmPassword}
+            />
             {password && <PasswStrengthMeter password={password} />}
             {error && <Indicator type='error' text={error ?? ''} />}
             <Button

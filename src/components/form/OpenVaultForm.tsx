@@ -51,7 +51,9 @@ export function OpenVaultForm({ onSubmit: onOpen }: Props) {
             <div>
                 <PasswordInput
                     className='w-full'
-                    onKeyUp={_ => {
+                    name='password'
+                    placeholder='Master password'
+                    onChange={_ => {
                         if (error || validationState !== ValidationState.None) {
                             setValidationState(ValidationState.None)
                             setError(null)

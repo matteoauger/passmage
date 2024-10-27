@@ -1,33 +1,29 @@
-import { twMerge } from 'tailwind-merge'
-import { InputStyles } from '../../../utils/styles'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faArrowsRotate,
-    faEye,
-    faEyeSlash,
-    faKey,
-} from '@fortawesome/free-solid-svg-icons'
-import { IconInputWrapper } from './IconInputWrapper'
+import { faKey } from '@fortawesome/free-solid-svg-icons'
 import { ValidationState } from '../../../models/input/ValidationState'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { TextInput } from './TextInput'
 import { PasswordGenerator } from '../generator/PasswordGenerator'
 import Modal from '../../common/Modal'
 
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+interface Props {
     icon?: boolean
     name?: string
     enableGeneration?: boolean
     className?: string
     validationState?: ValidationState
+    disabled?: boolean
+    placeholder?: string
+    value?: string
+    label?: string
+    onChange?: (val: string) => void
 }
 
 export function PasswordInput({
-    className,
-    validationState,
-    name = 'password',
-    icon = true,
     enableGeneration = false,
+    validationState,
+    icon = true,
+    disabled = false,
+    onChange,
     ...props
 }: Props) {
     const [visible, setVisible] = useState(false)
@@ -37,11 +33,9 @@ export function PasswordInput({
         setVisible(!visible)
     }
 
-    props.type = visible === true ? 'text' : 'password'
-    props.disabled = props.disabled ?? false
-    props.placeholder = props.placeholder ?? 'Input master password...'
+    const type = visible === true ? 'text' : 'password'
 
-    const showGeneration = enableGeneration && !props.disabled
+    const showGeneration = enableGeneration && !disabled
 
     return (
         <>
@@ -55,48 +49,34 @@ export function PasswordInput({
                 >
                     <PasswordGenerator
                         onSubmit={password => {
-                            props.onChange?.({
-                                target: {
-                                    name,
-                                    value: password,
-                                },
-                            } as React.ChangeEvent<HTMLInputElement>)
+                            onChange?.(password)
                             setEnableGenModal(false)
                         }}
                     />
                 </Modal>
             )}
-
-            <IconInputWrapper
-                className={className}
-                icon={icon ? faKey : undefined}
-            >
-                <TextInput
-                    validationState={validationState}
-                    name={name}
-                    className={twMerge(
-                        icon ? InputStyles.Pad : '',
-                        showGeneration ? 'pr-20' : 'pr-10',
-                    )}
-                    {...props}
-                />
-
-                {showGeneration && (
-                    <span className='absolute cursor-pointer inset-y-0 right-0 flex items-center pr-12'>
-                        <FontAwesomeIcon
-                            icon={faArrowsRotate}
-                            className={twMerge(
-                                'h-6 w-6 text-grey-500',
-                                props.disabled ? '' : 'hover:text-primary-500',
-                            )}
-                            onClick={() => {
-                                setEnableGenModal(true)
-                            }}
-                        />
-                    </span>
-                )}
-
-                <span
+            <TextInput
+                validationState={validationState}
+                leftIcon={icon ? faKey : undefined}
+                onChange={evt => onChange?.(evt.target.value)}
+                type={type}
+                {...props}
+            />
+            {/* {showGeneration && (
+                <span className='absolute cursor-pointer inset-y-0 right-0 flex items-center pr-12'>
+                    <FontAwesomeIcon
+                        icon={faArrowsRotate}
+                        className={twMerge(
+                            'h-6 w-6 text-grey-500',
+                            props.disabled ? '' : 'hover:text-primary-500',
+                        )}
+                        onClick={() => {
+                            setEnableGenModal(true)
+                        }}
+                    />
+                </span>
+            )} */}
+            {/* <span
                     className='absolute cursor-pointer inset-y-0 right-0 flex items-center pr-3'
                     onClick={toggleVisibility}
                 >
@@ -107,8 +87,7 @@ export function PasswordInput({
                             props.disabled ? '' : 'hover:text-primary-500',
                         )}
                     />
-                </span>
-            </IconInputWrapper>
+                </span> */}
         </>
     )
 }

@@ -86,21 +86,20 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
                 >
                     <div className='w-full flex gap-4 border-b border-grey-300 pb-4'>
                         <div className='w-1/2'>
-                            <Label htmlFor='entryName' text='Name' />
                             <TextInput
                                 type='text'
                                 name='entryName'
-                                placeholder='Name'
+                                label='Name'
+                                placeholder='Input the website name'
                                 readOnly={isReadonly}
                             />
                             {error && <Indicator type='error' text={error} />}
                         </div>
                         <div className='w-1/2'>
-                            <Label htmlFor='url' text='URL' />
                             <ClipboardInput
                                 hotkey='Ctrl + U'
-                                type='text'
                                 name='url'
+                                label='URL'
                                 placeholder='URL'
                                 readOnly={isReadonly}
                             />
@@ -108,25 +107,22 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
                     </div>
 
                     <div>
-                        <Label htmlFor='username' text='Username' />
                         <ClipboardInput
                             hotkey='Ctrl + B'
-                            type='text'
                             name='username'
+                            label='Username'
                             placeholder='Username'
                             readOnly={isReadonly}
                         />
                     </div>
                     <div>
-                        <Label htmlFor='password' text='Password' />
                         <PasswordInput
+                            label='Password'
                             icon={false}
-                            type='password'
                             name='password'
-                            placeholder='Password'
                             value={password}
                             enableGeneration={true}
-                            onChange={evt => setPassword(evt.target.value)}
+                            onChange={val => setPassword(val)}
                         />
                         <PasswStrengthMeter
                             className='mt-2'

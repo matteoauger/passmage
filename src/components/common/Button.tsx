@@ -24,7 +24,7 @@ const classes = [
     'rounded-xl',
     'bg-primary-500',
     'hover:bg-primary-800',
-    'text-[#ffffff]',
+    'text-white',
     'transition-all',
 ]
 

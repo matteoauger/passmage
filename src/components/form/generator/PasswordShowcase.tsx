@@ -1,6 +1,5 @@
 import { writeText } from '@tauri-apps/plugin-clipboard-manager'
 import { twMerge } from 'tailwind-merge'
-import { InputStyles } from '../../../utils/styles'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-toastify'
@@ -41,7 +40,6 @@ export function PasswordShowcase({ value, className }: Props) {
             <div
                 onClick={handlePasswordClick}
                 className={twMerge(
-                    InputStyles.Default,
                     ' break-words overflow-hidden cursor-pointer h-28 pr-12',
                 )}
             >
