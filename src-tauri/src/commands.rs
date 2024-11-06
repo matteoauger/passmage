@@ -1,6 +1,7 @@
 use crate::utils::{
     crypto::{hash, Encryption},
-    password::{calc_entropy, generate_passphrase, generate_password},
+    password::{calc_entropy, PasswordGenerator},
+    random::DefaultRandomGenerator,
 };
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
@@ -30,10 +31,12 @@ pub fn entropy(password: &str) -> f64 {
 
 #[tauri::command]
 pub fn gen_password(length: usize, capitals: bool, numbers: bool, specials: bool) -> String {
-    generate_password(length, capitals, numbers, specials)
+    let rng = DefaultRandomGenerator {};
+    PasswordGenerator::with(&rng).generate_password(length, capitals, numbers, specials)
 }
 
 #[tauri::command]
 pub fn gen_passphrase(length: usize, separator: &str) -> String {
-    generate_passphrase(length, separator)
+    let rng = DefaultRandomGenerator {};
+    PasswordGenerator::with(&rng).generate_passphrase(length, separator)
 }
