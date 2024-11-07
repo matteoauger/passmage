@@ -28,28 +28,41 @@ impl<'a> PasswordGenerator<'a> {
         use_special: bool,
     ) -> String {
         let mut charset = b"abcdefghijklmnopqrstuvwxyz".to_vec();
+        let mut guaranteed_chars: Vec<u8> = Vec::new(); // Guarantee requested characters
 
         if use_capitals {
-            charset.extend_from_slice(b"ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+            let capitals = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            charset.extend_from_slice(capitals);
+            let rand_index = self.rand.gen_range(0..capitals.len());
+            guaranteed_chars.push(capitals[rand_index]);
         }
 
         if use_numbers {
-            charset.extend_from_slice(b"0123456789");
+            let numbers = b"0123456789";
+            charset.extend_from_slice(numbers);
+            let rand_index = self.rand.gen_range(0..numbers.len());
+            guaranteed_chars.push(numbers[rand_index]);
         }
 
         if use_special {
-            charset.extend_from_slice(b"!@#$%^&*()-_=+");
+            let specials = b"!@#$%^&*()-_=+";
+            charset.extend_from_slice(specials);
+            let rand_index = self.rand.gen_range(0..specials.len());
+            guaranteed_chars.push(specials[rand_index]);
         }
 
         // Iterating through the charset and picking the desired number of random characters.
-        let password: String = (0..length)
+        let adjust_len = length - guaranteed_chars.len();
+        let mut password: Vec<u8> = (0..adjust_len)
             .map(move |_| {
                 let rand_idx = self.rand.gen_range(0..charset.len());
-                charset[rand_idx] as char
+                charset[rand_idx] as u8
             })
             .collect();
 
-        password
+        password.extend(guaranteed_chars);
+        self.rand.shuffle(&mut password);
+        String::from_utf8(password).unwrap()
     }
 
     /// Generates a passphrase with the given length and separator.
@@ -138,6 +151,11 @@ mod test {
         fn gen_range(&self, range: std::ops::Range<usize>) -> usize {
             let mut rng = StdRng::seed_from_u64(0u64);
             rng.gen_range(range)
+        }
+
+        fn shuffle(&self, vec: &mut Vec<u8>) {
+            let len = vec.len();
+            vec.swap(0, len - 1)
         }
     }
 
