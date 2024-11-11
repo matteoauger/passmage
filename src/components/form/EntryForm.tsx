@@ -1,6 +1,4 @@
 import { FormEvent, useEffect, useState } from 'react'
-import { IndexedVaultItem } from '../routes/Editor'
-import { twMerge } from 'tailwind-merge'
 import { TextInput } from './input/TextInput'
 import { Label } from './Label'
 import { Indicator } from '../common/Indicator'
@@ -10,11 +8,12 @@ import { TextArea } from './input/TextArea'
 import { PasswStrengthMeter } from './input/PasswStrengthMeter'
 import { PasswordInput } from './input/PasswordInput'
 import { ClipboardInput } from './input/ClipboardInput'
+import { EntryModel } from '../../models/EntryModel'
 
 interface Props {
-    entry: IndexedVaultItem
+    entry: EntryModel
     isNew: boolean
-    onSubmit: (item: IndexedVaultItem) => void
+    onSubmit: (item: EntryModel) => void
     onDelete: (key: string) => void
 }
 
@@ -79,11 +78,7 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
     return (
         <section>
             <form onSubmit={handleSubmit}>
-                <section
-                    className={twMerge(
-                        'flex flex-col gap-4 w-full bg-transparent border-b border-grey-300 pb-4',
-                    )}
-                >
+                <section className='flex flex-col gap-4 w-full bg-transparent border-b border-grey-300 pb-4'>
                     <div className='w-full flex gap-4 border-b border-grey-300 pb-4'>
                         <div className='w-1/2'>
                             <TextInput
@@ -140,14 +135,14 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
                     />
                 </div>
 
-                <div className={twMerge('flex justify-between items-center')}>
-                    <div className={twMerge('text-grey-500 text-sm')}>
+                <div className='flex justify-between items-center'>
+                    <div className='text-grey-500 text-sm'>
                         {createdAt && <span>Created: {createdAt}</span>}
                         <br />
                         {createdAt && <span>Updated: {updatedAt}</span>}
                     </div>
 
-                    <div className={twMerge('flex gap-2')}>
+                    <div className='flex gap-2'>
                         {!isNew && (
                             <Button
                                 type='button'

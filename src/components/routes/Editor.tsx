@@ -1,37 +1,21 @@
 import { useNavigate } from 'react-router-dom'
-import { VaultItem, VaultModel } from '../../models/VaultModel'
+import { VaultItem } from '../../models/VaultModel'
 import { Button } from '../common/Button'
-import { twMerge } from 'tailwind-merge'
-import { useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { EntryForm } from '../form/EntryForm'
 import { EntryMenuItem } from '../editor/EntryMenuItem'
 import { faLock, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { SearchBar } from '../editor/SearchBar'
+import { VaultContext } from '../provider/VaultProvider'
+import { EntryModel } from '../../models/EntryModel'
 
-interface Props {
-    vault: VaultModel
-    onLock: () => void
-    onChange: (vault: VaultModel) => void
-}
-
-export interface IndexedVaultItem {
-    key: string
-    value: VaultItem
-}
-
-export function Editor({ vault, onLock, onChange }: Props) {
+export function Editor() {
+    const [{ vault }, vaultActions] = useContext(VaultContext)
     const navigate = useNavigate()
-    const [entries, setEntries] = useState(vault ? Object.entries(vault) : [])
-    const [currentEntry, setCurrentEntry] = useState<IndexedVaultItem | null>(
-        null,
-    )
-    const [search, setSearch] = useState('')
 
-    useEffect(() => {
-        if (vault) {
-            setEntries(Object.entries(vault))
-        }
-    }, [vault])
+    const [entries, setEntries] = useState(Object.entries(vault))
+    const [currentEntry, setCurrentEntry] = useState<EntryModel | null>(null)
+    const [search, setSearch] = useState('')
 
     // Check if the current entry exists in the vault
     const entryExists =
@@ -57,21 +41,19 @@ export function Editor({ vault, onLock, onChange }: Props) {
         setEntries(searchResult)
     }
 
+    const handleEntrySubmit = (item: EntryModel) => {
+        vaultActions.addEntry(item)
+        setCurrentEntry(item)
+    }
+
     const handleEntryDelete = (key: string) => {
-        if (vault) {
-            const { [key]: _, ...rest } = vault
-            setCurrentEntry(null)
-            onChange(rest)
-        }
+        vaultActions.removeEntry(key)
+        setCurrentEntry(null)
     }
 
     return (
-        <article className={twMerge('h-full')}>
-            <header
-                className={twMerge(
-                    'flex gap-2 p-4 border-b-2 border-b-grey-300 h-[90px]',
-                )}
-            >
+        <article className='h-full'>
+            <header className='flex gap-2 p-4 border-b-2 border-b-grey-300 h-[90px]'>
                 <SearchBar
                     value={search}
                     onChange={term => handleSearch(term)}
@@ -88,17 +70,12 @@ export function Editor({ vault, onLock, onChange }: Props) {
                 <Button
                     icon={{ def: faLock, placement: 'left' }}
                     onClick={() => {
-                        onLock()
                         navigate('/')
                     }}
                 />
             </header>
-            <section className={twMerge('flex h-[calc(100%-90px)]')}>
-                <nav
-                    className={twMerge(
-                        'bg-white w-1/4 border-r-2 border-r-grey-300 flex flex-col overflow-y-scroll ',
-                    )}
-                >
+            <section className='flex h-[calc(100%-90px)]'>
+                <nav className='bg-white w-1/4 border-r-2 border-r-grey-300 flex flex-col overflow-y-scroll'>
                     {entries.map(([key, value]) => {
                         const indexedItem = { key, value }
 
@@ -115,18 +92,12 @@ export function Editor({ vault, onLock, onChange }: Props) {
                     })}
                 </nav>
 
-                <div className={twMerge('bg-background-100 h-full w-3/4 p-8')}>
+                <div className='bg-background-100 h-full w-3/4 p-8'>
                     {currentEntry && (
                         <EntryForm
                             entry={currentEntry}
                             isNew={!entryExists}
-                            onSubmit={item => {
-                                onChange({
-                                    ...vault,
-                                    [item.key]: item.value,
-                                })
-                                setCurrentEntry(item)
-                            }}
+                            onSubmit={handleEntrySubmit}
                             onDelete={() => {
                                 handleEntryDelete(currentEntry.key)
                             }}

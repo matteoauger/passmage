@@ -23,7 +23,10 @@ export function FileInput({
             type='text'
             value={value}
             placeholder={placeholder}
-            className={twMerge('caret-transparent select-none cursor-pointer')}
+            className={twMerge(
+                'caret-transparent select-none cursor-pointer',
+                className,
+            )}
             onClick={openFileDialog(onChange)}
             onChange={evt => onChange(evt.target.value)}
             disabled={disabled}

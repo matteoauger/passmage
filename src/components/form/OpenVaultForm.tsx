@@ -1,18 +1,15 @@
 import { faLockOpen } from '@fortawesome/free-solid-svg-icons'
 import { Button } from '../common/Button'
 import { PasswordInput } from './input/PasswordInput'
-import { twMerge } from 'tailwind-merge'
 import { useNavigate } from 'react-router-dom'
 import { hashPassword } from '../../utils/crypto'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useContext, useState } from 'react'
 import { ValidationState } from '../../models/input/ValidationState'
 import { Indicator } from '../common/Indicator'
+import { VaultContext } from '../provider/VaultProvider'
 
-interface Props {
-    onSubmit: (value: string) => Promise<void>
-}
-
-export function OpenVaultForm({ onSubmit: onOpen }: Props) {
+export function OpenVaultForm() {
+    const [, { setKey, openVault }] = useContext(VaultContext)
     const [validationState, setValidationState] = useState<ValidationState>(
         ValidationState.None,
     )
@@ -32,7 +29,8 @@ export function OpenVaultForm({ onSubmit: onOpen }: Props) {
 
         try {
             const hash = await hashPassword(password)
-            await onOpen(hash)
+            setKey(hash)
+            await openVault()
             navigate('/editor')
             return true
         } catch (err) {
@@ -46,7 +44,7 @@ export function OpenVaultForm({ onSubmit: onOpen }: Props) {
     return (
         <form
             onSubmit={handleOpenSubmit}
-            className={twMerge('flex flex-col gap-4 w-full')}
+            className='flex flex-col gap-4 w-full'
         >
             <div>
                 <PasswordInput

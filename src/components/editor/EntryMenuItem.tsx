@@ -1,8 +1,8 @@
 import { twMerge } from 'tailwind-merge'
-import { IndexedVaultItem } from '../routes/Editor'
+import { EntryModel } from '../../models/EntryModel'
 
 interface Props {
-    entry: IndexedVaultItem
+    entry: EntryModel
     onClick: () => void
     selected: boolean
 }

@@ -66,7 +66,6 @@ const StrengthDefinitions: Record<number, StrengthDefinition> = Object.freeze({
 })
 
 export function PasswStrengthMeter({ password, className }: Props) {
-    let [meter, setMeter] = useState<number>(0)
     let [strength, setStrength] = useState<StrengthDefinition | null>(null)
 
     useEffect(() => {
@@ -82,7 +81,6 @@ export function PasswStrengthMeter({ password, className }: Props) {
             entropyPercent = Math.min(entropyPercent, 100)
 
             setStrength(strengthDef)
-            setMeter(entropyPercent)
         }
         getEntropy()
     }, [password])

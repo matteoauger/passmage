@@ -1,20 +1,17 @@
 import { useNavigate } from 'react-router-dom'
 import { hashPassword } from '../../utils/crypto'
-import { twMerge } from 'tailwind-merge'
 import { PasswordInput } from './input/PasswordInput'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { Button } from '../common/Button'
 import { Indicator } from '../common/Indicator'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useContext, useState } from 'react'
 import { ValidationState } from '../../models/input/ValidationState'
 import { PasswStrengthMeter } from './input/PasswStrengthMeter'
+import { VaultContext } from '../provider/VaultProvider'
 
-interface Props {
-    onSubmit: (key: string) => void
-}
-
-export function NewVaultForm({ onSubmit }: Props) {
+export function NewVaultForm() {
     const navigate = useNavigate()
+    const [, { setKey, createVault }] = useContext(VaultContext)
     const [validationState, setValidationState] = useState({
         password: ValidationState.None,
         confirmPassword: ValidationState.None,
@@ -47,7 +44,8 @@ export function NewVaultForm({ onSubmit }: Props) {
 
         try {
             const hash = await hashPassword(password)
-            await onSubmit(hash)
+            setKey(hash)
+            await createVault()
             navigate('/editor')
         } catch (err) {
             console.error('handled error', err)
@@ -61,10 +59,7 @@ export function NewVaultForm({ onSubmit }: Props) {
     }
 
     return (
-        <form
-            onSubmit={handleSaveSubmit}
-            className={twMerge('flex flex-col gap-4 w-2/3')}
-        >
+        <form onSubmit={handleSaveSubmit} className='flex flex-col gap-4 w-2/3'>
             <PasswordInput
                 name='password'
                 label='Master password'
