@@ -8,10 +8,13 @@ import { FormEvent, useContext, useState } from 'react'
 import { ValidationState } from '../../models/input/ValidationState'
 import { PasswStrengthMeter } from './input/PasswStrengthMeter'
 import { VaultContext } from '../provider/VaultProvider'
+import { useStorage } from '../../hooks/useStorage'
 
 export function NewVaultForm() {
     const navigate = useNavigate()
-    const [, { setKey, createVault }] = useContext(VaultContext)
+    const [{ fileDefinition }, { setDecryptionKey, setVault }] =
+        useContext(VaultContext)
+    const { save } = useStorage()
     const [validationState, setValidationState] = useState({
         password: ValidationState.None,
         confirmPassword: ValidationState.None,
@@ -43,9 +46,14 @@ export function NewVaultForm() {
         }
 
         try {
-            const hash = await hashPassword(password)
-            setKey(hash)
-            await createVault()
+            const key = await hashPassword(password)
+            setDecryptionKey(key)
+            const vault = {}
+            await save(
+                { decryptionKey: key, filepath: fileDefinition.filepath },
+                vault,
+            )
+            setVault(vault)
             navigate('/editor')
         } catch (err) {
             console.error('handled error', err)

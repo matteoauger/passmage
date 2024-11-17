@@ -10,7 +10,8 @@ import { VaultContext } from '../provider/VaultProvider'
 
 export function Home() {
     const [mode, setMode] = useState(HomeMode.Blank)
-    const [{ filepath }, { setFilepath }] = useContext(VaultContext)
+    const [{ fileDefinition }, { setFilepath }] = useContext(VaultContext)
+    const filepath = fileDefinition.filepath
 
     // Automatically switch to "open" mode if the component is initialized with an existing vault filepath.
     useEffect(() => {

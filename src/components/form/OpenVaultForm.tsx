@@ -7,9 +7,12 @@ import { FormEvent, useContext, useState } from 'react'
 import { ValidationState } from '../../models/input/ValidationState'
 import { Indicator } from '../common/Indicator'
 import { VaultContext } from '../provider/VaultProvider'
+import { useStorage } from '../../hooks/useStorage'
 
 export function OpenVaultForm() {
-    const [, { setKey, openVault }] = useContext(VaultContext)
+    const [{ fileDefinition }, { setVault, setDecryptionKey }] =
+        useContext(VaultContext)
+    const { open } = useStorage()
     const [validationState, setValidationState] = useState<ValidationState>(
         ValidationState.None,
     )
@@ -28,10 +31,15 @@ export function OpenVaultForm() {
         }
 
         try {
-            const hash = await hashPassword(password)
-            setKey(hash)
-            await openVault()
+            const key = await hashPassword(password)
+            setDecryptionKey(key)
+            const decryptedVault = await open({
+                decryptionKey: key,
+                filepath: fileDefinition.filepath,
+            })
+            setVault(decryptedVault)
             navigate('/editor')
+
             return true
         } catch (err) {
             console.error('handled error', err)

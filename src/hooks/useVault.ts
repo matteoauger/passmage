@@ -1,105 +1,89 @@
-import { useReducer, useState } from 'react'
+import { useReducer } from 'react'
 import { VaultModel } from '../models/VaultModel'
-import { VaultHookData } from './types'
-import { openFile, saveFile } from '../utils/fs'
-import { decrypt, encrypt } from '../utils/crypto'
+import { VaultHookData, VaultHookResult } from './types'
 import { EntryModel } from '../models/EntryModel'
 
 type ReducerData =
-    | { type: 'SET'; payload: VaultModel }
-    | { type: 'ENTRY_ADD'; payload: EntryModel }
-    | { type: 'ENTRY_DELETE'; payload: string }
+    | { type: 'SET_VAULT'; payload: { vault: VaultModel } }
+    | { type: 'ENTRY_ADD'; payload: { entry: EntryModel } }
+    | { type: 'ENTRY_DELETE'; payload: { entryKey: string } }
+    | { type: 'SET_DECRYPTION_KEY'; payload: { decryptionKey: string } }
+    | { type: 'SET_FILEPATH'; payload: { filepath: string } }
 
-export const useVault: () => VaultHookData = () => {
-    const [vault, dispatch] = useReducer(reducer, {})
-    const [key, setKey] = useState('')
-    const [filepath, setFilepath] = useState('')
-
-    const openVault = async () => {
-        if (!filepath || !key) {
-            return
-        }
-        const data = await openFile(filepath)
-        const decryptedData = await decrypt(key, data)
-
-        if (!decryptedData) {
-            return
-        }
-
-        dispatch({
-            type: 'SET',
-            payload: JSON.parse(decryptedData) as VaultModel,
-        })
-    }
-
-    const saveVault = async () => {
-        if (!filepath || !key || !vault) {
-            return
-        }
-
-        const data = JSON.stringify(vault)
-        const encryptedData = await encrypt(key, data)
-        await saveFile(filepath, encryptedData)
-    }
-
-    const createVault = async () => {
-        if (!filepath || !key) {
-            return
-        }
-
-        setKey(key)
-        dispatch({
-            type: 'SET',
-            payload: {},
-        })
-        await saveVault()
-    }
+export const useVault: () => VaultHookResult = () => {
+    const [{ vault, fileDefinition }, dispatch] = useReducer(reducer, {
+        vault: {},
+        fileDefinition: {
+            decryptionKey: '',
+            filepath: '',
+        },
+    })
 
     return [
         {
             vault,
-            key,
-            filepath,
+            fileDefinition,
         },
         {
+            setVault: (vault: VaultModel) =>
+                dispatch({
+                    type: 'SET_VAULT',
+                    payload: { vault },
+                }),
             addEntry: (entry: EntryModel) =>
                 dispatch({
                     type: 'ENTRY_ADD',
-                    payload: entry,
+                    payload: { entry },
                 }),
             removeEntry: (entryKey: string) =>
                 dispatch({
                     type: 'ENTRY_DELETE',
-                    payload: entryKey,
+                    payload: { entryKey },
                 }),
-            createVault,
-            openVault,
-            saveVault,
-            setKey,
-            setFilepath,
+            setDecryptionKey: (decryptionKey: string) =>
+                dispatch({
+                    type: 'SET_DECRYPTION_KEY',
+                    payload: { decryptionKey },
+                }),
+            setFilepath: (filepath: string) =>
+                dispatch({
+                    type: 'SET_FILEPATH',
+                    payload: { filepath },
+                }),
         },
     ]
 }
 
 const reducer = (
-    prevState: VaultModel,
+    prevState: VaultHookData,
     { type, payload }: ReducerData,
-): VaultModel => {
+): VaultHookData => {
     let state = { ...prevState }
 
     switch (type) {
-        case 'SET':
-            state = { ...payload }
+        case 'SET_VAULT':
+            state.vault = { ...payload.vault }
             break
 
         case 'ENTRY_ADD':
-            const item = { [payload.key]: payload.value }
-            state = { ...state, ...item }
+            const { entry } = payload
+            const item = { [entry.key]: entry.value }
+            state.vault = { ...state.vault, ...item }
             break
 
         case 'ENTRY_DELETE':
-            const { [payload]: _, ...rest } = state
-            state = rest
+            const {
+                vault: { [payload.entryKey]: _, ...rest },
+            } = state
+            state.vault = rest
+            break
+
+        case 'SET_DECRYPTION_KEY':
+            state.fileDefinition.decryptionKey = payload.decryptionKey
+            break
+
+        case 'SET_FILEPATH':
+            state.fileDefinition.filepath = payload.filepath
             break
 
         default:

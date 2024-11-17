@@ -1,25 +1,32 @@
 import { useNavigate } from 'react-router-dom'
 import { VaultItem } from '../../models/VaultModel'
 import { Button } from '../common/Button'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { EntryForm } from '../form/EntryForm'
 import { EntryMenuItem } from '../editor/EntryMenuItem'
 import { faLock, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { SearchBar } from '../editor/SearchBar'
 import { VaultContext } from '../provider/VaultProvider'
 import { EntryModel } from '../../models/EntryModel'
+import { useStorage } from '../../hooks/useStorage'
 
 export function Editor() {
-    const [{ vault }, vaultActions] = useContext(VaultContext)
+    const [{ vault, fileDefinition }, vaultActions] = useContext(VaultContext)
     const navigate = useNavigate()
 
     const [entries, setEntries] = useState(Object.entries(vault))
     const [currentEntry, setCurrentEntry] = useState<EntryModel | null>(null)
     const [search, setSearch] = useState('')
+    const { save } = useStorage()
 
-    // Check if the current entry exists in the vault
     const entryExists =
         (currentEntry && vault.hasOwnProperty(currentEntry.key)) ?? false
+
+    useEffect(() => {
+        setSearch('')
+        setEntries(Object.entries(vault))
+        save(fileDefinition, vault)
+    }, [vault])
 
     const handleSearch = (term: string) => {
         setSearch(term.toLowerCase())
@@ -41,7 +48,7 @@ export function Editor() {
         setEntries(searchResult)
     }
 
-    const handleEntrySubmit = (item: EntryModel) => {
+    const handleEntrySubmit = async (item: EntryModel) => {
         vaultActions.addEntry(item)
         setCurrentEntry(item)
     }
@@ -51,6 +58,12 @@ export function Editor() {
         setCurrentEntry(null)
     }
 
+    const handleLock = async () => {
+        await save(fileDefinition, vault)
+        vaultActions.setDecryptionKey('')
+        navigate('/')
+    }
+
     return (
         <article className='h-full'>
             <header className='flex gap-2 p-4 border-b-2 border-b-grey-300 h-[90px]'>
@@ -58,6 +71,7 @@ export function Editor() {
                     value={search}
                     onChange={term => handleSearch(term)}
                 />
+                {/* New entry button */}
                 <Button
                     icon={{ def: faPlus, placement: 'left' }}
                     onClick={() => {
@@ -65,13 +79,14 @@ export function Editor() {
                             key: crypto.randomUUID(),
                             value: new VaultItem(),
                         })
+                        setSearch('')
                     }}
                 />
+
+                {/* Lock vault button */}
                 <Button
                     icon={{ def: faLock, placement: 'left' }}
-                    onClick={() => {
-                        navigate('/')
-                    }}
+                    onClick={handleLock}
                 />
             </header>
             <section className='flex h-[calc(100%-90px)]'>

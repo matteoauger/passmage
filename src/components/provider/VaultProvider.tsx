@@ -1,24 +1,24 @@
 import { createContext } from 'react'
 import { useVault } from '../../hooks/useVault'
-import { VaultHookData } from '../../hooks/types'
+import { VaultHookResult } from '../../hooks/types'
 
 interface Props {
     children: React.ReactNode
 }
 
-export const VaultContext = createContext<VaultHookData>([
+export const VaultContext = createContext<VaultHookResult>([
     {
         vault: {},
-        key: '',
-        filepath: '',
+        fileDefinition: {
+            decryptionKey: '',
+            filepath: '',
+        },
     },
     {
+        setVault: () => {},
         addEntry: () => {},
         removeEntry: () => {},
-        createVault: async () => {},
-        openVault: async () => {},
-        saveVault: async () => {},
-        setKey: () => {},
+        setDecryptionKey: () => {},
         setFilepath: () => {},
     },
 ])
