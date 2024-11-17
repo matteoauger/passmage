@@ -199,7 +199,7 @@ mod test {
 
     #[test]
     fn test_calc_charset() {
-        let password = "password1!";
+        let password = "password1! \n";
         let charset = calc_charset(password);
         assert_eq!(charset as u32, 69);
     }
