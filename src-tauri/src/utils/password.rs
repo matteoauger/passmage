@@ -120,7 +120,12 @@ fn calc_charset(password: &str) -> f64 {
     let has_upper = password.bytes().any(|byte| byte >= b'A' && byte <= b'Z');
     let has_lower = password.bytes().any(|byte| byte >= b'a' && byte <= b'z');
     let has_special = password.bytes().any(|byte| {
-        byte < b'0' || (byte > b'9' && byte < b'A') || (byte > b'Z' && byte < b'a') || byte > b'z'
+        byte != b' '
+            && byte != b'\n'
+            && (byte < b'0'
+                || (byte > b'9' && byte < b'A')
+                || (byte > b'Z' && byte < b'a')
+                || byte > b'z')
     });
 
     if has_lower {

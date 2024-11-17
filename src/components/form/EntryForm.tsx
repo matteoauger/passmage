@@ -22,6 +22,10 @@ interface Props {
     onDelete: (key: string) => void
 }
 
+// TODO debug edition / read modes
+// TODO fix bug allowing whitespaces to be calculated in entropy
+// TODO fix bug not copying the password to clipboard
+
 export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
     const [isReadonly, setIsReadonly] = useState(!isNew)
     const [password, setPassword] = useState('')
