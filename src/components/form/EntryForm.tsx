@@ -3,7 +3,12 @@ import { TextInput } from './input/TextInput'
 import { Label } from './Label'
 import { Indicator } from '../common/Indicator'
 import { Button } from '../common/Button'
-import { faFloppyDisk, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
+import {
+    faFloppyDisk,
+    faPen,
+    faTrash,
+    faXmark,
+} from '@fortawesome/free-solid-svg-icons'
 import { TextArea } from './input/TextArea'
 import { PasswStrengthMeter } from './input/PasswStrengthMeter'
 import { PasswordInput } from './input/PasswordInput'
@@ -18,7 +23,7 @@ interface Props {
 }
 
 export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
-    const [isReadonly, setIsReadonly] = useState(true)
+    const [isReadonly, setIsReadonly] = useState(!isNew)
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
 
@@ -35,6 +40,10 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
 
     useEffect(() => {
         if (!entry) return
+        resetForm()
+    }, [entry])
+
+    const resetForm = () => {
         const form = document.querySelector('form') as HTMLFormElement
         const data = entry.value
 
@@ -46,7 +55,7 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
 
         setPassword(data.password)
         setError('') // Reset error message
-    }, [entry])
+    }
 
     const handleSubmit = (evt: FormEvent) => {
         evt.preventDefault()
@@ -143,12 +152,21 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
                     </div>
 
                     <div className='flex gap-2'>
-                        {!isNew && (
+                        {!isReadonly && !isNew && (
                             <Button
                                 type='button'
                                 label='Delete'
                                 icon={{ def: faTrash, placement: 'left' }}
                                 onClick={() => onDelete(entry.key)}
+                            />
+                        )}
+
+                        {!isReadonly && !isNew && (
+                            <Button
+                                type='submit'
+                                label='Discard'
+                                icon={{ def: faXmark, placement: 'left' }}
+                                onClick={resetForm}
                             />
                         )}
 

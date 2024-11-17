@@ -20,7 +20,9 @@ export function ClipboardInput({ hotkey, readOnly = false, ...props }: Props) {
     const lowerCaseNoSpaceHotkey = hotkey.replace(' ', '').toLowerCase()
     useHotkeys(lowerCaseNoSpaceHotkey, () => {
         // Copy value to clipboard
-        copyValueToClipboard()
+        if (readOnly) {
+            copyValueToClipboard()
+        }
     })
 
     const copyValueToClipboard = async () => {
@@ -33,5 +35,11 @@ export function ClipboardInput({ hotkey, readOnly = false, ...props }: Props) {
         })
     }
 
-    return <TextInput ref={input} rightText={hotkey} {...props} />
+    return (
+        <TextInput
+            ref={input}
+            rightText={readOnly ? undefined : hotkey}
+            {...props}
+        />
+    )
 }
