@@ -16,7 +16,6 @@ export function useStorage() {
             throw new Error('Could not open the vault.')
         }
 
-        console.log('opened', decryptedData)
         const vault: VaultModel = JSON.parse(decryptedData)
         return vault
     }
@@ -32,7 +31,6 @@ export function useStorage() {
         const data = JSON.stringify(vault)
         const encryptedData = await encrypt(key, data)
         await saveFile(filepath, encryptedData)
-        console.log('saved', data)
     }
 
     return {
