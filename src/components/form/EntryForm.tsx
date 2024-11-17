@@ -22,12 +22,10 @@ interface Props {
     onDelete: (key: string) => void
 }
 
-// TODO debug edition / read modes
-// TODO fix bug allowing whitespaces to be calculated in entropy
 // TODO fix bug not copying the password to clipboard
 
 export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
-    const [isReadonly, setIsReadonly] = useState(!isNew)
+    const [isReadonly, setIsReadonly] = useState(false)
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
 
@@ -43,8 +41,11 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
     }
 
     useEffect(() => {
-        if (!entry) return
         resetForm()
+
+        // Putting the form in readonly mode if the entry exists in the vault (ie. Edit mode).
+        // The user will then have to click "edit" to change the entry data.
+        setIsReadonly(!isNew)
     }, [entry])
 
     const resetForm = () => {

@@ -36,9 +36,11 @@ export function PasswordShowcase({ value, className }: Props) {
     )
 
     return (
-        <div className={twMerge('relative', className)}>
+        <div
+            className={twMerge('relative', className)}
+            onClick={handlePasswordClick}
+        >
             <div
-                onClick={handlePasswordClick}
                 className={twMerge(
                     ' break-words overflow-hidden cursor-pointer h-28 pr-12',
                 )}
