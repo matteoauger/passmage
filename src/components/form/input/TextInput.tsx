@@ -4,7 +4,11 @@ import { forwardRef } from 'react'
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export type InputWidget = { icon: IconDefinition; onClick: () => void }
+export type InputWidget = {
+    id: string
+    icon: IconDefinition
+    onClick: () => void
+}
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     name?: string
@@ -99,7 +103,10 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                 {widgets?.length > 0 && (
                     <div className='flex gap-4'>
                         {widgets.map(widget => (
-                            <span className='cursor-pointer flex items-center'>
+                            <span
+                                key={widget.id}
+                                className='cursor-pointer flex items-center'
+                            >
                                 <FontAwesomeIcon
                                     icon={widget.icon}
                                     className={twMerge(
