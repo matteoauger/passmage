@@ -26,7 +26,6 @@ export function ClipboardInput({ hotkey, readOnly = false, ...props }: Props) {
     })
 
     const copyValueToClipboard = async () => {
-        if (!readOnly) return
         const value = input.current?.value
         if (!value) return
         await writeText(value)
@@ -38,7 +37,7 @@ export function ClipboardInput({ hotkey, readOnly = false, ...props }: Props) {
     return (
         <TextInput
             ref={input}
-            rightText={readOnly ? undefined : hotkey}
+            rightText={readOnly ? hotkey : undefined}
             {...props}
         />
     )
