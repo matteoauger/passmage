@@ -9,6 +9,7 @@ import { SearchBar } from '../editor/SearchBar'
 import { VaultContext } from '../provider/VaultProvider'
 import { EntryModel } from '../../models/EntryModel'
 import { useStorage } from '../../hooks/useStorage'
+import { confirm } from '@tauri-apps/plugin-dialog'
 
 export function Editor() {
     const [{ vault, fileDefinition }, vaultActions] = useContext(VaultContext)
@@ -53,9 +54,17 @@ export function Editor() {
         setCurrentEntry(item)
     }
 
-    const handleEntryDelete = (key: string) => {
-        vaultActions.removeEntry(key)
-        setCurrentEntry(null)
+    const handleEntryDelete = async (key: string) => {
+        // Show up a confirmation dialog.
+        const confirmation = await confirm(
+            'You are about to permanently delete this entry. Are you sure ?',
+            { title: 'Confirm deletion', kind: 'warning' },
+        )
+
+        if (confirmation) {
+            vaultActions.removeEntry(key)
+            setCurrentEntry(null)
+        }
     }
 
     const handleLock = async () => {
