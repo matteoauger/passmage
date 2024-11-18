@@ -27,6 +27,7 @@ export function ClipboardInput({ hotkey, readOnly = false, ...props }: Props) {
         <TextInput
             ref={input}
             rightText={readOnly ? hotkey : undefined}
+            readOnly={readOnly}
             {...props}
         />
     )

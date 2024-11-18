@@ -93,6 +93,7 @@ export function PasswordInput({
                 onChange={evt => onChange?.(evt.target.value)}
                 type={type}
                 widgets={widgets}
+                readOnly={readOnly}
                 rightText={enableHotkey && readOnly ? hotkey : undefined}
                 {...props}
             />
