@@ -130,7 +130,9 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
                             icon={false}
                             name='password'
                             value={password}
+                            enableHotkey={true}
                             enableGeneration={true}
+                            readOnly={isReadonly}
                             onChange={val => setPassword(val)}
                         />
                         <PasswStrengthMeter

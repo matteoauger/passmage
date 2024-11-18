@@ -101,7 +101,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                 </div>
 
                 {widgets?.length > 0 && (
-                    <div className='flex gap-4'>
+                    <div className='flex gap-2'>
                         {widgets.map(widget => (
                             <span
                                 key={widget.id}
@@ -123,7 +123,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                 )}
 
                 {rightText && (
-                    <div className='text-sm flex items-center border-l border-grey-300 pl-4 min-w-16'>
+                    <div className='text-sm flex items-center border-l border-grey-300 pl-4 ml-4 min-w-16'>
                         {rightText}
                     </div>
                 )}

@@ -5,6 +5,7 @@ import { InputWidget, TextInput } from './TextInput'
 import { PasswordGenerator } from '../generator/PasswordGenerator'
 import Modal from '../../common/Modal'
 import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons/faArrowsRotate'
+import { useHotkeyCopy } from '../../../hooks/useHotkeyCopy'
 
 interface Props {
     icon?: boolean
@@ -12,10 +13,11 @@ interface Props {
     enableGeneration?: boolean
     className?: string
     validationState?: ValidationState
-    disabled?: boolean
     placeholder?: string
     value?: string
     label?: string
+    readOnly?: boolean
+    enableHotkey?: boolean
     onChange?: (val: string) => void
 }
 
@@ -23,12 +25,22 @@ export function PasswordInput({
     enableGeneration = false,
     validationState,
     icon = true,
-    disabled = false,
+    readOnly = false,
+    enableHotkey = false,
     onChange,
     ...props
 }: Props) {
     const [visible, setVisible] = useState(false)
     const [enableGenModal, setEnableGenModal] = useState(false)
+
+    const hotkey = 'Ctrl + C'
+    useHotkeyCopy({
+        hotkey,
+        enabled: enableHotkey && readOnly,
+        getValueToCopy: () => {
+            return props.value ?? ''
+        },
+    })
 
     const toggleVisibility = () => {
         setVisible(!visible)
@@ -36,7 +48,7 @@ export function PasswordInput({
 
     const type = visible === true ? 'text' : 'password'
 
-    const showGeneration = enableGeneration && !disabled
+    const showGeneration = enableGeneration && !readOnly
 
     let widgets: InputWidget[] = [
         {
@@ -81,6 +93,7 @@ export function PasswordInput({
                 onChange={evt => onChange?.(evt.target.value)}
                 type={type}
                 widgets={widgets}
+                rightText={enableHotkey && readOnly ? hotkey : undefined}
                 {...props}
             />
         </>
