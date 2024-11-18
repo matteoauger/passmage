@@ -58,7 +58,7 @@ export function PasswordInput({
         },
     ]
 
-    if (enableGeneration) {
+    if (showGeneration) {
         widgets = [
             {
                 id: 'generate',
