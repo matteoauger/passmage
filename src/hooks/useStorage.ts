@@ -6,11 +6,11 @@ import { VaultFileDefinition } from './types'
 
 export function useStorage() {
     const open = async ({
-        decryptionKey: key,
+        decryptionKey,
         filepath,
     }: VaultFileDefinition): Promise<VaultModel> => {
         const data = await openFile(filepath)
-        const decryptedData = await decrypt(key, data)
+        const decryptedData = await decrypt(decryptionKey, data)
 
         if (!decryptedData) {
             throw new Error('Could not open the vault.')
@@ -21,15 +21,11 @@ export function useStorage() {
     }
 
     const save = async (
-        { decryptionKey: key, filepath }: VaultFileDefinition,
+        { decryptionKey: decryptionKey, filepath }: VaultFileDefinition,
         vault: VaultModel,
     ) => {
-        if (!filepath || !key || !vault) {
-            return
-        }
-
         const data = JSON.stringify(vault)
-        const encryptedData = await encrypt(key, data)
+        const encryptedData = await encrypt(decryptionKey, data)
         await saveFile(filepath, encryptedData)
     }
 
