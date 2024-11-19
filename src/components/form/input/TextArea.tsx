@@ -7,14 +7,14 @@ interface Props {
     readOnly: boolean
 }
 
-export function TextArea({ className, ...props }: Props) {
+export function TextArea({ className, readOnly, ...props }: Props) {
     return (
         <textarea
             className={twMerge(
                 'w-full',
                 'h-32',
                 'p-2',
-                'border-2',
+                'border',
                 'border-gray-300',
                 'rounded-lg',
                 'focus:outline-none',
@@ -25,8 +25,10 @@ export function TextArea({ className, ...props }: Props) {
                 'duration-200',
                 'ease-in-out',
                 'resize-none',
+                readOnly ? 'bg-gray-100' : '',
                 className,
             )}
+            readOnly={readOnly}
             {...props}
         />
     )
