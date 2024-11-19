@@ -24,7 +24,7 @@ const colorByType: Record<Props['type'], { fg: string; bg: string }> = {
     error: { bg: 'bg-error', fg: 'text-white' },
     success: { bg: 'bg-success', fg: 'text-white' },
     warning: { bg: 'bg-warning', fg: 'text-white' },
-    info: { bg: 'bg-accent-300', fg: 'text-grey-800' },
+    info: { bg: 'bg-accent-300', fg: 'text-gray-800' },
 }
 
 export function Indicator({ type, text }: Props) {

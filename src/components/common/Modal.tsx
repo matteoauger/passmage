@@ -24,7 +24,7 @@ export default function Modal({ children, onClose, show }: Props) {
             {/* Modal bg */}
             <div
                 className={twMerge(
-                    'absolute h-full w-full bg-grey-800 opacity-70 z-10',
+                    'absolute h-full w-full bg-gray-800 opacity-70 z-10',
                 )}
             ></div>
 
@@ -41,7 +41,7 @@ export default function Modal({ children, onClose, show }: Props) {
                 >
                     <FontAwesomeIcon
                         icon={faXmark}
-                        className={twMerge('hover:text-primary-500')}
+                        className={twMerge('hover:text-violet-500')}
                     />
                 </button>
                 {children}

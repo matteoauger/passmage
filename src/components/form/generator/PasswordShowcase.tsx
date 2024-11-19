@@ -50,7 +50,7 @@ export function PasswordShowcase({ value, className }: Props) {
             <span className='absolute cursor-pointer inset-y-0 right-0 flex items-center pr-3'>
                 <FontAwesomeIcon
                     icon={faCopy}
-                    className={twMerge('h-6 w-6 text-grey-500')}
+                    className={twMerge('h-6 w-6 text-gray-500')}
                 />
             </span>
         </div>

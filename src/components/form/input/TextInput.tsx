@@ -61,7 +61,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                         validationState ?? ValidationState.None
                     ],
                     readOnly ? Styles.Readonly : [],
-                    disabled ? '' : 'hover:text-primary-500',
+                    disabled ? '' : 'hover:text-violet-500',
                     className,
                 )}
                 onClick={onClick}
@@ -71,8 +71,8 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                         <FontAwesomeIcon
                             icon={leftIcon}
                             className={twMerge(
-                                'h-4 w-4 text-grey-500',
-                                disabled ? '' : 'group-hover:text-primary-500',
+                                'h-4 w-4 text-gray-500',
+                                disabled ? '' : 'group-hover:text-violet-500',
                             )}
                         />
                     </span>
@@ -82,7 +82,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                     {label && (
                         <label
                             htmlFor={name}
-                            className='text-sm text-bold text-black'
+                            className='text-sm text-bold text-black group-hover:text-violet-500'
                         >
                             {label}
                         </label>
@@ -110,10 +110,8 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                                 <FontAwesomeIcon
                                     icon={widget.icon}
                                     className={twMerge(
-                                        'h-6 w-6 text-grey-500',
-                                        readOnly
-                                            ? ''
-                                            : 'hover:text-primary-500',
+                                        'h-6 w-6 text-gray-500',
+                                        readOnly ? '' : 'hover:text-violet-500',
                                     )}
                                     onClick={widget.onClick}
                                 />
@@ -123,7 +121,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                 )}
 
                 {rightText && (
-                    <div className='text-sm flex items-center border-l border-grey-300 pl-4 ml-4 min-w-16'>
+                    <div className='text-sm flex items-center border-l border-gray-300 pl-4 ml-4 min-w-16'>
                         {rightText}
                     </div>
                 )}
@@ -134,11 +132,11 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
 
 const Styles = Object.freeze({
     Default: [
-        'text-grey-600',
+        'text-gray-600',
         'text-lg',
         'border',
         'focus:border-transparent',
-        'border-grey-300',
+        'border-gray-300',
         'rounded-lg',
         'focus:ring-2',
         'focus:outline-none',
@@ -152,9 +150,9 @@ const Styles = Object.freeze({
         'flex',
     ].join(' '),
     Hover: [
-        'hover:border-primary-500',
-        'hover:placeholder-primary-500',
-        'hover:text-primary-500',
+        'hover:border-violet-500',
+        'hover:placeholder-violet-500',
+        'hover:text-violet-500',
     ].join(' '),
     Readonly: ['bg-gray-100', 'cursor-pointer'].join(' '),
 })

@@ -21,9 +21,9 @@ const classes = [
     'w-auto',
     'px-4',
     'py-4',
-    'rounded-xl',
-    'bg-primary-500',
-    'hover:bg-primary-800',
+    'rounded-lg',
+    'bg-violet-500',
+    'hover:bg-violet-800',
     'text-white',
     'transition-all',
 ]

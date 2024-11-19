@@ -16,8 +16,8 @@ export function EntryMenuItem({ entry, onClick, selected }: Props) {
         'pl-4',
         'border-b',
         'cursor-pointer',
-        selected ? 'border-primary-500' : 'border-grey-300',
-        selected ? 'bg-primary-500' : 'bg-white',
+        selected ? 'border-violet-500' : 'border-gray-300',
+        selected ? 'bg-violet-500' : 'bg-white',
         selected ? 'text-white' : 'text-black',
         selected ? 'font-bold' : 'font-normal',
     ]

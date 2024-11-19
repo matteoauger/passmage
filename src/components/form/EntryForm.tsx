@@ -92,8 +92,8 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
     return (
         <section>
             <form onSubmit={handleSubmit}>
-                <section className='flex flex-col gap-4 w-full bg-transparent border-b border-grey-300 pb-4'>
-                    <div className='w-full flex gap-4 border-b border-grey-300 pb-4'>
+                <section className='flex flex-col gap-4 w-full bg-transparent border-b border-gray-300 pb-4'>
+                    <div className='w-full flex gap-4 border-b border-gray-300 pb-4'>
                         <div className='w-1/2'>
                             <TextInput
                                 type='text'
@@ -152,7 +152,7 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
                 </div>
 
                 <div className='flex justify-between items-center'>
-                    <div className='text-grey-500 text-sm'>
+                    <div className='text-gray-500 text-sm'>
                         {createdAt && <span>Created: {createdAt}</span>}
                         <br />
                         {createdAt && <span>Updated: {updatedAt}</span>}

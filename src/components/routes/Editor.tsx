@@ -75,7 +75,7 @@ export function Editor() {
 
     return (
         <article className='h-full'>
-            <header className='flex gap-2 p-4 border-b-2 border-b-grey-300 h-[90px]'>
+            <header className='flex gap-2 p-4 border-b-2 border-b-gray-300 h-[90px]'>
                 <SearchBar
                     value={search}
                     onChange={term => handleSearch(term)}
@@ -99,7 +99,7 @@ export function Editor() {
                 />
             </header>
             <section className='flex h-[calc(100%-90px)]'>
-                <nav className='bg-white w-1/4 border-r-2 border-r-grey-300 flex flex-col overflow-y-scroll'>
+                <nav className='bg-violet-100 w-1/4 border-gray-300 border-solid border-r-2 flex flex-col overflow-y-scroll'>
                     {entries.map(([key, value]) => {
                         const indexedItem = { key, value }
 
@@ -116,7 +116,7 @@ export function Editor() {
                     })}
                 </nav>
 
-                <div className='bg-background-100 h-full w-3/4 p-8'>
+                <div className='h-full w-3/4 p-8'>
                     {currentEntry && (
                         <EntryForm
                             entry={currentEntry}
