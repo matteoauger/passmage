@@ -116,7 +116,7 @@ export function Editor() {
                     })}
                 </nav>
 
-                <div className='h-full w-3/4 p-8'>
+                <div className='h-full w-3/4 p-4'>
                     {currentEntry && (
                         <EntryForm
                             entry={currentEntry}

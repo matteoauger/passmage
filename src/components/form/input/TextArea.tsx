@@ -12,7 +12,7 @@ export function TextArea({ className, readOnly, ...props }: Props) {
         <textarea
             className={twMerge(
                 'w-full',
-                'h-32',
+                'h-24',
                 'p-2',
                 'border',
                 'border-gray-300',
