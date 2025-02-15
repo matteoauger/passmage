@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import { Button } from '../../common/Button'
 import { invoke } from '@tauri-apps/api/core'
 import { PasswStrengthMeter } from '../input/PasswStrengthMeter'
-import { faArrowRight, faArrowsRotate } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faArrowsRotate, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { twMerge } from 'tailwind-merge'
 import { Checkbox } from '../input/Checkbox'
 import { PasswordShowcase } from './PasswordShowcase'
 import { Select } from '../input/Select'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 type PasswordType = 'password' | 'passphrase'
 
@@ -68,8 +69,8 @@ export function PasswordGenerator({ onSubmit }: Props) {
     }
 
     const typeOptions = [
-        { value: 'password', label: 'Password' },
-        { value: 'passphrase', label: 'Passphrase' },
+        { value: 'password', label: 'password' },
+        { value: 'passphrase', label: 'passphrase' },
     ]
 
     const separatorOptions = [
@@ -81,7 +82,39 @@ export function PasswordGenerator({ onSubmit }: Props) {
 
     return (
         <div className={twMerge('flex flex-col gap-4')}>
-            <h3 className='text-2xl mb-2'>Generate a password :</h3>
+            <h3 className='text-2xl mb-2 flex items-baseline gap-1'>
+                Generate a{' '}
+                <div className='relative inline-flex items-center'>
+                    <select
+                        value={type}
+                        onChange={evt => setType(evt.target.value as PasswordType)}
+                        className={twMerge(
+                            'appearance-none',
+                            'text-2xl',
+                            'text-violet-500',
+                            'font-bold',
+                            'cursor-pointer',
+                            'focus:outline-none',
+                            'border-b',
+                            'border-dotted',
+                            'border-violet-500',
+                            'pr-5',
+                            'bg-transparent',
+                            'hover:border-solid'
+                        )}
+                    >
+                        {typeOptions.map(option => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                    <FontAwesomeIcon
+                        icon={faChevronDown}
+                        className='absolute right-0 text-violet-500 w-3 h-3 pointer-events-none'
+                    />
+                </div>
+            </h3>
 
             <div className='flex gap-2 w-full'>
                 <PasswordShowcase
@@ -94,13 +127,6 @@ export function PasswordGenerator({ onSubmit }: Props) {
             <div>
                 <h4>Options</h4>
                 <div className='flex flex-col gap-4'>
-                    <Select
-                        label='Type'
-                        value={type}
-                        onChange={value => setType(value as PasswordType)}
-                        options={typeOptions}
-                    />
-                    
                     <div className='flex gap-2'>
                         <label>Length:</label>
                         <input
