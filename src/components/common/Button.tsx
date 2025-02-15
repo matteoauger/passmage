@@ -12,11 +12,7 @@ interface Props {
 }
 
 const variantClasses = {
-    primary: [
-        'bg-violet-500',
-        'hover:bg-violet-800',
-        'text-white',
-    ],
+    primary: ['bg-violet-500', 'hover:bg-violet-800', 'text-white'],
     secondary: [
         'bg-gray-100',
         'hover:bg-gray-200',
@@ -24,11 +20,7 @@ const variantClasses = {
         'border',
         'border-gray-300',
     ],
-    danger: [
-        'bg-red-500',
-        'hover:bg-red-600',
-        'text-white',
-    ],
+    danger: ['bg-red-500', 'hover:bg-red-600', 'text-white'],
 }
 
 const baseClasses = [
@@ -38,7 +30,6 @@ const baseClasses = [
     'items-center',
     'justify-center',
     'gap-2',
-    'w-auto',
     'px-2',
     'py-2',
     'transition-all',
@@ -52,9 +43,15 @@ export function Button({
     icon,
     variant = 'primary',
 }: Props) {
+    const sizeClasses = !label?.trim() ? ['w-12', 'h-full'] : ['w-auto']
     return (
         <button
-            className={twMerge(baseClasses, variantClasses[variant], className)}
+            className={twMerge(
+                baseClasses,
+                sizeClasses,
+                variantClasses[variant],
+                className,
+            )}
             onClick={onClick}
             type={type}
         >
