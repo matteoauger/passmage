@@ -110,17 +110,17 @@ export function PasswordGenerator({ onSubmit }: Props) {
                 {type === 'password' && (
                     <>
                         <Checkbox
-                            label='Include capitals'
+                            label='Capitals'
                             checked={capitals}
                             onChange={setCapitals}
                         />
                         <Checkbox
-                            label='Include numbers'
+                            label='Numbers'
                             checked={numbers}
                             onChange={setNumbers}
                         />
                         <Checkbox
-                            label='Include specials'
+                            label='Specials'
                             checked={specials}
                             onChange={setSpecials}
                         />
