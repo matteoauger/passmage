@@ -163,6 +163,7 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
                             <Button
                                 type='button'
                                 label='Delete'
+                                variant='danger'
                                 icon={{ def: faTrash, placement: 'left' }}
                                 onClick={() => onDelete(entry.key)}
                             />
@@ -172,6 +173,7 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
                             <Button
                                 type='submit'
                                 label='Discard'
+                                variant='secondary'
                                 icon={{ def: faXmark, placement: 'left' }}
                                 onClick={resetForm}
                             />

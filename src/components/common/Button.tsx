@@ -8,23 +8,39 @@ interface Props {
     onClick?: () => void
     className?: string
     icon?: { def: IconDefinition; placement: 'left' | 'right' }
+    variant?: 'primary' | 'secondary' | 'danger'
 }
 
-const classes = [
+const variantClasses = {
+    primary: [
+        'bg-violet-500',
+        'hover:bg-violet-800',
+        'text-white',
+    ],
+    secondary: [
+        'bg-gray-100',
+        'hover:bg-gray-200',
+        'text-gray-800',
+        'border',
+        'border-gray-300',
+    ],
+    danger: [
+        'bg-red-500',
+        'hover:bg-red-600',
+        'text-white',
+    ],
+}
+
+const baseClasses = [
     'font-bold',
     'rounded-lg',
-    'text-lg',
     'flex',
     'items-center',
     'justify-center',
     'gap-2',
     'w-auto',
-    'px-4',
-    'py-4',
-    'rounded-lg',
-    'bg-violet-500',
-    'hover:bg-violet-800',
-    'text-white',
+    'px-2',
+    'py-2',
     'transition-all',
 ]
 
@@ -34,19 +50,20 @@ export function Button({
     type = 'button',
     className,
     icon,
+    variant = 'primary',
 }: Props) {
     return (
         <button
-            className={twMerge(classes, className)}
+            className={twMerge(baseClasses, variantClasses[variant], className)}
             onClick={onClick}
             type={type}
         >
             {icon && icon.placement === 'left' && (
-                <FontAwesomeIcon icon={icon.def} className='h-6 w-6' />
+                <FontAwesomeIcon icon={icon.def} className='h-4 w-4' />
             )}
             {label}
             {icon && icon.placement === 'right' && (
-                <FontAwesomeIcon icon={icon.def} className='h-6 w-6' />
+                <FontAwesomeIcon icon={icon.def} className='h-4 w-4' />
             )}
         </button>
     )

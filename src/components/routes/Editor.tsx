@@ -75,7 +75,7 @@ export function Editor() {
 
     return (
         <article className='h-full'>
-            <header className='flex gap-2 p-4 border-b-2 border-b-gray-300 h-[90px]'>
+            <header className='flex gap-2 p-4 border-b-2 border-b-gray-300'>
                 <SearchBar
                     value={search}
                     onChange={term => handleSearch(term)}
@@ -90,12 +90,16 @@ export function Editor() {
                         })
                         setSearch('')
                     }}
+                    variant='secondary'
+                    className='h-12 w-12'
                 />
 
                 {/* Lock vault button */}
                 <Button
                     icon={{ def: faLock, placement: 'left' }}
+                    variant='secondary'
                     onClick={handleLock}
+                    className='h-12 w-12'
                 />
             </header>
             <section className='flex h-[calc(100%-90px)]'>

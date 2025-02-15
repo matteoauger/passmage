@@ -44,7 +44,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
             widgets = [],
             type = 'text',
             ...props
-        }: Props,
+        }: Props,   
         ref: React.Ref<any>,
     ) => {
         props.autoComplete = 'off'
@@ -67,7 +67,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                 onClick={onClick}
             >
                 {leftIcon && (
-                    <span className='flex items-center w-8 mr-2'>
+                    <span className='flex items-center w-8'>
                         <FontAwesomeIcon
                             icon={leftIcon}
                             className={twMerge(
@@ -78,7 +78,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                     </span>
                 )}
 
-                <div className='flex flex-col py-2 w-full h-full justify-center'>
+                <div className='flex flex-col w-full h-full justify-center'>
                     {label && (
                         <label
                             htmlFor={name}
@@ -110,7 +110,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                                 <FontAwesomeIcon
                                     icon={widget.icon}
                                     className={twMerge(
-                                        'h-6 w-6 text-gray-500',
+                                        'h-5 w-5 text-gray-500',
                                         readOnly ? '' : 'hover:text-violet-500',
                                     )}
                                     onClick={widget.onClick}
@@ -141,7 +141,7 @@ const Styles = Object.freeze({
         'block',
         'bg-white',
         'w-full',
-        'px-4',
+        'p-2',
         'rounded-l-lg',
         'group',
         'h-auto',
