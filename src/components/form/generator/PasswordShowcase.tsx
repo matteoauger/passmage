@@ -37,20 +37,18 @@ export function PasswordShowcase({ value, className }: Props) {
 
     return (
         <div
-            className={twMerge('relative', className)}
+            className={twMerge('relative border border-gray-300 rounded-lg p-2', className)}
             onClick={handlePasswordClick}
         >
             <div
-                className={twMerge(
-                    ' break-words overflow-hidden cursor-pointer h-28 pr-12',
-                )}
+                className='break-words overflow-hidden cursor-pointer pr-12'
             >
                 {valueElement}
             </div>
             <span className='absolute cursor-pointer inset-y-0 right-0 flex items-center pr-3'>
                 <FontAwesomeIcon
                     icon={faCopy}
-                    className={twMerge('h-6 w-6 text-gray-500')}
+                    className={'h-6 w-6 text-gray-500'}
                 />
             </span>
         </div>

@@ -81,27 +81,14 @@ export function PasswordGenerator({ onSubmit }: Props) {
     ]
 
     return (
-        <div className={twMerge('flex flex-col gap-4')}>
+        <div className={'flex flex-col gap-4'}>
             <h3 className='text-2xl mb-2 flex items-baseline gap-1'>
                 Generate a{' '}
                 <div className='relative inline-flex items-center'>
                     <select
                         value={type}
                         onChange={evt => setType(evt.target.value as PasswordType)}
-                        className={twMerge(
-                            'appearance-none',
-                            'text-2xl',
-                            'text-violet-500',
-                            'font-bold',
-                            'cursor-pointer',
-                            'focus:outline-none',
-                            'border-b',
-                            'border-dotted',
-                            'border-violet-500',
-                            'pr-5',
-                            'bg-transparent',
-                            'hover:border-solid'
-                        )}
+                        className='appearance-none text-2xl text-violet-500 font-bold cursor-pointer focus:outline-none border-b border-dotted border-violet-500 pr-5 bg-transparent hover:border-solid'
                     >
                         {typeOptions.map(option => (
                             <option key={option.value} value={option.value}>
@@ -119,7 +106,7 @@ export function PasswordGenerator({ onSubmit }: Props) {
             <div className='flex gap-2 w-full'>
                 <PasswordShowcase
                     value={password}
-                    className={twMerge('w-full')}
+                    className={'w-full h-16'}
                 />
             </div>
             <PasswStrengthMeter password={password} />
