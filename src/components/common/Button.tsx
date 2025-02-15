@@ -43,7 +43,7 @@ export function Button({
     icon,
     variant = 'primary',
 }: Props) {
-    const sizeClasses = !label?.trim() ? ['w-12', 'h-full'] : ['w-auto']
+    const sizeClasses = !label?.trim() ? ['w-12', 'h-auto'] : ['w-auto']
     return (
         <button
             className={twMerge(
