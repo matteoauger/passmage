@@ -22,7 +22,7 @@ export function Home() {
 
     return (
         <section className='flex flex-col gap-6 items-center justify-center h-full mx-auto max-w-xl'>
-            <div className='flex gap-4 items-center w-full'>
+            <div className='flex gap-4 w-full'>
                 <FileInput
                     className='w-full'
                     value={filepath ?? ''}
