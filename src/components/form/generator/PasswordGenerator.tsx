@@ -6,6 +6,7 @@ import { faArrowRight, faArrowsRotate } from '@fortawesome/free-solid-svg-icons'
 import { twMerge } from 'tailwind-merge'
 import { Checkbox } from '../input/Checkbox'
 import { PasswordShowcase } from './PasswordShowcase'
+import { Select } from '../input/Select'
 
 type PasswordType = 'password' | 'passphrase'
 
@@ -66,6 +67,18 @@ export function PasswordGenerator({ onSubmit }: Props) {
         setPassword(password)
     }
 
+    const typeOptions = [
+        { value: 'password', label: 'Password' },
+        { value: 'passphrase', label: 'Passphrase' },
+    ]
+
+    const separatorOptions = [
+        { value: '-', label: '-' },
+        { value: '_', label: '_' },
+        { value: '.', label: '.' },
+        { value: ' ', label: 'Space' },
+    ]
+
     return (
         <div className={twMerge('flex flex-col gap-4')}>
             <h3 className='text-2xl mb-2'>Generate a password :</h3>
@@ -80,68 +93,59 @@ export function PasswordGenerator({ onSubmit }: Props) {
 
             <div>
                 <h4>Options</h4>
-                <div>
-                    <label>Type:</label>
-                    <select
+                <div className='flex flex-col gap-4'>
+                    <Select
+                        label='Type'
                         value={type}
-                        onChange={evt =>
-                            setType(evt.target.value as PasswordType)
-                        }
-                    >
-                        <option value='password'>Password</option>
-                        <option value='passphrase'>Passphrase</option>
-                    </select>
-                </div>
-                <div className='flex gap-2'>
-                    <label>Length:</label>
-                    <input
-                        type='range'
-                        value={length}
-                        min={lengthBoundaries[0]}
-                        max={lengthBoundaries[1]}
-                        onChange={evt => setLength(+evt.target.value)}
+                        onChange={value => setType(value as PasswordType)}
+                        options={typeOptions}
                     />
-                    <input
-                        type='number'
-                        value={length}
-                        onChange={evt => setLength(+evt.target.value)}
-                    />
-                </div>
-                {type === 'password' && (
-                    <>
-                        <Checkbox
-                            label='Capitals'
-                            checked={capitals}
-                            onChange={setCapitals}
+                    
+                    <div className='flex gap-2'>
+                        <label>Length:</label>
+                        <input
+                            type='range'
+                            value={length}
+                            min={lengthBoundaries[0]}
+                            max={lengthBoundaries[1]}
+                            onChange={evt => setLength(+evt.target.value)}
                         />
-                        <Checkbox
-                            label='Numbers'
-                            checked={numbers}
-                            onChange={setNumbers}
+                        <input
+                            type='number'
+                            value={length}
+                            onChange={evt => setLength(+evt.target.value)}
                         />
-                        <Checkbox
-                            label='Specials'
-                            checked={specials}
-                            onChange={setSpecials}
-                        />
-                    </>
-                )}
-                {type === 'passphrase' && (
-                    <div>
-                        <label>Separator:</label>
-                        <select
-                            value={separator}
-                            onChange={evt => {
-                                setSeparator(evt.target.value)
-                            }}
-                        >
-                            <option value='-'>-</option>
-                            <option value='_'>_</option>
-                            <option value='.'>.</option>
-                            <option value=' '>Space</option>
-                        </select>
                     </div>
-                )}
+
+                    {type === 'password' && (
+                        <>
+                            <Checkbox
+                                label='Include capitals'
+                                checked={capitals}
+                                onChange={setCapitals}
+                            />
+                            <Checkbox
+                                label='Include numbers'
+                                checked={numbers}
+                                onChange={setNumbers}
+                            />
+                            <Checkbox
+                                label='Include specials'
+                                checked={specials}
+                                onChange={setSpecials}
+                            />
+                        </>
+                    )}
+                    
+                    {type === 'passphrase' && (
+                        <Select
+                            label='Separator'
+                            value={separator}
+                            onChange={setSeparator}
+                            options={separatorOptions}
+                        />
+                    )}
+                </div>
             </div>
 
             <div className='flex gap-2 justify-end'>
