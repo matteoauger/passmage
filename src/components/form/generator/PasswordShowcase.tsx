@@ -41,7 +41,7 @@ export function PasswordShowcase({ value, className }: Props) {
             onClick={handlePasswordClick}
         >
             <div
-                className='break-words overflow-hidden cursor-pointer pr-12'
+                className='break-all overflow-hidden cursor-pointer pr-12'
             >
                 {valueElement}
             </div>
