@@ -11,7 +11,7 @@ interface Props {
 export function Checkbox({ label, checked, onChange }: Props) {
     const heightClass = 'w-5 h-5'
     return (
-        <label className='flex items-center gap-3 cursor-pointer select-none'>
+        <label className='flex items-center gap-2 cursor-pointer select-none'>
             <div className={'relative ' + heightClass}>
                 <input
                     type='checkbox'
@@ -38,7 +38,7 @@ export function Checkbox({ label, checked, onChange }: Props) {
                     />
                 )}
             </div>
-            <span className='text-gray-800 text-lg'>{label}</span>
+            <span className='text-gray-700'>{label}</span>
         </label>
     )
 }

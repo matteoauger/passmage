@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react'
 import { Button } from '../../common/Button'
 import { invoke } from '@tauri-apps/api/core'
 import { PasswStrengthMeter } from '../input/PasswStrengthMeter'
-import { faArrowRight, faArrowsRotate, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import {
+    faArrowRight,
+    faArrowsRotate,
+    faChevronDown,
+} from '@fortawesome/free-solid-svg-icons'
 import { Checkbox } from '../input/Checkbox'
 import { PasswordShowcase } from './PasswordShowcase'
 import { Select } from '../input/Select'
@@ -87,7 +91,9 @@ export function PasswordGenerator({ onSubmit }: Props) {
                 <div className='relative inline-flex items-center'>
                     <select
                         value={type}
-                        onChange={evt => setType(evt.target.value as PasswordType)}
+                        onChange={evt =>
+                            setType(evt.target.value as PasswordType)
+                        }
                         className='appearance-none text-2xl text-violet-500 font-bold cursor-pointer focus:outline-none border-b border-dotted border-violet-500 pr-5 bg-transparent hover:border-solid'
                     >
                         {typeOptions.map(option => (
@@ -104,23 +110,21 @@ export function PasswordGenerator({ onSubmit }: Props) {
             </h3>
 
             <div className='flex gap-2 w-full'>
-                <PasswordShowcase
-                    value={password}
-                    className={'w-full h-16'}
-                />
+                <PasswordShowcase value={password} className={'w-full h-16'} />
             </div>
             <PasswStrengthMeter password={password} />
 
             <div>
-                <div className='flex flex-col gap-4'>
-                    <RangeSlider
-                        label='Length'
-                        value={length}
-                        onChange={setLength}
-                        min={lengthBoundaries[0]}
-                        max={lengthBoundaries[1]}
-                    />
+                <RangeSlider
+                    label='Length'
+                    value={length}
+                    onChange={setLength}
+                    min={lengthBoundaries[0]}
+                    max={lengthBoundaries[1]}
+                    className='mb-8'
+                />
 
+                <div className='flex flex-col gap-2'>
                     {type === 'password' && (
                         <>
                             <Checkbox
@@ -140,7 +144,7 @@ export function PasswordGenerator({ onSubmit }: Props) {
                             />
                         </>
                     )}
-                    
+
                     {type === 'passphrase' && (
                         <Select
                             label='Separator'

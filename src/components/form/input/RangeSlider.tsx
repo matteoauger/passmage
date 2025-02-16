@@ -25,7 +25,7 @@ export function RangeSlider({ label, value, onChange, min, max, className }: Pro
         <div className={twMerge('flex flex-col gap-2', className)}>
             <div className='flex justify-between items-center'>
                 {label && (
-                    <span className='text-sm font-medium text-gray-700'>{label}</span>
+                    <span className='text-gray-700'>{label}</span>
                 )}
                 <div className='flex items-center gap-2'>
                     <input

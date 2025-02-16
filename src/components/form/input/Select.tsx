@@ -14,7 +14,7 @@ export function Select({ label, value, onChange, options, className }: Props) {
     return (
         <div className='flex flex-col gap-2'>
             {label && (
-                <label className='text-sm text-bold text-black'>{label}</label>
+                <label className='text-gray-700'>{label}</label>
             )}
             <div className='relative'>
                 <select
