@@ -1,6 +1,8 @@
-# Passkey Manager
+# Passmage - Simple password manager
 
-A simple, secure and user-friendly password manager built with Tauri, React and TypeScript.
+A simple, secure and user-friendly password manager built with Tauri and React. \
+
+<img src="./assets/images/demo.gif" width="700" alt="Demo"/>
 
 ## Features
 
@@ -21,6 +23,8 @@ A simple, secure and user-friendly password manager built with Tauri, React and 
 
 ## Installation
 
+You can download the latest release [here](https://github.com/matteoauger/passmage/releases).
+
 ## Development
 
 ### Prerequisites
@@ -31,15 +35,24 @@ A simple, secure and user-friendly password manager built with Tauri, React and 
 
 ### Getting Started
 
-1. Install dependencies:
+1. Clone the repository:
+
+```bash
+git clone https://github.com/matteoauger/passmage.git
+```
+
+2. Install dependencies:
 
 ```bash
 npm install
 ```
 
-2. Run the development server:
+3. Run the development server:
 
 ```bash
 npm run tauri dev
 ```
 
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for details.
