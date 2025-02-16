@@ -1,6 +1,6 @@
 # Passmage - Simple password manager
 
-A simple, secure and user-friendly password manager built with Tauri and React. \
+A simple, secure and user-friendly password manager built with Tauri and React.
 
 <img src="./assets/images/demo.gif" width="700" alt="Demo"/>
 
