@@ -3,11 +3,11 @@ import { Button } from '../../common/Button'
 import { invoke } from '@tauri-apps/api/core'
 import { PasswStrengthMeter } from '../input/PasswStrengthMeter'
 import { faArrowRight, faArrowsRotate, faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import { twMerge } from 'tailwind-merge'
 import { Checkbox } from '../input/Checkbox'
 import { PasswordShowcase } from './PasswordShowcase'
 import { Select } from '../input/Select'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { RangeSlider } from '../input/RangeSlider'
 
 type PasswordType = 'password' | 'passphrase'
 
@@ -112,23 +112,14 @@ export function PasswordGenerator({ onSubmit }: Props) {
             <PasswStrengthMeter password={password} />
 
             <div>
-                <h4>Options</h4>
                 <div className='flex flex-col gap-4'>
-                    <div className='flex gap-2'>
-                        <label>Length:</label>
-                        <input
-                            type='range'
-                            value={length}
-                            min={lengthBoundaries[0]}
-                            max={lengthBoundaries[1]}
-                            onChange={evt => setLength(+evt.target.value)}
-                        />
-                        <input
-                            type='number'
-                            value={length}
-                            onChange={evt => setLength(+evt.target.value)}
-                        />
-                    </div>
+                    <RangeSlider
+                        label='Length'
+                        value={length}
+                        onChange={setLength}
+                        min={lengthBoundaries[0]}
+                        max={lengthBoundaries[1]}
+                    />
 
                     {type === 'password' && (
                         <>
