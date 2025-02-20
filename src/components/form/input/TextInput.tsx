@@ -3,6 +3,8 @@ import { ValidationState } from '../../../models/input/ValidationState'
 import { forwardRef } from 'react'
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { InputThemeClasses } from './style/inputThemeClasses'
+import { TextClasses } from '../../common/style/textClasses'
 
 export type InputWidget = {
     id: string
@@ -14,6 +16,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     name?: string
     label?: string
     className?: string
+    nestedElementClassName?: string
     validationState?: ValidationState
     leftIcon?: IconDefinition
     rightText?: string
@@ -35,6 +38,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
             name,
             label,
             className,
+            nestedElementClassName,
             validationState,
             leftIcon,
             rightText,
@@ -44,7 +48,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
             widgets = [],
             type = 'text',
             ...props
-        }: Props,   
+        }: Props,
         ref: React.Ref<any>,
     ) => {
         props.autoComplete = 'off'
@@ -55,12 +59,13 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
         return (
             <div
                 className={twMerge(
-                    Styles.Default,
-                    Styles.Hover,
+                    InputThemeClasses.default,
+                    InputThemeClasses.hover,
+                    InputThemeClasses.wrapper,
                     classesByValidationState[
                         validationState ?? ValidationState.None
                     ],
-                    readOnly ? Styles.Readonly : [],
+                    readOnly ? InputThemeClasses.readonly : [],
                     disabled ? '' : 'hover:text-violet-500',
                     className,
                 )}
@@ -72,7 +77,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                             icon={leftIcon}
                             className={twMerge(
                                 'h-4 w-4 text-gray-500',
-                                disabled ? '' : 'group-hover:text-violet-500',
+                                'group-hover:text-violet-500',
                             )}
                         />
                     </span>
@@ -82,7 +87,10 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                     {label && (
                         <label
                             htmlFor={name}
-                            className='text-sm text-bold text-black group-hover:text-violet-500'
+                            className={twMerge(
+                                InputThemeClasses.embeddedLabel,
+                                readOnly ? 'cursor-pointer' : 'group-hover:text-violet-500',
+                            )}
                         >
                             {label}
                         </label>
@@ -90,7 +98,10 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                     <input
                         className={twMerge(
                             'ring-0 w-full focus:outline-none',
-                            readOnly ? Styles.Readonly : [],
+                            InputThemeClasses.default,
+                            InputThemeClasses.hover,
+                            readOnly ? InputThemeClasses.readonly : [],
+                            nestedElementClassName,
                         )}
                         name={name}
                         ref={ref}
@@ -109,10 +120,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                             >
                                 <FontAwesomeIcon
                                     icon={widget.icon}
-                                    className={twMerge(
-                                        'h-5 w-5 text-gray-500',
-                                        readOnly ? '' : 'hover:text-violet-500',
-                                    )}
+                                    className={`h-5 w-5 ${TextClasses.Default} ${TextClasses.Hover}`}
                                     onClick={widget.onClick}
                                 />
                             </span>
@@ -129,28 +137,3 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
         )
     },
 )
-
-const Styles = Object.freeze({
-    Default: [
-        'text-gray-600',
-        'text-lg',
-        'border',
-        'focus-within:border-violet-500',
-        'border-gray-300',
-        'rounded-lg',
-        'block',
-        'bg-white',
-        'w-full',
-        'p-2',
-        'rounded-l-lg',
-        'group',
-        'h-auto',
-        'flex',
-    ].join(' '),
-    Hover: [
-        'hover:border-violet-500',
-        'hover:placeholder-violet-500',
-        'hover:text-violet-500',
-    ].join(' '),
-    Readonly: ['bg-gray-100', 'cursor-pointer'].join(' '),
-})

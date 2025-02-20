@@ -1,4 +1,3 @@
-import { twMerge } from 'tailwind-merge'
 import { openFileDialog } from '../../../utils/dialog'
 import { faFile } from '@fortawesome/free-solid-svg-icons'
 import { TextInput } from './TextInput'
@@ -23,10 +22,8 @@ export function FileInput({
             type='text'
             value={value}
             placeholder={placeholder}
-            className={twMerge(
-                'caret-transparent select-none cursor-pointer',
-                className,
-            )}
+            className={className}
+            nestedElementClassName='cursor-pointer caret-transparent select-none'
             onClick={openFileDialog(onChange)}
             onChange={evt => onChange(evt.target.value)}
             disabled={disabled}
