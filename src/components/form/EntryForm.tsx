@@ -14,6 +14,8 @@ import { PasswStrengthMeter } from './input/PasswStrengthMeter'
 import { PasswordInput } from './input/PasswordInput'
 import { ClipboardInput } from './input/ClipboardInput'
 import { EntryModel } from '../../models/EntryModel'
+import { twMerge } from 'tailwind-merge'
+import { BorderClasses } from '../common/style/borderClasses'
 
 interface Props {
     entry: EntryModel
@@ -21,8 +23,6 @@ interface Props {
     onSubmit: (item: EntryModel) => void
     onDelete: (key: string) => void
 }
-
-// TODO fix bug not copying the password to clipboard
 
 export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
     const [isReadonly, setIsReadonly] = useState(false)
@@ -92,8 +92,8 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
     return (
         <section>
             <form onSubmit={handleSubmit}>
-                <section className='flex flex-col gap-4 w-full bg-transparent border-b border-gray-300 pb-4'>
-                    <div className='w-full flex gap-4 border-b border-gray-300 pb-4'>
+                <section className={twMerge('flex flex-col gap-4 w-full bg-transparent border-b pb-4', BorderClasses.Default)}>
+                    <div className={twMerge('w-full flex gap-4 border-b pb-4', BorderClasses.Default)}>
                         <div className='w-1/2'>
                             <TextInput
                                 type='text'

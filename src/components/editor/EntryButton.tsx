@@ -13,7 +13,7 @@ export function EntryButton({ label, className, icon, onClick }: Props) {
     return (
         <button
             className={twMerge(
-                'flex gap-4 p-4 justify-center items-center hover:text-violet-500 text-lg',
+                'flex gap-4 p-4 justify-center items-center hover:text-violet-800 text-lg',
                 className,
             )}
             onClick={onClick}
