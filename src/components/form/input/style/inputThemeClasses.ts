@@ -12,7 +12,7 @@ export const InputThemeClasses = {
         'flex',
         'text-neutral-900',
         'dark:text-neutral-100',
-        'bg-neutral-200',
+        'bg-white',
         'dark:bg-neutral-800',
     ].join(' '),
     hover: [
@@ -21,12 +21,12 @@ export const InputThemeClasses = {
         'group-hover:text-violet-500',
     ].join(' '),
     readonly: [
-        'bg-neutral-300',
+        'bg-neutral-200',
         'text-neutral-500',
         'dark:bg-neutral-700',
         'dark:text-neutral-400',
         'cursor-pointer',
-        'group-hover:bg-neutral-300',
+        'group-hover:bg-neutral-200',
         'group-hover:text-neutral-500',
         'group-hover:dark:bg-neutral-700',
         'group-hover:dark:text-neutral-400',

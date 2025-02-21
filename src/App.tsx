@@ -20,7 +20,7 @@ function App() {
     ])
 
     return (
-        <ThemeProvider className='h-full bg-neutral-200 text-neutral-200 dark:bg-neutral-900 dark:text-neutral-200'>
+        <ThemeProvider className='h-full bg-neutral-100 text-neutral-200 dark:bg-neutral-900 dark:text-neutral-200'>
             <VaultProvider>
                 <RouterProvider router={router} />
             </VaultProvider>

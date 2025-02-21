@@ -109,7 +109,7 @@ export function Editor() {
                 />
             </header>
             <section className='flex h-[calc(100%-90px)]'>
-                <nav className={twMerge('w-1/4 flex flex-col overflow-y-auto border-r gap-2 p-2 bg-neutral-200 dark:bg-neutral-800', BorderClasses.Default)}>
+                <nav className={twMerge('w-1/4 flex flex-col overflow-y-auto border-r gap-2 p-2 bg-neutral-100 dark:bg-neutral-800', BorderClasses.Default)}>
                     {entries.map(([key, value]) => {
                         const indexedItem = { key, value }
 

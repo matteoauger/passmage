@@ -14,11 +14,12 @@ interface Props {
 const variantClasses = {
     primary: ['bg-violet-500', 'hover:bg-violet-800', 'text-white'],
     secondary: [
-        'bg-gray-100',
-        'hover:bg-gray-200',
-        'text-gray-800',
+        'text-violet-500',
         'border',
-        'border-gray-300',
+        'border-violet-500',
+        'hover:bg-violet-800',
+        'hover:border-violet-800',
+        'hover:text-white',
     ],
     danger: ['bg-red-500', 'hover:bg-red-600', 'text-white'],
 }
