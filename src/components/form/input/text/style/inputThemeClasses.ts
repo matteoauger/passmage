@@ -20,7 +20,7 @@ export const InputThemeClasses = {
         'group-hover:placeholder-violet-500',
         'group-hover:text-violet-500',
     ].join(' '),
-    readonly: [
+    Readonly: [
         'bg-neutral-200',
         'text-neutral-500',
         'dark:bg-neutral-700',

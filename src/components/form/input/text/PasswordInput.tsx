@@ -110,7 +110,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, Props>(
                                 'ring-0 w-full focus:outline-none',
                                 InputThemeClasses.Default,
                                 InputThemeClasses.Hover,
-                                readOnly ? InputThemeClasses.readonly : [],
+                                readOnly ? InputThemeClasses.Readonly : [],
                             )}
                             name={props.name}
                             ref={ref}

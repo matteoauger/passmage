@@ -65,7 +65,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                         'ring-0 w-full focus:outline-none',
                         InputThemeClasses.Default,
                         InputThemeClasses.Hover,
-                        readOnly ? InputThemeClasses.readonly : [],
+                        readOnly ? InputThemeClasses.Readonly : [],
                         nestedElementClassName,
                     )}
                     name={name}

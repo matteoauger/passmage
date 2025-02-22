@@ -1,32 +1,42 @@
 import { twMerge } from 'tailwind-merge'
 import { InputThemeClasses } from './style/inputThemeClasses'
+import { TextInputWrapper } from './TextInputWrapper'
 
 interface Props {
     name: string
-    placeholder: string
+    label: string
     className?: string
     readOnly: boolean
 }
 
 export function TextArea({ className, readOnly, ...props }: Props) {
     return (
-        <textarea
+        <TextInputWrapper
+            label={props.label}
+            readOnly={readOnly}
             className={twMerge(
-                InputThemeClasses.Default,
-                InputThemeClasses.Hover,
-                InputThemeClasses.Wrapper,
-                'w-full',
-                'h-24',
-                'focus:outline-none',
-                'transition',
-                'duration-200',
-                'ease-in-out',
-                'resize-none',
-                readOnly ? InputThemeClasses.readonly : '',
                 className,
             )}
-            readOnly={readOnly}
-            {...props}
-        />
+        >
+            <textarea
+                className={twMerge(
+                    InputThemeClasses.Default,
+                    InputThemeClasses.Hover,
+                    'w-full',
+                    'h-24',
+                    'text-sm',
+                    'focus:outline-none',
+                    'transition',
+                    'duration-200',
+                    'ease-in-out',
+                    'resize-none',
+                    readOnly ? InputThemeClasses.Readonly : '',
+                    className,
+                )}
+                readOnly={readOnly}
+                {...props}
+            />
+        </TextInputWrapper>
+        
     )
 }

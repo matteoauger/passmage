@@ -142,11 +142,10 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
                     </div>
                 </section>
 
-                <div>
-                    <Label htmlFor='notes' text='Notes' />
+                <div className='w-full py-4'>
                     <TextArea
                         name='notes'
-                        placeholder='Notes'
+                        label='Notes'
                         readOnly={isReadonly}
                     />
                 </div>

@@ -53,7 +53,7 @@ export function TextInputWrapper({
                 classesByValidationState[
                     validationState ?? ValidationState.None
                 ],
-                readOnly ? InputThemeClasses.readonly : [],
+                readOnly ? InputThemeClasses.Readonly : [],
                 readOnly ? '' : InputThemeClasses.Hover,
                 disabled ? '' : 'hover:text-violet-500',
                 className,
