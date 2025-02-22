@@ -12,9 +12,9 @@ export function TextArea({ className, readOnly, ...props }: Props) {
     return (
         <textarea
             className={twMerge(
-                InputThemeClasses.default,
-                InputThemeClasses.hover,
-                InputThemeClasses.wrapper,
+                InputThemeClasses.Default,
+                InputThemeClasses.Hover,
+                InputThemeClasses.Wrapper,
                 'w-full',
                 'h-24',
                 'focus:outline-none',

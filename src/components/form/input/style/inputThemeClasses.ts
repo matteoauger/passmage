@@ -1,7 +1,7 @@
 import { TextClasses } from "../../../common/style/textClasses";
 
 export const InputThemeClasses = {
-    default: [
+    Default: [
         'block',
         'text-lg',
         'w-full',
@@ -15,7 +15,7 @@ export const InputThemeClasses = {
         'bg-white',
         'dark:bg-neutral-800',
     ].join(' '),
-    hover: [
+    Hover: [
         'group-hover:border-violet-500',
         'group-hover:placeholder-violet-500',
         'group-hover:text-violet-500',
@@ -31,7 +31,7 @@ export const InputThemeClasses = {
         'group-hover:dark:bg-neutral-700',
         'group-hover:dark:text-neutral-400',
     ].join(' '),
-    wrapper: [
+    Wrapper: [
         'focus-within:border-violet-500',
         'rounded-lg',
         'border',

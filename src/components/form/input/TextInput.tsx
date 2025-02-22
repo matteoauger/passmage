@@ -59,9 +59,9 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
         return (
             <div
                 className={twMerge(
-                    InputThemeClasses.default,
-                    InputThemeClasses.hover,
-                    InputThemeClasses.wrapper,
+                    InputThemeClasses.Default,
+                    InputThemeClasses.Hover,
+                    InputThemeClasses.Wrapper,
                     classesByValidationState[
                         validationState ?? ValidationState.None
                     ],
@@ -98,8 +98,8 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                     <input
                         className={twMerge(
                             'ring-0 w-full focus:outline-none',
-                            InputThemeClasses.default,
-                            InputThemeClasses.hover,
+                            InputThemeClasses.Default,
+                            InputThemeClasses.Hover,
                             readOnly ? InputThemeClasses.readonly : [],
                             nestedElementClassName,
                         )}
