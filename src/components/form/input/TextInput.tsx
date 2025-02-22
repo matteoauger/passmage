@@ -120,7 +120,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                             >
                                 <FontAwesomeIcon
                                     icon={widget.icon}
-                                    className={`h-5 w-5 ${TextClasses.Default} ${TextClasses.Hover}`}
+                                    className={`h-5 w-5 text-neutral-500 hover:text-neutral-700 dark:text-neutral-500 dark:hover:text-neutral-300`}
                                     onClick={widget.onClick}
                                 />
                             </span>
