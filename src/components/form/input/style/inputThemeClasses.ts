@@ -35,8 +35,9 @@ export const InputThemeClasses = {
         'focus-within:border-violet-500',
         'rounded-lg',
         'border',
-        'border-gray-300',
+        'border-neutral-300',
         'dark:border-neutral-600',
+        'focus-within:dark:border-violet-500',
     ].join(' '),
     embeddedLabel: [
         'text-sm',

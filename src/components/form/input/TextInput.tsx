@@ -129,7 +129,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                 )}
 
                 {rightText && (
-                    <div className={`text-sm flex items-center border-l border-gray-300 pl-4 ml-4 min-w-16 ${TextClasses.Default} ${TextClasses.Hover}`}>
+                    <div className={`text-sm flex items-center border-l border-neutral-300 dark:border-neutral-500 pl-4 ml-4 min-w-16 ${TextClasses.Default} ${TextClasses.Hover}`}>
                         {rightText}
                     </div>
                 )}

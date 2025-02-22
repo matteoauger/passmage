@@ -23,7 +23,7 @@ export function Home() {
 
     return (
         <>
-            <ThemeToggle />
+            <ThemeToggle className='absolute top-4 right-4' />
             <section className='flex flex-col gap-6 items-center justify-center h-full mx-auto max-w-xl'>
                 <div className='flex gap-4 w-full'>
                     <FileInput
