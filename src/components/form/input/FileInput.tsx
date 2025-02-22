@@ -1,6 +1,6 @@
 import { openFileDialog } from '../../../utils/dialog'
 import { faFile } from '@fortawesome/free-solid-svg-icons'
-import { TextInput } from './TextInput'
+import { TextInput } from './text/TextInput'
 
 interface Props {
     value: string

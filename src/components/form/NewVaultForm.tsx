@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { hashPassword } from '../../utils/crypto'
-import { PasswordInput } from './input/PasswordInput'
+import { PasswordInput } from './input/text/PasswordInput'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { Button } from '../common/Button'
 import { Indicator } from '../common/Indicator'

@@ -1,5 +1,5 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { TextInput } from '../form/input/TextInput'
+import { TextInput } from '../form/input/text/TextInput'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { useRef } from 'react'
 

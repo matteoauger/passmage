@@ -1,4 +1,4 @@
-import { TextClasses } from "../../../common/style/textClasses";
+import { TextClasses } from "../../../../common/style/textClasses";
 
 export const InputThemeClasses = {
     Default: [

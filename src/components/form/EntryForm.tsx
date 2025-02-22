@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
-import { TextInput } from './input/TextInput'
+import { TextInput } from './input/text/TextInput'
 import { Label } from './Label'
 import { Indicator } from '../common/Indicator'
 import { Button } from '../common/Button'
@@ -9,10 +9,10 @@ import {
     faTrash,
     faXmark,
 } from '@fortawesome/free-solid-svg-icons'
-import { TextArea } from './input/TextArea'
+import { TextArea } from './input/text/TextArea'
 import { PasswStrengthMeter } from './input/PasswStrengthMeter'
-import { PasswordInput } from './input/PasswordInput'
-import { ClipboardInput } from './input/ClipboardInput'
+import { PasswordInput } from './input/text/PasswordInput'
+import { ClipboardInput } from './input/text/ClipboardInput'
 import { EntryModel } from '../../models/EntryModel'
 import { twMerge } from 'tailwind-merge'
 import { BorderClasses } from '../common/style/borderClasses'

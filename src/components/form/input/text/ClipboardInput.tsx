@@ -1,7 +1,7 @@
 import { useRef } from 'react'
-import { ValidationState } from '../../../models/input/ValidationState'
+import { ValidationState } from '../../../../models/input/ValidationState'
 import { TextInput } from './TextInput'
-import { useHotkeyCopy } from '../../../hooks/useHotkeyCopy'
+import { useHotkeyCopy } from '../../../../hooks/useHotkeyCopy'
 
 interface Props {
     hotkey: string

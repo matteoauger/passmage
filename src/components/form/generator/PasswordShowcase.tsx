@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-toastify'
+import { PasswordBreakdown } from '../../common/PasswordBreakdown'
 
 interface Props {
     className?: string
@@ -17,24 +18,6 @@ export function PasswordShowcase({ value, className }: Props) {
         await writeText(value)
     }
 
-    const getCharClass = (char: string) => {
-        if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(char))
-            return 'text-red-700'
-        if (/[0-9]/.test(char)) return 'text-blue-700'
-        return 'text-default'
-    }
-
-    // Styling up the password to distinguish character groups.
-    const valueElement = (
-        <span>
-            {value.split('').map((char, index) => (
-                <span key={index} className={getCharClass(char)}>
-                    {char}
-                </span>
-            ))}
-        </span>
-    )
-
     return (
         <div
             className={twMerge('relative border border-gray-300 rounded-lg p-2', className)}
@@ -43,7 +26,7 @@ export function PasswordShowcase({ value, className }: Props) {
             <div
                 className='break-all overflow-hidden cursor-pointer pr-12'
             >
-                {valueElement}
+                <PasswordBreakdown password={value} />
             </div>
             <span className='absolute cursor-pointer inset-y-0 right-0 flex items-center pr-3'>
                 <FontAwesomeIcon

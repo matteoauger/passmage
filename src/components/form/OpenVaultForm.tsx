@@ -1,6 +1,6 @@
 import { faLockOpen } from '@fortawesome/free-solid-svg-icons'
 import { Button } from '../common/Button'
-import { PasswordInput } from './input/PasswordInput'
+import { PasswordInput } from './input/text/PasswordInput'
 import { useNavigate } from 'react-router-dom'
 import { hashPassword } from '../../utils/crypto'
 import { FormEvent, useContext, useState } from 'react'
@@ -56,7 +56,6 @@ export function OpenVaultForm() {
         >
             <div>
                 <PasswordInput
-                    className='w-full'
                     name='password'
                     placeholder='Master password'
                     onChange={_ => {
