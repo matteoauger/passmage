@@ -86,7 +86,7 @@ export function PasswordGenerator({ onSubmit }: Props) {
 
     return (
         <div className={'flex flex-col gap-4'}>
-            <h3 className='text-2xl mb-2 flex items-baseline gap-1'>
+            <h3 className='text-2xl mb-2 flex items-baseline gap-1 text-neutral-900 dark:text-neutral-100'>
                 Generate a{' '}
                 <div className='relative inline-flex items-center'>
                     <select

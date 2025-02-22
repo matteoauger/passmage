@@ -11,7 +11,7 @@ interface Props {
 export function Checkbox({ label, checked, onChange }: Props) {
     const heightClass = 'w-5 h-5'
     return (
-        <label className='flex items-center gap-2 cursor-pointer select-none'>
+        <label className='flex items-center gap-2 cursor-pointer select-none text-neutral-900 dark:text-neutral-100'>
             <div className={'relative ' + heightClass}>
                 <input
                     type='checkbox'
@@ -34,11 +34,11 @@ export function Checkbox({ label, checked, onChange }: Props) {
                 {checked && (
                     <FontAwesomeIcon
                         icon={faCheck}
-                        className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white w-3 h-3'
+                        className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-neutral-100 w-3 h-3'
                     />
                 )}
             </div>
-            <span className='text-gray-700'>{label}</span>
+            <span >{label}</span>
         </label>
     )
 }

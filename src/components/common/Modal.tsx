@@ -23,16 +23,16 @@ export default function Modal({ children, onClose, show }: Props) {
         >
             {/* Modal bg */}
             <div
+                onClick={onClose}
                 className={twMerge(
                     'absolute h-full w-full bg-gray-800 opacity-70 z-10',
                 )}
             ></div>
 
             {/* Modal content */}
-
             <div
                 className={twMerge(
-                    'relative z-20 bg-white rounded-2xl p-8 shadow-2xl w-[500px]',
+                    'relative z-20 rounded-2xl p-8 shadow-2xl w-[500px] bg-neutral-100 dark:bg-neutral-800',
                 )}
             >
                 <button
@@ -41,7 +41,7 @@ export default function Modal({ children, onClose, show }: Props) {
                 >
                     <FontAwesomeIcon
                         icon={faXmark}
-                        className={twMerge('hover:text-violet-800')}
+                        className={twMerge('text-neutral-900 dark:text-neutral-100 hover:text-violet-800 dark:hover:text-violet-400')}
                     />
                 </button>
                 {children}

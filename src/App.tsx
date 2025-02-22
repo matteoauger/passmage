@@ -21,6 +21,7 @@ function App() {
 
     return (
         <ThemeProvider className='h-full bg-neutral-100 text-neutral-200 dark:bg-neutral-900 dark:text-neutral-200'>
+            <section id='modal-root' />
             <VaultProvider>
                 <RouterProvider router={router} />
             </VaultProvider>
