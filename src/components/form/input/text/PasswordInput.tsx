@@ -107,6 +107,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, Props>(
                     {!breakdown && (
                         <input
                             className={twMerge(
+                                InputThemeClasses.Common,
                                 'ring-0 w-full focus:outline-none',
                                 readOnly ? InputThemeClasses.Readonly : [],
                             )}

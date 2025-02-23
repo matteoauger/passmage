@@ -3,13 +3,15 @@ import { TextClasses } from '../../../../common/style/textClasses'
 export const InputThemeClasses = {
     Default: [
         'block',
-        'text-lg',
         'w-full',
         'p-2',
         'rounded-l-lg',
         'group',
         'h-auto',
         'flex',
+    ].join(' '),
+    Common: [
+        'text-lg',
         'text-neutral-900',
         'dark:text-neutral-100',
         'bg-white',

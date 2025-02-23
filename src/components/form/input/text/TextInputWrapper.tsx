@@ -47,6 +47,7 @@ export function TextInputWrapper({
     return (
         <div
             className={twMerge(
+                InputThemeClasses.Common,
                 InputThemeClasses.Default,
                 InputThemeClasses.Wrapper,
                 classesByValidationState[
