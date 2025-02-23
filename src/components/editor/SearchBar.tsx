@@ -20,7 +20,7 @@ export function SearchBar({ value, onChange }: Props) {
         <TextInput
             ref={searchBar}
             leftIcon={faSearch}
-            className='w-full'
+            className='w-full h-12'
             rightText='Ctrl + K'
             placeholder='Search...'
             value={value}

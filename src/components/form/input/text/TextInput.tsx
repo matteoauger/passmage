@@ -63,8 +63,6 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(
                 <input
                     className={twMerge(
                         'ring-0 w-full focus:outline-none',
-                        InputThemeClasses.Default,
-                        InputThemeClasses.Hover,
                         readOnly ? InputThemeClasses.Readonly : [],
                         nestedElementClassName,
                     )}

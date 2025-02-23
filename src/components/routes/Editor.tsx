@@ -108,7 +108,7 @@ export function Editor() {
                     className='h-12 w-12'
                 />
             </header>
-            <section className='flex h-[calc(100%-90px)]'>
+            <section className='flex h-[calc(100%-82px)]'>
                 <nav className={twMerge('w-1/4 flex flex-col overflow-y-auto border-r gap-2 p-2 bg-neutral-100 dark:bg-neutral-800', BorderClasses.Default)}>
                     {entries.map(([key, value]) => {
                         const indexedItem = { key, value }

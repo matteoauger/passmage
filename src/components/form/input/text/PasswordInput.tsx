@@ -108,8 +108,6 @@ export const PasswordInput = forwardRef<HTMLInputElement, Props>(
                         <input
                             className={twMerge(
                                 'ring-0 w-full focus:outline-none',
-                                InputThemeClasses.Default,
-                                InputThemeClasses.Hover,
                                 readOnly ? InputThemeClasses.Readonly : [],
                             )}
                             name={props.name}
@@ -124,7 +122,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, Props>(
                     )}
 
                     {breakdown && (
-                        <div className='w-full p-2'>
+                        <div className='w-full'>
                             <PasswordBreakdown password={props.value ?? ''} />
                         </div>
                     )}

@@ -20,8 +20,6 @@ export function TextArea({ className, readOnly, ...props }: Props) {
         >
             <textarea
                 className={twMerge(
-                    InputThemeClasses.Default,
-                    InputThemeClasses.Hover,
                     'w-full',
                     'h-24',
                     'text-sm',
