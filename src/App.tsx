@@ -5,6 +5,7 @@ import { Home } from './components/routes/Home'
 import { Editor } from './components/routes/Editor'
 import { ToastContainer } from 'react-toastify'
 import { VaultProvider } from './components/provider/VaultProvider'
+import { ThemeProvider } from './components/provider/ThemeProvider'
 
 function App() {
     const router = createBrowserRouter([
@@ -19,12 +20,13 @@ function App() {
     ])
 
     return (
-        <main className='h-full bg-background'>
+        <ThemeProvider className='h-full bg-neutral-100 text-neutral-200 dark:bg-neutral-900 dark:text-neutral-200'>
+            <section id='modal-root' />
             <VaultProvider>
                 <RouterProvider router={router} />
             </VaultProvider>
             <ToastContainer />
-        </main>
+        </ThemeProvider>
     )
 }
 

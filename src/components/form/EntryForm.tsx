@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
-import { TextInput } from './input/TextInput'
+import { TextInput } from './input/text/TextInput'
 import { Label } from './Label'
 import { Indicator } from '../common/Indicator'
 import { Button } from '../common/Button'
@@ -9,11 +9,13 @@ import {
     faTrash,
     faXmark,
 } from '@fortawesome/free-solid-svg-icons'
-import { TextArea } from './input/TextArea'
+import { TextArea } from './input/text/TextArea'
 import { PasswStrengthMeter } from './input/PasswStrengthMeter'
-import { PasswordInput } from './input/PasswordInput'
-import { ClipboardInput } from './input/ClipboardInput'
+import { PasswordInput } from './input/text/PasswordInput'
+import { ClipboardInput } from './input/text/ClipboardInput'
 import { EntryModel } from '../../models/EntryModel'
+import { twMerge } from 'tailwind-merge'
+import { BorderClasses } from '../common/style/borderClasses'
 
 interface Props {
     entry: EntryModel
@@ -21,8 +23,6 @@ interface Props {
     onSubmit: (item: EntryModel) => void
     onDelete: (key: string) => void
 }
-
-// TODO fix bug not copying the password to clipboard
 
 export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
     const [isReadonly, setIsReadonly] = useState(false)
@@ -92,8 +92,8 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
     return (
         <section>
             <form onSubmit={handleSubmit}>
-                <section className='flex flex-col gap-4 w-full bg-transparent border-b border-gray-300 pb-4'>
-                    <div className='w-full flex gap-4 border-b border-gray-300 pb-4'>
+                <section className={twMerge('flex flex-col gap-4 w-full bg-transparent border-b pb-4', BorderClasses.Default)}>
+                    <div className={twMerge('w-full flex gap-4 border-b pb-4', BorderClasses.Default)}>
                         <div className='w-1/2'>
                             <TextInput
                                 type='text'
@@ -142,11 +142,10 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
                     </div>
                 </section>
 
-                <div>
-                    <Label htmlFor='notes' text='Notes' />
+                <div className='w-full py-4'>
                     <TextArea
                         name='notes'
-                        placeholder='Notes'
+                        label='Notes'
                         readOnly={isReadonly}
                     />
                 </div>

@@ -10,6 +10,10 @@ import { VaultContext } from '../provider/VaultProvider'
 import { EntryModel } from '../../models/EntryModel'
 import { useStorage } from '../../hooks/useStorage'
 import { confirm } from '@tauri-apps/plugin-dialog'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { twMerge } from 'tailwind-merge'
+import { BorderClasses } from '../common/style/borderClasses'
+import { TextClasses } from '../common/style/textClasses'
 
 export function Editor() {
     const [{ vault, fileDefinition }, vaultActions] = useContext(VaultContext)
@@ -73,9 +77,17 @@ export function Editor() {
         navigate('/')
     }
 
+    const handleNewEntryClick = () => {
+        setCurrentEntry({
+            key: crypto.randomUUID(),
+            value: new VaultItem(),
+        })
+        setSearch('')
+    }
+
     return (
         <article className='h-full'>
-            <header className='flex gap-2 p-4 border-b-2 border-b-gray-300'>
+            <header className={twMerge('flex gap-2 p-4 border-b-2 items-center', BorderClasses.Default)}>
                 <SearchBar
                     value={search}
                     onChange={term => handleSearch(term)}
@@ -83,13 +95,7 @@ export function Editor() {
                 {/* New entry button */}
                 <Button
                     icon={{ def: faPlus, placement: 'left' }}
-                    onClick={() => {
-                        setCurrentEntry({
-                            key: crypto.randomUUID(),
-                            value: new VaultItem(),
-                        })
-                        setSearch('')
-                    }}
+                    onClick={() => handleNewEntryClick()}
                     variant='secondary'
                     className='h-12 w-12'
                 />
@@ -102,8 +108,8 @@ export function Editor() {
                     className='h-12 w-12'
                 />
             </header>
-            <section className='flex h-[calc(100%-90px)]'>
-                <nav className='bg-violet-100 w-1/4 border-gray-300 border-solid border-r-2 flex flex-col overflow-y-scroll'>
+            <section className='flex h-[calc(100%-82px)]'>
+                <nav className={twMerge('w-1/4 flex flex-col overflow-y-auto border-r gap-2 p-2 bg-neutral-100 dark:bg-neutral-800', BorderClasses.Default)}>
                     {entries.map(([key, value]) => {
                         const indexedItem = { key, value }
 
@@ -118,6 +124,9 @@ export function Editor() {
                             />
                         )
                     })}
+                    <button className={twMerge('h-12 w-full', TextClasses.Icon)} type="button" onClick={handleNewEntryClick}>
+                        <FontAwesomeIcon icon={faPlus} />
+                    </button>
                 </nav>
 
                 <div className='h-full w-3/4 p-4'>

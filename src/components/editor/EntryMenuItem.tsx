@@ -14,12 +14,11 @@ export function EntryMenuItem({ entry, onClick, selected }: Props) {
         'items-center',
         'p-2',
         'pl-4',
-        'border-b',
         'cursor-pointer',
-        selected ? 'border-violet-500' : 'border-gray-300',
-        selected ? 'bg-violet-500' : 'bg-white',
-        selected ? 'text-white' : 'text-black',
-        selected ? 'font-bold' : 'font-normal',
+        'rounded-md',
+        'transition-all',
+        'text-neutral-900 dark:text-neutral-200',
+        selected ? 'bg-violet-700 hover:bg-violet-800 text-white font-bold' : 'bg-neutral-300 hover:bg-neutral-400 dark:bg-neutral-700 dark:hover:bg-neutral-600',
     ]
 
     return (

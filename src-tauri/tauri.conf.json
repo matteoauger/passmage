@@ -14,9 +14,9 @@
             {
                 "title": "passmage",
                 "width": 800,
-                "height": 600,
+                "height": 616,
                 "minWidth": 800,
-                "minHeight": 600
+                "minHeight": 616
             }
         ],
         "security": {
