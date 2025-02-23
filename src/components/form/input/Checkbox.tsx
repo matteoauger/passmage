@@ -38,7 +38,7 @@ export function Checkbox({ label, checked, onChange }: Props) {
                     />
                 )}
             </div>
-            <span >{label}</span>
+            <span>{label}</span>
         </label>
     )
 }

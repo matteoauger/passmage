@@ -14,9 +14,7 @@ export function TextArea({ className, readOnly, ...props }: Props) {
         <TextInputWrapper
             label={props.label}
             readOnly={readOnly}
-            className={twMerge(
-                className,
-            )}
+            className={twMerge(className)}
         >
             <textarea
                 className={twMerge(
@@ -35,6 +33,5 @@ export function TextArea({ className, readOnly, ...props }: Props) {
                 {...props}
             />
         </TextInputWrapper>
-        
     )
 }

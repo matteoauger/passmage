@@ -20,12 +20,13 @@ export function PasswordShowcase({ value, className }: Props) {
 
     return (
         <div
-            className={twMerge('relative border border-gray-300 rounded-lg p-2', className)}
+            className={twMerge(
+                'relative border border-gray-300 rounded-lg p-2',
+                className,
+            )}
             onClick={handlePasswordClick}
         >
-            <div
-                className='break-all overflow-hidden cursor-pointer pr-12'
-            >
+            <div className='break-all overflow-hidden cursor-pointer pr-12'>
                 <PasswordBreakdown password={value} />
             </div>
             <span className='absolute cursor-pointer inset-y-0 right-0 flex items-center pr-3'>

@@ -18,7 +18,9 @@ export function EntryMenuItem({ entry, onClick, selected }: Props) {
         'rounded-md',
         'transition-all',
         'text-neutral-900 dark:text-neutral-200',
-        selected ? 'bg-violet-700 hover:bg-violet-800 text-white font-bold' : 'bg-neutral-300 hover:bg-neutral-400 dark:bg-neutral-700 dark:hover:bg-neutral-600',
+        selected
+            ? 'bg-violet-700 hover:bg-violet-800 text-white font-bold'
+            : 'bg-neutral-300 hover:bg-neutral-400 dark:bg-neutral-700 dark:hover:bg-neutral-600',
     ]
 
     return (

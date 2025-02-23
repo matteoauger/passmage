@@ -91,8 +91,18 @@ export function EntryForm({ entry, isNew, onSubmit, onDelete }: Props) {
     return (
         <section>
             <form onSubmit={handleSubmit}>
-                <section className={twMerge('flex flex-col gap-4 w-full bg-transparent border-b pb-4', BorderClasses.Default)}>
-                    <div className={twMerge('w-full flex gap-4 border-b pb-4', BorderClasses.Default)}>
+                <section
+                    className={twMerge(
+                        'flex flex-col gap-4 w-full bg-transparent border-b pb-4',
+                        BorderClasses.Default,
+                    )}
+                >
+                    <div
+                        className={twMerge(
+                            'w-full flex gap-4 border-b pb-4',
+                            BorderClasses.Default,
+                        )}
+                    >
                         <div className='w-1/2'>
                             <TextInput
                                 type='text'

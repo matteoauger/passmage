@@ -3,4 +3,3 @@ export const TextClasses = Object.freeze({
     Hover: 'hover:text-violet-800',
     Icon: 'text-neutral-900 dark:text-neutral-400 hover:text-violet-800',
 })
-

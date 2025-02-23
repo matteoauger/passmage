@@ -41,7 +41,9 @@ export default function Modal({ children, onClose, show }: Props) {
                 >
                     <FontAwesomeIcon
                         icon={faXmark}
-                        className={twMerge('text-neutral-900 dark:text-neutral-100 hover:text-violet-800 dark:hover:text-violet-400')}
+                        className={twMerge(
+                            'text-neutral-900 dark:text-neutral-100 hover:text-violet-800 dark:hover:text-violet-400',
+                        )}
                     />
                 </button>
                 {children}

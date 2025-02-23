@@ -87,7 +87,12 @@ export function Editor() {
 
     return (
         <article className='h-full'>
-            <header className={twMerge('flex gap-2 p-4 border-b-2 items-center', BorderClasses.Default)}>
+            <header
+                className={twMerge(
+                    'flex gap-2 p-4 border-b-2 items-center',
+                    BorderClasses.Default,
+                )}
+            >
                 <SearchBar
                     value={search}
                     onChange={term => handleSearch(term)}
@@ -109,7 +114,12 @@ export function Editor() {
                 />
             </header>
             <section className='flex h-[calc(100%-82px)]'>
-                <nav className={twMerge('w-1/4 flex flex-col overflow-y-auto border-r gap-2 p-2 bg-neutral-100 dark:bg-neutral-800', BorderClasses.Default)}>
+                <nav
+                    className={twMerge(
+                        'w-1/4 flex flex-col overflow-y-auto border-r gap-2 p-2 bg-neutral-100 dark:bg-neutral-800',
+                        BorderClasses.Default,
+                    )}
+                >
                     {entries.map(([key, value]) => {
                         const indexedItem = { key, value }
 
@@ -124,7 +134,11 @@ export function Editor() {
                             />
                         )
                     })}
-                    <button className={twMerge('h-12 w-full', TextClasses.Icon)} type="button" onClick={handleNewEntryClick}>
+                    <button
+                        className={twMerge('h-12 w-full', TextClasses.Icon)}
+                        type='button'
+                        onClick={handleNewEntryClick}
+                    >
                         <FontAwesomeIcon icon={faPlus} />
                     </button>
                 </nav>
