@@ -1,6 +1,5 @@
 import { twMerge } from 'tailwind-merge'
 import { ValidationState } from '../../../../models/input/ValidationState'
-import { forwardRef } from 'react'
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { InputThemeClasses } from './style/inputThemeClasses'
