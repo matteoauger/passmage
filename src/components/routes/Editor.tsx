@@ -87,7 +87,7 @@ export function Editor() {
 
     return (
         <article className='h-full'>
-            <header className={twMerge('flex gap-2 p-4 border-b-2', BorderClasses.Default)}>
+            <header className={twMerge('flex gap-2 p-4 border-b-2 items-center', BorderClasses.Default)}>
                 <SearchBar
                     value={search}
                     onChange={term => handleSearch(term)}
