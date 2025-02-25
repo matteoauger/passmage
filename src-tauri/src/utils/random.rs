@@ -16,7 +16,7 @@ impl RandomGenerator for DefaultRandomGenerator {
         let len = vec.len();
         for i in 0..len {
             let rand_idx = self.gen_range(0..len);
-            let j = (rand_idx as usize) % (len - i) + i;
+            let j = rand_idx % (len - i) + i;
             vec.swap(i, j);
         }
     }

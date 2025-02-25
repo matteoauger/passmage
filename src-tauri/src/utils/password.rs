@@ -56,7 +56,7 @@ impl<'a> PasswordGenerator<'a> {
         let mut password: Vec<u8> = (0..adjust_len)
             .map(move |_| {
                 let rand_idx = self.rand.gen_range(0..charset.len());
-                charset[rand_idx] as u8
+                charset[rand_idx]
             })
             .collect();
 
@@ -79,15 +79,13 @@ impl<'a> PasswordGenerator<'a> {
         let words: Vec<&str> = wordlist.lines().collect();
 
         // Picking random words and joining them into a single string with the given separator.
-        let password = (0..length)
+        (0..length)
             .map(move |_| {
                 let rand_idx = self.rand.gen_range(0..words.len());
                 words[rand_idx]
             })
             .collect::<Vec<&str>>()
-            .join(separator);
-
-        password
+            .join(separator)
     }
 }
 
@@ -116,9 +114,9 @@ pub fn calc_entropy(password: &str) -> f64 {
 fn calc_charset(password: &str) -> f64 {
     let mut charset = 0i32;
 
-    let has_number = password.bytes().any(|byte| byte >= b'0' && byte <= b'9');
-    let has_upper = password.bytes().any(|byte| byte >= b'A' && byte <= b'Z');
-    let has_lower = password.bytes().any(|byte| byte >= b'a' && byte <= b'z');
+    let has_number = password.bytes().any(|byte| byte.is_ascii_digit());
+    let has_upper = password.bytes().any(|byte| byte.is_ascii_uppercase());
+    let has_lower = password.bytes().any(|byte| byte.is_ascii_lowercase());
     let has_special = password.bytes().any(|byte| {
         byte != b' '
             && byte != b'\n'
