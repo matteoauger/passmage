@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { ValidationState } from '../../../../models/input/ValidationState'
 import { TextInput } from './TextInput'
-import { useHotkeyCopy } from '../../../../hooks/useHotkeyCopy'
+import { useClipboard } from '../../../../hooks/useClipboard'
 
 interface Props {
     hotkey: string
@@ -15,7 +15,7 @@ interface Props {
 
 export function ClipboardInput({ hotkey, readOnly = false, ...props }: Props) {
     const input = useRef<HTMLInputElement>(null)
-    useHotkeyCopy({
+    const copyToClipboard = useClipboard({
         hotkey,
         enabled: readOnly,
         getValueToCopy: () => {
@@ -23,11 +23,18 @@ export function ClipboardInput({ hotkey, readOnly = false, ...props }: Props) {
         },
     })
 
+    const handleClick = () => {
+        if (readOnly) {
+            copyToClipboard()
+        }
+    }
+
     return (
         <TextInput
             ref={input}
             rightText={readOnly ? hotkey : undefined}
             readOnly={readOnly}
+            onClick={handleClick}
             {...props}
         />
     )
