@@ -5,7 +5,7 @@ import { InputWidget } from './TextInput'
 import { PasswordGenerator } from '../../generator/PasswordGenerator'
 import Modal from '../../../common/Modal'
 import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons/faArrowsRotate'
-import { useHotkeyCopy } from '../../../../hooks/useHotkeyCopy'
+import { useClipboard } from '../../../../hooks/useClipboard'
 import { TextInputWrapper } from './TextInputWrapper'
 import { twMerge } from 'tailwind-merge'
 import { InputThemeClasses } from './style/inputThemeClasses'
@@ -42,7 +42,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, Props>(
         const [enableGenModal, setEnableGenModal] = useState(false)
 
         const hotkey = 'Ctrl + C'
-        useHotkeyCopy({
+        const copyToClipboard = useClipboard({
             hotkey,
             enabled: enableHotkey && readOnly,
             getValueToCopy: () => {
@@ -77,6 +77,12 @@ export const PasswordInput = forwardRef<HTMLInputElement, Props>(
             ]
         }
 
+        const handleClick = () => {
+            if (readOnly) {
+                copyToClipboard()
+            }
+        }
+
         return (
             <>
                 {/* Password generation modal */}
@@ -102,6 +108,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, Props>(
                     widgets={widgets}
                     readOnly={readOnly}
                     rightText={enableHotkey && readOnly ? hotkey : undefined}
+                    onClick={handleClick}
                     {...props}
                 >
                     {!breakdown && (
