@@ -20,3 +20,11 @@ export type VaultHookActions = {
 }
 
 export type VaultHookResult = [VaultHookData, VaultHookActions]
+
+export interface Settings {
+    theme: 'light' | 'dark'
+}
+
+export type SettingsReducerAction = {
+    type: 'TOGGLE_THEME'
+}

@@ -3,7 +3,7 @@ import { VaultModel } from '../models/VaultModel'
 import { VaultHookData, VaultHookResult } from './types'
 import { EntryModel } from '../models/EntryModel'
 
-type ReducerData =
+type ReducerAction =
     | { type: 'SET_VAULT'; payload: { vault: VaultModel } }
     | { type: 'ENTRY_ADD'; payload: { entry: EntryModel } }
     | { type: 'ENTRY_DELETE'; payload: { entryKey: string } }
@@ -56,7 +56,7 @@ export const useVault: () => VaultHookResult = () => {
 
 const reducer = (
     prevState: VaultHookData,
-    { type, payload }: ReducerData,
+    { type, payload }: ReducerAction,
 ): VaultHookData => {
     let state = { ...prevState }
 

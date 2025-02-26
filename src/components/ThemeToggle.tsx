@@ -1,12 +1,22 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useTheme } from './provider/ThemeProvider'
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons'
 import { twMerge } from 'tailwind-merge'
+import { useSettingsContext } from '../hooks/useSettings'
 
 export function ThemeToggle({ className }: { className?: string }) {
-    const { theme, toggleTheme } = useTheme()
+    const [{ theme }, dispatch] = useSettingsContext()
+
+    const handleButtonClick = () => {
+        dispatch({
+            type: 'TOGGLE_THEME',
+        })
+    }
+
     return (
-        <button onClick={toggleTheme} className={twMerge('text-xl', className)}>
+        <button
+            onClick={handleButtonClick}
+            className={twMerge('text-xl', className)}
+        >
             {theme === 'light' ? (
                 <FontAwesomeIcon
                     icon={faMoon}
