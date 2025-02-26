@@ -3,15 +3,14 @@ import { Button } from '../common/Button'
 import { PasswordInput } from './input/text/PasswordInput'
 import { useNavigate } from 'react-router-dom'
 import { hashPassword } from '../../utils/crypto'
-import { FormEvent, useContext, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { ValidationState } from '../../models/input/ValidationState'
 import { Indicator } from '../common/Indicator'
-import { VaultContext } from '../provider/VaultProvider'
 import { useStorage } from '../../hooks/useStorage'
+import { useVaultContext } from '../../hooks/useVault'
 
 export function OpenVaultForm() {
-    const [{ fileDefinition }, { setVault, setDecryptionKey }] =
-        useContext(VaultContext)
+    const [{ fileDefinition }, vaultDispatch] = useVaultContext()
     const { open } = useStorage()
     const [validationState, setValidationState] = useState<ValidationState>(
         ValidationState.None,
@@ -31,13 +30,19 @@ export function OpenVaultForm() {
         }
 
         try {
-            const key = await hashPassword(password)
-            setDecryptionKey(key)
+            const decryptionKey = await hashPassword(password)
+            vaultDispatch({
+                type: 'SET_DECRYPTION_KEY',
+                payload: { decryptionKey },
+            })
             const decryptedVault = await open({
-                decryptionKey: key,
+                decryptionKey: decryptionKey,
                 filepath: fileDefinition.filepath,
             })
-            setVault(decryptedVault)
+            vaultDispatch({
+                type: 'SET_VAULT',
+                payload: { vault: decryptedVault },
+            })
             navigate('/editor')
 
             return true

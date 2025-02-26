@@ -26,7 +26,7 @@ export const useSettings = () => {
 }
 
 export const SettingsContext = createContext<SettingsContextType>([
-    { ...DefaultSettings },
+    DefaultSettings,
     () => {},
 ])
 

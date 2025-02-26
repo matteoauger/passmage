@@ -1,12 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import { VaultItem } from '../../models/VaultModel'
 import { Button } from '../common/Button'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { EntryForm } from '../form/EntryForm'
 import { EntryMenuItem } from '../editor/EntryMenuItem'
 import { faLock, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { SearchBar } from '../editor/SearchBar'
-import { VaultContext } from '../provider/VaultProvider'
 import { EntryModel } from '../../models/EntryModel'
 import { useStorage } from '../../hooks/useStorage'
 import { confirm } from '@tauri-apps/plugin-dialog'
@@ -14,9 +13,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { twMerge } from 'tailwind-merge'
 import { BorderClasses } from '../common/style/borderClasses'
 import { TextClasses } from '../common/style/textClasses'
+import { useVaultContext } from '../../hooks/useVault'
 
 export function Editor() {
-    const [{ vault, fileDefinition }, vaultActions] = useContext(VaultContext)
+    const [{ vault, fileDefinition }, vaultDispatch] = useVaultContext()
     const navigate = useNavigate()
 
     const [entries, setEntries] = useState(Object.entries(vault))
@@ -53,12 +53,12 @@ export function Editor() {
         setEntries(searchResult)
     }
 
-    const handleEntrySubmit = async (item: EntryModel) => {
-        vaultActions.addEntry(item)
-        setCurrentEntry(item)
+    const handleEntrySubmit = async (entry: EntryModel) => {
+        vaultDispatch({ type: 'ENTRY_ADD', payload: { entry } })
+        setCurrentEntry(entry)
     }
 
-    const handleEntryDelete = async (key: string) => {
+    const handleEntryDelete = async (entryKey: string) => {
         // Show up a confirmation dialog.
         const confirmation = await confirm(
             'You are about to permanently delete this entry. Are you sure ?',
@@ -66,14 +66,17 @@ export function Editor() {
         )
 
         if (confirmation) {
-            vaultActions.removeEntry(key)
+            vaultDispatch({ type: 'ENTRY_DELETE', payload: { entryKey } })
             setCurrentEntry(null)
         }
     }
 
     const handleLock = async () => {
         await save(fileDefinition, vault)
-        vaultActions.setDecryptionKey('')
+        vaultDispatch({
+            type: 'SET_DECRYPTION_KEY',
+            payload: { decryptionKey: '' },
+        })
         navigate('/')
     }
 

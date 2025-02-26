@@ -1,62 +1,16 @@
-import { useReducer } from 'react'
+import { createContext, useContext, useReducer } from 'react'
+import { VaultFileDefinition, VaultReducerAction } from './types'
 import { VaultModel } from '../models/VaultModel'
-import { VaultHookData, VaultHookResult } from './types'
-import { EntryModel } from '../models/EntryModel'
 
-type ReducerAction =
-    | { type: 'SET_VAULT'; payload: { vault: VaultModel } }
-    | { type: 'ENTRY_ADD'; payload: { entry: EntryModel } }
-    | { type: 'ENTRY_DELETE'; payload: { entryKey: string } }
-    | { type: 'SET_DECRYPTION_KEY'; payload: { decryptionKey: string } }
-    | { type: 'SET_FILEPATH'; payload: { filepath: string } }
-
-export const useVault: () => VaultHookResult = () => {
-    const [{ vault, fileDefinition }, dispatch] = useReducer(reducer, {
-        vault: {},
-        fileDefinition: {
-            decryptionKey: '',
-            filepath: '',
-        },
-    })
-
-    return [
-        {
-            vault,
-            fileDefinition,
-        },
-        {
-            setVault: (vault: VaultModel) =>
-                dispatch({
-                    type: 'SET_VAULT',
-                    payload: { vault },
-                }),
-            addEntry: (entry: EntryModel) =>
-                dispatch({
-                    type: 'ENTRY_ADD',
-                    payload: { entry },
-                }),
-            removeEntry: (entryKey: string) =>
-                dispatch({
-                    type: 'ENTRY_DELETE',
-                    payload: { entryKey },
-                }),
-            setDecryptionKey: (decryptionKey: string) =>
-                dispatch({
-                    type: 'SET_DECRYPTION_KEY',
-                    payload: { decryptionKey },
-                }),
-            setFilepath: (filepath: string) =>
-                dispatch({
-                    type: 'SET_FILEPATH',
-                    payload: { filepath },
-                }),
-        },
-    ]
+interface VaultHookData {
+    vault: VaultModel
+    fileDefinition: VaultFileDefinition
 }
+type VaultHookType = [VaultHookData, (action: VaultReducerAction) => void]
 
 const reducer = (
     prevState: VaultHookData,
-    { type, payload }: ReducerAction,
+    { type, payload }: VaultReducerAction,
 ): VaultHookData => {
     let state = { ...prevState }
 
@@ -91,4 +45,36 @@ const reducer = (
     }
 
     return state
+}
+
+const DefaultVault: VaultHookData = {
+    vault: {},
+    fileDefinition: {
+        decryptionKey: '',
+        filepath: '',
+    },
+}
+
+export const useVault: () => VaultHookType = () => {
+    const [{ vault, fileDefinition }, dispatch] = useReducer(
+        reducer,
+        DefaultVault,
+    )
+
+    return [
+        {
+            vault,
+            fileDefinition,
+        },
+        dispatch,
+    ]
+}
+
+export const VaultContext = createContext<VaultHookType>([
+    DefaultVault,
+    () => {},
+])
+
+export const useVaultContext = () => {
+    return useContext(VaultContext)
 }
