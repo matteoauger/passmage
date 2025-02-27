@@ -3,11 +3,24 @@ import 'react-toastify/dist/ReactToastify.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Home } from './components/routes/Home'
 import { Editor } from './components/routes/Editor'
-import { ToastContainer } from 'react-toastify'
-import { VaultProvider } from './components/provider/VaultProvider'
-import { ThemeProvider } from './components/provider/ThemeProvider'
+import { useSettingsContext } from './hooks/useSettings'
+import { twMerge } from 'tailwind-merge'
+import { useEffect } from 'react'
+import { load } from './utils/settingsStore'
 
 function App() {
+    const [{ theme }, dispatch] = useSettingsContext()
+
+    // Load settings
+    useEffect(() => {
+        load().then(settings => {
+            dispatch({
+                type: 'SET_SETTINGS',
+                payload: settings,
+            })
+        })
+    }, [])
+
     const router = createBrowserRouter([
         {
             path: '/',
@@ -20,13 +33,11 @@ function App() {
     ])
 
     return (
-        <ThemeProvider className='h-full bg-neutral-100 text-neutral-200 dark:bg-neutral-900 dark:text-neutral-200'>
-            <section id='modal-root' />
-            <VaultProvider>
+        <main className={twMerge(theme, 'h-full')}>
+            <section className='h-full bg-neutral-100 text-neutral-200 dark:bg-neutral-900 dark:text-neutral-200'>
                 <RouterProvider router={router} />
-            </VaultProvider>
-            <ToastContainer />
-        </ThemeProvider>
+            </section>
+        </main>
     )
 }
 

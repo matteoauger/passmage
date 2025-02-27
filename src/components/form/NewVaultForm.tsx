@@ -4,16 +4,15 @@ import { PasswordInput } from './input/text/PasswordInput'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { Button } from '../common/Button'
 import { Indicator } from '../common/Indicator'
-import { FormEvent, useContext, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { ValidationState } from '../../models/input/ValidationState'
 import { PasswStrengthMeter } from './input/PasswStrengthMeter'
-import { VaultContext } from '../provider/VaultProvider'
 import { useStorage } from '../../hooks/useStorage'
+import { useVaultContext } from '../../hooks/useVault'
 
 export function NewVaultForm() {
     const navigate = useNavigate()
-    const [{ fileDefinition }, { setDecryptionKey, setVault }] =
-        useContext(VaultContext)
+    const [{ fileDefinition }, vaultDispatch] = useVaultContext()
     const { save } = useStorage()
     const [validationState, setValidationState] = useState({
         password: ValidationState.None,
@@ -46,14 +45,20 @@ export function NewVaultForm() {
         }
 
         try {
-            const key = await hashPassword(password)
-            setDecryptionKey(key)
+            const decryptionKey = await hashPassword(password)
+            vaultDispatch({
+                type: 'SET_DECRYPTION_KEY',
+                payload: { decryptionKey },
+            })
             const vault = {}
             await save(
-                { decryptionKey: key, filepath: fileDefinition.filepath },
+                { decryptionKey, filepath: fileDefinition.filepath },
                 vault,
             )
-            setVault(vault)
+            vaultDispatch({
+                type: 'SET_VAULT',
+                payload: { vault },
+            })
             navigate('/editor')
         } catch (err) {
             console.error('handled error', err)

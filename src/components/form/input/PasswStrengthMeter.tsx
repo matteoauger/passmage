@@ -40,28 +40,28 @@ const entropyToStrength = (entropy: number) => {
 const StrengthDefinitions: Record<number, StrengthDefinition> = Object.freeze({
     [Strength.VeryWeak]: {
         label: 'Very Weak',
-        textColor: 'text-supererror',
-        bgColor: 'bg-supererror',
+        textColor: 'text-red-900',
+        bgColor: 'bg-red-900',
     },
     [Strength.Weak]: {
         label: 'Weak',
-        textColor: 'text-error',
-        bgColor: 'bg-error',
+        textColor: 'text-red-700',
+        bgColor: 'bg-red-700',
     },
     [Strength.Moderate]: {
         label: 'Moderate',
-        textColor: 'text-warning',
-        bgColor: 'bg-warning',
+        textColor: 'text-amber-700',
+        bgColor: 'bg-amber-700',
     },
     [Strength.Strong]: {
         label: 'Strong',
-        textColor: 'text-success',
-        bgColor: 'bg-success',
+        textColor: 'text-green-700',
+        bgColor: 'bg-green-700',
     },
     [Strength.VeryStrong]: {
         label: 'Amazing',
-        textColor: 'text-supersuccess',
-        bgColor: 'bg-supersuccess',
+        textColor: 'text-teal-700',
+        bgColor: 'bg-teal-700',
     },
 })
 

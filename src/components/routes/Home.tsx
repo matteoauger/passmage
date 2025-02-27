@@ -5,13 +5,13 @@ import { HomeMode } from '../../models/HomeMode'
 import { faFile, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { OpenVaultForm } from '../form/OpenVaultForm'
 import { NewVaultForm } from '../form/NewVaultForm'
-import { useContext, useEffect, useState } from 'react'
-import { VaultContext } from '../provider/VaultProvider'
+import { useEffect, useState } from 'react'
 import { ThemeToggle } from '../ThemeToggle'
+import { useVaultContext } from '../../hooks/useVault'
 
 export function Home() {
     const [mode, setMode] = useState(HomeMode.Blank)
-    const [{ fileDefinition }, { setFilepath }] = useContext(VaultContext)
+    const [{ fileDefinition }, vaultDispatch] = useVaultContext()
     const filepath = fileDefinition.filepath
 
     // Automatically switch to "open" mode if the component is initialized with an existing vault filepath.
@@ -30,8 +30,11 @@ export function Home() {
                         className='w-full'
                         value={filepath ?? ''}
                         placeholder='Select a file...'
-                        onChange={(val: string) => {
-                            setFilepath(val)
+                        onChange={(filepath: string) => {
+                            vaultDispatch({
+                                type: 'SET_FILEPATH',
+                                payload: { filepath },
+                            })
                             setMode(HomeMode.Open)
                         }}
                         disabled={filepath !== null}
@@ -41,7 +44,10 @@ export function Home() {
                         <Button
                             icon={{ def: faXmark, placement: 'left' }}
                             onClick={() => {
-                                setFilepath('')
+                                vaultDispatch({
+                                    type: 'SET_FILEPATH',
+                                    payload: { filepath: '' },
+                                })
                                 setMode(HomeMode.Blank)
                             }}
                         />
@@ -59,16 +65,22 @@ export function Home() {
                     <div className='flex gap-4'>
                         <Button
                             label='Open'
-                            onClick={openFileDialog((val: string) => {
-                                setFilepath(val)
+                            onClick={openFileDialog((filepath: string) => {
+                                vaultDispatch({
+                                    type: 'SET_FILEPATH',
+                                    payload: { filepath },
+                                })
                                 setMode(HomeMode.Open)
                             })}
                             icon={{ def: faFile, placement: 'left' }}
                         />
                         <Button
                             label='New'
-                            onClick={saveFileDialog((val: string) => {
-                                setFilepath(val)
+                            onClick={saveFileDialog((filepath: string) => {
+                                vaultDispatch({
+                                    type: 'SET_FILEPATH',
+                                    payload: { filepath },
+                                })
                                 setMode(HomeMode.New)
                             })}
                             icon={{ def: faPlus, placement: 'left' }}

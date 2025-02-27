@@ -26,9 +26,9 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
 
 const classesByValidationState: Record<ValidationState, string> = {
     [ValidationState.None]: '',
-    [ValidationState.Valid]: 'border-2 border-success',
-    [ValidationState.Warning]: 'border-2 border-warning',
-    [ValidationState.Fail]: 'border-2 border-error',
+    [ValidationState.Valid]: 'border-2 border-green-700',
+    [ValidationState.Warning]: 'border-2 border-amber-700',
+    [ValidationState.Fail]: 'border-2 border-red-700',
 }
 
 export function TextInputWrapper({

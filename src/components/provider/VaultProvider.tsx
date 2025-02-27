@@ -1,27 +1,8 @@
-import { createContext } from 'react'
-import { useVault } from '../../hooks/useVault'
-import { VaultHookResult } from '../../hooks/types'
+import { useVault, VaultContext } from '../../hooks/useVault'
 
 interface Props {
     children: React.ReactNode
 }
-
-export const VaultContext = createContext<VaultHookResult>([
-    {
-        vault: {},
-        fileDefinition: {
-            decryptionKey: '',
-            filepath: '',
-        },
-    },
-    {
-        setVault: () => {},
-        addEntry: () => {},
-        removeEntry: () => {},
-        setDecryptionKey: () => {},
-        setFilepath: () => {},
-    },
-])
 
 export function VaultProvider({ children }: Props) {
     const vault = useVault()
