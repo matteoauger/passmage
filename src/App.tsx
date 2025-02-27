@@ -5,9 +5,22 @@ import { Home } from './components/routes/Home'
 import { Editor } from './components/routes/Editor'
 import { useSettingsContext } from './hooks/useSettings'
 import { twMerge } from 'tailwind-merge'
+import { useEffect } from 'react'
+import { load } from './utils/settingsStore'
 
 function App() {
-    const [{ theme }, _] = useSettingsContext()
+    const [{ theme }, dispatch] = useSettingsContext()
+
+    // Load settings
+    useEffect(() => {
+        load().then(settings => {
+            dispatch({
+                type: 'SET_SETTINGS',
+                payload: settings,
+            })
+        })
+    }, [])
+
     const router = createBrowserRouter([
         {
             path: '/',

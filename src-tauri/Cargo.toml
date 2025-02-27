@@ -27,4 +27,5 @@ tauri-plugin-fs = "2.0.0"
 tauri-plugin-dialog = "2.0.0"
 rand = "0.8.5"
 tauri-plugin-clipboard-manager = "2.0.1"
+tauri-plugin-store = "2"
 

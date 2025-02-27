@@ -1,4 +1,5 @@
 import { EntryModel } from '../models/EntryModel'
+import { Settings } from '../models/Settings'
 import { VaultModel } from '../models/VaultModel'
 
 export type VaultFileDefinition = {
@@ -13,10 +14,6 @@ export type VaultReducerAction =
     | { type: 'SET_DECRYPTION_KEY'; payload: { decryptionKey: string } }
     | { type: 'SET_FILEPATH'; payload: { filepath: string } }
 
-export interface Settings {
-    theme: 'light' | 'dark'
-}
-
-export type SettingsReducerAction = {
-    type: 'TOGGLE_THEME'
-}
+export type SettingsReducerAction =
+    | { type: 'TOGGLE_THEME' }
+    | { type: 'SET_SETTINGS'; payload: Settings }
