@@ -1,6 +1,7 @@
-import { openFileDialog } from '../../../utils/dialog'
+import { createOpenFileDialog } from '../../../utils/dialog/dialog'
 import { faFile } from '@fortawesome/free-solid-svg-icons'
 import { TextInput } from './text/TextInput'
+import { FileTypes } from '../../../utils/dialog/types'
 
 interface Props {
     value: string
@@ -24,7 +25,7 @@ export function FileInput({
             placeholder={placeholder}
             className={className}
             nestedElementClassName='cursor-pointer caret-transparent select-none'
-            onClick={openFileDialog(onChange)}
+            onClick={createOpenFileDialog(onChange, FileTypes.PMV)}
             onChange={evt => onChange(evt.target.value)}
             disabled={disabled}
             leftIcon={faFile}

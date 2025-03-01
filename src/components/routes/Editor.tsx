@@ -14,6 +14,7 @@ import { twMerge } from 'tailwind-merge'
 import { BorderClasses } from '../common/style/borderClasses'
 import { TextClasses } from '../common/style/textClasses'
 import { useVaultContext } from '../../hooks/useVault'
+import { SettingsButton } from '../settings/SettingsButton'
 
 export function Editor() {
     const [{ vault, fileDefinition }, vaultDispatch] = useVaultContext()
@@ -115,6 +116,9 @@ export function Editor() {
                     onClick={handleLock}
                     className='h-12 w-12'
                 />
+
+                {/* Settings button */}
+                <SettingsButton className='h-12 w-12' enableExport={true} />
             </header>
             <section className='flex h-[calc(100%-82px)]'>
                 <nav

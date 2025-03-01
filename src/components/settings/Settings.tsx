@@ -1,13 +1,29 @@
-import { faFileCsv } from '@fortawesome/free-solid-svg-icons'
 import { Button } from '../common/Button'
 import { ThemeToggle } from '../ThemeToggle'
 import { useVaultContext } from '../../hooks/useVault'
+import { exportVault } from '../../utils/csv'
+import { createSaveFileDialog } from '../../utils/dialog/dialog'
+import { saveFile } from '../../utils/fs'
+import { FileTypes } from '../../utils/dialog/types'
+import { message } from '@tauri-apps/plugin-dialog'
 
-export function Settings() {
+interface Props {
+    enableExport: boolean
+}
+
+export function Settings({ enableExport }: Props) {
     const [{ vault }, _] = useVaultContext()
-    //const [settings, settingsDispatch] = useSettingsContext()
-    function handleExportClick(): void {
-        throw new Error('Function not implemented.')
+
+    const handleExportClick = () => {
+        if (!enableExport) return
+        const csv = exportVault(vault)
+        const openSaveFileDialog = createSaveFileDialog(async path => {
+            const bytes = new TextEncoder().encode(csv)
+            await saveFile(path, bytes)
+            message('Export successful')
+        }, FileTypes.CSV)
+
+        openSaveFileDialog()
     }
 
     return (
@@ -25,14 +41,13 @@ export function Settings() {
                 <ThemeToggle />
             </div>
 
-            {vault && (
+            {enableExport && (
                 <div className='flex items-center justify-between gap-2'>
-                    <label>Export vault to CSV</label>
+                    <label>Export vault</label>
                     <Button
                         variant='primary'
                         onClick={handleExportClick}
                         label='Export'
-                        icon={{ def: faFileCsv, placement: 'left' }}
                     />
                 </div>
             )}

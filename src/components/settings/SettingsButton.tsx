@@ -5,10 +5,11 @@ import { Modal } from '../common/Modal'
 import { Settings } from './Settings'
 
 interface Props {
+    enableExport?: boolean
     className?: string
 }
 
-export function SettingsButton({ className }: Props) {
+export function SettingsButton({ className, enableExport = false }: Props) {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
@@ -22,7 +23,7 @@ export function SettingsButton({ className }: Props) {
 
             {isOpen && (
                 <Modal show={isOpen} onClose={() => setIsOpen(false)}>
-                    <Settings />
+                    <Settings enableExport={enableExport} />
                 </Modal>
             )}
         </>
