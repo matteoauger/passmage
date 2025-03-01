@@ -8,7 +8,6 @@ import { ToastContainer } from 'react-toastify'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
         <SettingsProvider>
-            <section id='modal-root' />
             <VaultProvider>
                 <App />
             </VaultProvider>

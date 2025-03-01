@@ -1,4 +1,7 @@
-import { openFileDialog, saveFileDialog } from '../../utils/dialog'
+import {
+    createOpenFileDialog,
+    createSaveFileDialog,
+} from '../../utils/dialog/dialog'
 import { Button } from '../common/Button'
 import { FileInput } from '../form/input/FileInput'
 import { HomeMode } from '../../models/HomeMode'
@@ -6,8 +9,9 @@ import { faFile, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { OpenVaultForm } from '../form/OpenVaultForm'
 import { NewVaultForm } from '../form/NewVaultForm'
 import { useEffect, useState } from 'react'
-import { ThemeToggle } from '../ThemeToggle'
 import { useVaultContext } from '../../hooks/useVault'
+import { SettingsButton } from '../settings/SettingsButton'
+import { FileTypes } from '../../utils/dialog/types'
 
 export function Home() {
     const [mode, setMode] = useState(HomeMode.Blank)
@@ -23,7 +27,7 @@ export function Home() {
 
     return (
         <>
-            <ThemeToggle className='absolute top-4 right-4' />
+            <SettingsButton className='absolute top-4 right-4' />
             <section className='flex flex-col gap-6 items-center justify-center h-full mx-auto max-w-xl'>
                 <div className='flex gap-4 w-full'>
                     <FileInput
@@ -65,24 +69,30 @@ export function Home() {
                     <div className='flex gap-4'>
                         <Button
                             label='Open'
-                            onClick={openFileDialog((filepath: string) => {
-                                vaultDispatch({
-                                    type: 'SET_FILEPATH',
-                                    payload: { filepath },
-                                })
-                                setMode(HomeMode.Open)
-                            })}
+                            onClick={createOpenFileDialog(
+                                (filepath: string) => {
+                                    vaultDispatch({
+                                        type: 'SET_FILEPATH',
+                                        payload: { filepath },
+                                    })
+                                    setMode(HomeMode.Open)
+                                },
+                                FileTypes.PMV,
+                            )}
                             icon={{ def: faFile, placement: 'left' }}
                         />
                         <Button
                             label='New'
-                            onClick={saveFileDialog((filepath: string) => {
-                                vaultDispatch({
-                                    type: 'SET_FILEPATH',
-                                    payload: { filepath },
-                                })
-                                setMode(HomeMode.New)
-                            })}
+                            onClick={createSaveFileDialog(
+                                (filepath: string) => {
+                                    vaultDispatch({
+                                        type: 'SET_FILEPATH',
+                                        payload: { filepath },
+                                    })
+                                    setMode(HomeMode.New)
+                                },
+                                FileTypes.PMV,
+                            )}
                             icon={{ def: faPlus, placement: 'left' }}
                         />
                     </div>

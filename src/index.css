@@ -39,4 +39,14 @@
     input[type='password']::-ms-reveal {
         display: none;
     }
+
+    .light {
+        color: var(--neutral-900);
+        background-color: var(--neutral-100);
+    }
+
+    .dark {
+        color: var(--neutral-100);
+        background-color: var(--neutral-900);
+    }
 }

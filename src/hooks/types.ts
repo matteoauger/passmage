@@ -13,6 +13,7 @@ export type VaultReducerAction =
     | { type: 'ENTRY_DELETE'; payload: { entryKey: string } }
     | { type: 'SET_DECRYPTION_KEY'; payload: { decryptionKey: string } }
     | { type: 'SET_FILEPATH'; payload: { filepath: string } }
+    | { type: 'IMPORT_VAULT'; payload: VaultModel }
 
 export type SettingsReducerAction =
     | { type: 'TOGGLE_THEME' }
