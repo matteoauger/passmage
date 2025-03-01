@@ -40,6 +40,10 @@ const reducer = (
             state.fileDefinition.filepath = payload.filepath
             break
 
+        case 'IMPORT_VAULT':
+            state.vault = { ...state.vault, ...payload }
+            break
+
         default:
             throw new Error(`Action ${type} not supported`)
     }

@@ -118,7 +118,10 @@ export function Editor() {
                 />
 
                 {/* Settings button */}
-                <SettingsButton className='h-12 w-12' enableExport={true} />
+                <SettingsButton
+                    className='h-12 w-12'
+                    enableImportExport={true}
+                />
             </header>
             <section className='flex h-[calc(100%-82px)]'>
                 <nav
