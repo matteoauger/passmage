@@ -10,7 +10,7 @@ interface Props {
     onClose: () => void
 }
 
-export default function Modal({ children, onClose, show }: Props) {
+export function Modal({ children, onClose, show }: Props) {
     if (!show) return null
 
     const root = document.getElementById('modal-root')!

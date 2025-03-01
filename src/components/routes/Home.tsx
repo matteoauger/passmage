@@ -6,8 +6,8 @@ import { faFile, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { OpenVaultForm } from '../form/OpenVaultForm'
 import { NewVaultForm } from '../form/NewVaultForm'
 import { useEffect, useState } from 'react'
-import { ThemeToggle } from '../ThemeToggle'
 import { useVaultContext } from '../../hooks/useVault'
+import { SettingsButton } from '../settings/SettingsButton'
 
 export function Home() {
     const [mode, setMode] = useState(HomeMode.Blank)
@@ -23,7 +23,7 @@ export function Home() {
 
     return (
         <>
-            <ThemeToggle className='absolute top-4 right-4' />
+            <SettingsButton className='absolute top-4 right-4' />
             <section className='flex flex-col gap-6 items-center justify-center h-full mx-auto max-w-xl'>
                 <div className='flex gap-4 w-full'>
                     <FileInput

@@ -34,6 +34,7 @@ function App() {
 
     return (
         <main className={twMerge(theme, 'h-full')}>
+            <section id='modal-root' />
             <section className='h-full bg-neutral-100 text-neutral-200 dark:bg-neutral-900 dark:text-neutral-200'>
                 <RouterProvider router={router} />
             </section>
